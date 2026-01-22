@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Member List - TEAM SOPAN REMIX</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #020212;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #11113a 0%, #020212 100%);
+            overflow-x: hidden;
+            padding: 40px 20px;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: rgba(99, 102, 241, 0.1);
+            filter: blur(120px);
+            border-radius: 50%;
+            z-index: -1;
+            top: 10%;
+            right: -10%;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header-section h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 700;
+            background: linear-gradient(to bottom, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header-section p {
+            color: #94a3b8;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Member Grid */
+        .member-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .member-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 25px;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .member-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            border: 3px solid #6366f1;
+            padding: 3px;
+            object-fit: cover;
+        }
+
+        .member-name {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .member-id {
+            font-size: 11px;
+            color: #6366f1;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: rgba(99, 102, 241, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .btn-visit {
+            padding: 10px 20px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            display: block;
+        }
+
+        .btn-visit:hover {
+            background: #fff;
+            color: #020212;
+        }
+
+        #loading-state {
+            text-align: center;
+            padding: 50px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .nav-back {
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
+        .nav-back a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* Status Badge */
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 9px;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 800;
+        }
+        .status-verified { background: #10b981; color: #fff; }
+        .status-pending { background: #f59e0b; color: #fff; }
+
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="container">
+        <div class="nav-back">
+            <a href="index.html">← Back to Home</a>
+        </div>
+
+        <div class="header-section" data-aos="fade-down">
+            <p>Official Talent</p>
+            <h1>Member Sopan Remix</h1>
+        </div>
+
+        <div id="loading-state">
+            <div class="spinner">Memuat daftar anggota...</div>
+        </div>
+
+        <div class="member-grid" id="memberGrid">
+            </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Gunakan Config yang sama dengan halaman pendaftaran
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
+            authDomain: "labelmusic-ee1b2.firebaseapp.com",
+            projectId: "labelmusic-ee1b2",
+            databaseURL: "https://labelmusic-ee1b2-default-rtdb.asia-southeast1.firebasedatabase.app",
+            storageBucket: "labelmusic-ee1b2.firebasestorage.app",
+            messagingSenderId: "634541524714",
+            appId: "1:634541524714:web:a2fc9d47a91e37f44a7993"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        AOS.init();
+
+        const memberGrid = document.getElementById('memberGrid');
+        const loadingState = document.getElementById('loading-state');
+
+        // Fungsi Load Data
+        function loadMembers() {
+            database.ref('registrations').on('value', (snapshot) => {
+                memberGrid.innerHTML = '';
+                loadingState.style.display = 'none';
+
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        const data = childSnapshot.val();
+                        
+                        // Tentukan class status
+                        const statusClass = data.status === 'verified' ? 'status-verified' : 'status-pending';
+                        const statusText = data.status || 'Pending';
+
+                        const card = `
+                            <div class="member-card" data-aos="zoom-in">
+                                <span class="badge ${statusClass}">${statusText}</span>
+                                <img src="${data.profilePhoto || 'https://via.placeholder.com/100'}" class="member-photo" alt="${data.artistName}">
+                                <span class="member-name">${data.artistName}</span>
+                                <span class="member-id">${data.userID}</span>
+                                
+                                <div class="social-links">
+                                    <a href="${data.youtube}" target="_blank" class="btn-visit">Visit YouTube</a>
+                                </div>
+                            </div>
+                        `;
+                        memberGrid.innerHTML += card;
+                    });
+                } else {
+                    memberGrid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color:#94a3b8;">Belum ada member yang terdaftar.</p>';
+                }
+            });
+        }
+
+        // Jalankan fungsi
+        loadMembers();
+    </script>
+</body>
+</html>

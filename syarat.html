@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Requirement - TEAM SOPAN REMIX</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #020212;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #11113a 0%, #020212 100%);
+            overflow-x: hidden;
+            padding: 40px 20px;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: rgba(99, 102, 241, 0.1);
+            filter: blur(120px);
+            border-radius: 50%;
+            z-index: -1;
+            top: -10%;
+            right: -10%;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .nav-back {
+            margin-bottom: 30px;
+        }
+
+        .nav-back a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-section h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(30px, 5vw, 42px);
+            font-weight: 700;
+            background: linear-gradient(to bottom, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header-section p {
+            color: #6366f1;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .req-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            padding: 35px;
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+
+        .req-list {
+            list-style: none;
+        }
+
+        .req-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .check-icon {
+            width: 24px;
+            height: 24px;
+            background: #6366f1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 14px;
+            color: white;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .req-text h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .req-text p {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        .btn-ready {
+            display: block;
+            text-align: center;
+            background: #fff;
+            color: #020212;
+            padding: 18px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 35px;
+            transition: 0.3s;
+        }
+
+        .btn-ready:hover {
+            background: #6366f1;
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+        }
+
+        @media (max-width: 480px) {
+            .req-card { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="container">
+        <div class="nav-back">
+            <a href="index.html" data-aos="fade-right">← KEMBALI</a>
+        </div>
+
+        <div class="header-section" data-aos="fade-up">
+            <p>How to Join</p>
+            <h1>Persyaratan</h1>
+        </div>
+
+        <div class="req-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="req-list">
+                
+                <div class="req-item">
+                    <div class="check-icon">✓</div>
+                    <div class="req-text">
+                        <h4>Minimal 1 Karya Aktif</h4>
+                        <p>Memiliki minimal satu karya remix/musik yang sudah diunggah di platform YouTube.</p>
+                    </div>
+                </div>
+
+                <div class="req-item">
+                    <div class="check-icon">✓</div>
+                    <div class="req-text">
+                        <h4>Identitas Team</h4>
+                        <p>Bersedia mengganti atau menambahkan akhiran "SOPAN" pada nama artist Anda.</p>
+                    </div>
+                </div>
+
+                <div class="req-item">
+                    <div class="check-icon">✓</div>
+                    <div class="req-text">
+                        <h4>Kualitas Audio</h4>
+                        <p>Karya harus memiliki kualitas audio yang bersih (tidak pecah) dan enak didengar.</p>
+                    </div>
+                </div>
+
+                <div class="req-item">
+                    <div class="check-icon">✓</div>
+                    <div class="req-text">
+                        <h4>Attitude & Etika</h4>
+                        <p>Menjaga kesopanan sesuai dengan nama team kita, baik di dalam grup maupun sosial media.</p>
+                    </div>
+                </div>
+
+                <div class="req-item">
+                    <div class="check-icon">✓</div>
+                    <div class="req-text">
+                        <h4>WhatsApp Aktif</h4>
+                        <p>Wajib memiliki nomor WhatsApp aktif untuk koordinasi dan konfirmasi pendaftaran.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <a href="join.html" class="btn-ready">Saya Siap Bergabung</a>
+        </div>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
+</body>
+</html>

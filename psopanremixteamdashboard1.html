@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SOPAN REMIX</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #020212;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, #11113a 0%, #020212 100%);
+            padding: 30px;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+        
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 20px;
+        }
+
+        header h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 28px;
+            background: linear-gradient(90deg, #ffffff, #475569, #ffffff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: moveGradient 4s linear infinite;
+        }
+        @keyframes moveGradient {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        header span { color: #6366f1; font-weight: 800; font-size: 12px; letter-spacing: 2px; }
+
+        .tabs { display: flex; gap: 15px; margin-bottom: 30px; }
+        .tab-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8;
+            padding: 12px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+        .tab-btn.active {
+            background: #6366f1;
+            color: white;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .admin-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 0;
+            backdrop-filter: blur(20px);
+            transition: 0.3s;
+            overflow: hidden;
+            height: fit-content;
+        }
+
+        .card-header { 
+            display: flex; 
+            gap: 15px; 
+            align-items: center; 
+            padding: 20px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.01);
+            transition: background 0.3s;
+        }
+        .card-header:hover { background: rgba(255,255,255,0.05); }
+        .card-header img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; }
+        .card-info h3 { font-size: 16px; margin-bottom: 2px; }
+
+        /* --- ANIMASI DROPDOWN SMOOTH & SLOWMO --- */
+        .dropdown-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.6s ease-in-out,
+                        padding 0.6s ease;
+            padding: 0 20px;
+        }
+
+        .dropdown-content.open {
+            max-height: 1000px; /* Nilai tinggi maksimal agar smooth */
+            opacity: 1;
+            padding: 0 20px 20px 20px;
+        }
+
+        .details { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin-bottom: 15px; width: 100%; }
+        .details div { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; }
+        .details span { color: #94a3b8; }
+        .details b { color: #fff; text-align: right; }
+
+        .audio-player { width: 100%; margin: 10px 0; height: 35px; border-radius: 8px; }
+
+        /* --- PERAPIHAN TOMBOL --- */
+        .actions { 
+            display: flex; 
+            gap: 12px; 
+            width: 100%;
+            justify-content: stretch;
+        }
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 800;
+            font-size: 11px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0.5px;
+        }
+        .btn-accept { background: #10b981; color: white; }
+        .btn-reject { background: #ef4444; color: white; }
+        .btn-accept:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); }
+        .btn-reject:hover { background: #dc2626; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3); }
+        
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        .status-pending { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .status-verified { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+
+        #empty-msg { text-align: center; grid-column: 1/-1; padding: 50px; color: #475569; }
+
+        @media (max-width: 600px) {
+            body { padding: 15px; }
+            .card-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div>
+                <span>CONTROL PANEL</span>
+                <h1>Admin Dashboard</h1>
+            </div>
+            <button class="tab-btn" onclick="location.reload()">Refresh Data</button>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('pendaftaran')">Pendaftaran Baru</button>
+            <button class="tab-btn" onclick="switchTab('tracks')">Daftar Artist</button>
+        </div>
+
+        <div id="pendaftaran-section" class="card-grid"></div>
+
+        <div id="tracks-section" class="card-grid" style="display: none;"></div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
+            authDomain: "labelmusic-ee1b2.firebaseapp.com",
+            projectId: "labelmusic-ee1b2",
+            databaseURL: "https://labelmusic-ee1b2-default-rtdb.asia-southeast1.firebasedatabase.app",
+            storageBucket: "labelmusic-ee1b2.firebasestorage.app",
+            messagingSenderId: "634541524714",
+            appId: "1:634541524714:web:a2fc9d47a91e37f44a7993"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        function switchTab(tab) {
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            if(event) event.target.classList.add('active');
+
+            if(tab === 'pendaftaran') {
+                document.getElementById('pendaftaran-section').style.display = 'grid';
+                document.getElementById('tracks-section').style.display = 'none';
+            } else {
+                document.getElementById('pendaftaran-section').style.display = 'none';
+                document.getElementById('tracks-section').style.display = 'grid';
+            }
+        }
+
+        // FUNGSI TOGGLE DROPDOWN DENGAN CLASS UNTUK ANIMASI CSS
+        function toggleDropdown(key) {
+            const content = document.getElementById('drop-' + key);
+            content.classList.toggle('open');
+        }
+
+        function fetchRegistrations() {
+            const ref = database.ref('registrations');
+            ref.on('value', (snapshot) => {
+                const pendingContainer = document.getElementById('pendaftaran-section');
+                const tracksContainer = document.getElementById('tracks-section');
+                
+                pendingContainer.innerHTML = '';
+                tracksContainer.innerHTML = '';
+                
+                if(!snapshot.exists()) {
+                    pendingContainer.innerHTML = '<div id="empty-msg">Tidak ada data di Firebase.</div>';
+                    return;
+                }
+
+                snapshot.forEach((child) => {
+                    const data = child.val();
+                    const key = child.key;
+                    const statusClass = data.status === 'verified' ? 'status-verified' : 'status-pending';
+
+                    const cardHtml = `
+                        <div class="admin-card">
+                            <div class="card-header" onclick="toggleDropdown('${key}')">
+                                <img src="${data.profilePhoto}" alt="Foto">
+                                <div class="card-info">
+                                    <h3>${data.artistName}</h3>
+                                    <span class="status-pill ${statusClass}">${data.status}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-content" id="drop-${key}">
+                                <div class="details">
+                                    <div><span>ID Member</span> <b>${data.userID}</b></div>
+                                    <div><span>WhatsApp</span> <b>${data.whatsapp}</b></div>
+                                    <div><span>YouTube</span> <a href="${data.youtube}" target="_blank" style="color:#6366f1; text-decoration: none; font-weight: 600;">Lihat Channel</a></div>
+                                    <div><span>Waktu Daftar</span> <b>${data.submittedAt}</b></div>
+                                </div>
+
+                                <p style="font-size:11px; color:#94a3b8; margin-bottom:5px; font-weight: 600;">PREVIEW KARYA:</p>
+                                <audio src="${data.audioUrl}" controls class="audio-player"></audio>
+
+                                <div class="actions">
+                                    ${data.status === 'pending' ? `
+                                        <button class="btn btn-accept" onclick="updateStatus('${key}', 'verified')">Terima</button>
+                                        <button class="btn btn-reject" onclick="deleteEntry('${key}')">Tolak</button>
+                                    ` : `
+                                        <button class="btn btn-reject" style="width:100%" onclick="deleteEntry('${key}')">Hapus Artist</button>
+                                    `}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    if(data.status === 'pending') {
+                        pendingContainer.innerHTML += cardHtml;
+                    } else {
+                        tracksContainer.innerHTML += cardHtml;
+                    }
+                });
+
+                if(pendingContainer.innerHTML === '') pendingContainer.innerHTML = '<div id="empty-msg">Tidak ada pendaftar baru.</div>';
+                if(tracksContainer.innerHTML === '') tracksContainer.innerHTML = '<div id="empty-msg">Belum ada Artist yang diverifikasi.</div>';
+            });
+        }
+
+        function updateStatus(key, status) {
+            if(confirm('Terima member ini sebagai official artist?')) {
+                database.ref('registrations/' + key).update({
+                    status: status
+                }).then(() => alert('Member berhasil diverifikasi!'));
+            }
+        }
+
+        function deleteEntry(key) {
+            if(confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                database.ref('registrations/' + key).remove()
+                .then(() => alert('Data berhasil dihapus!'));
+            }
+        }
+
+        fetchRegistrations();
+    </script>
+</body>
+</html>

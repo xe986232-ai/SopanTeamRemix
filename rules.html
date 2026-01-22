@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rules - TEAM SOPAN REMIX</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #020212;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            background: radial-gradient(circle at center, #11113a 0%, #020212 100%);
+            overflow-x: hidden;
+            padding: 40px 20px;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: rgba(99, 102, 241, 0.1);
+            filter: blur(120px);
+            border-radius: 50%;
+            z-index: -1;
+            bottom: -10%;
+            left: -10%;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .nav-back {
+            margin-bottom: 30px;
+        }
+
+        .nav-back a {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header-section h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 700;
+            background: linear-gradient(to bottom, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header-section p {
+            color: #6366f1;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        /* Rules Box */
+        .rules-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 32px;
+            padding: 40px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .rule-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .rule-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .rule-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #6366f1;
+            opacity: 0.5;
+        }
+
+        .rule-content h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .rule-content p {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 12px;
+            color: #475569;
+            font-style: italic;
+        }
+
+        @media (max-width: 480px) {
+            .rules-card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="container">
+        <div class="nav-back">
+            <a href="index.html" data-aos="fade-right">← BACK TO HOME</a>
+        </div>
+
+        <div class="header-section" data-aos="fade-up">
+            <p>Community Guidelines</p>
+            <h1>Team Rules</h1>
+        </div>
+
+        <div class="rules-card" data-aos="fade-up" data-aos-delay="200">
+            
+            <div class="rule-item">
+                <div class="rule-number">01</div>
+                <div class="rule-content">
+                    <h3>Gunakan Nama Akhiran SOPAN</h3>
+                    <p>Setiap member wajib menggunakan akhiran nama "SOPAN" pada nama artist atau akun sosial media resmi untuk memperkuat identitas team.</p>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number">02</div>
+                <div class="rule-content">
+                    <h3>Respect Each Other</h3>
+                    <p>Dilarang keras menjatuhkan sesama member. Selalu dukung karya satu sama lain dan jaga etika dalam berkomunikasi di grup maupun publik.</p>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number">03</div>
+                <div class="rule-content">
+                    <h3>Originalitas Karya</h3>
+                    <p>Pastikan setiap karya remix yang diunggah tidak melanggar hak cipta yang merugikan team. Utamakan kualitas daripada kuantitas.</p>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number">04</div>
+                <div class="rule-content">
+                    <h3>Aktif Berkontribusi</h3>
+                    <p>Member diharapkan aktif dalam kegiatan team, baik itu kolaborasi, promosi bersama, maupun diskusi pengembangan skill.</p>
+                </div>
+            </div>
+
+            <div class="rule-item">
+                <div class="rule-number">05</div>
+                <div class="rule-content">
+                    <h3>Sanksi Pelanggaran</h3>
+                    <p>Setiap pelanggaran berat terhadap aturan di atas dapat mengakibatkan pencabutan status member (Kick) secara permanen oleh Admin.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-note" data-aos="fade-up">
+            *Aturan dapat berubah sewaktu-waktu sesuai kebijakan Admin Sopan Remix.
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
+</body>
+</html>

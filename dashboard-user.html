@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Dashboard - SOPAN REMIX</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg-dark: #020212;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: radial-gradient(circle at top right, #1a1a4e, var(--bg-dark) 60%);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding-bottom: 50px;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        /* --- HEADER --- */
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 30px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 20px; letter-spacing: 3px; }
+        .logo span { color: var(--primary); }
+        .btn-back { color: #94a3b8; text-decoration: none; font-size: 13px; transition: 0.3s; }
+
+        /* --- STATS SECTION --- */
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 30px; 
+        }
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        .stat-card h4 { font-size: 12px; color: #94a3b8; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-card p { font-family: 'Orbitron', sans-serif; font-size: 24px; color: var(--primary); }
+
+        /* --- PROFILE --- */
+        .artist-profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .artist-profile img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+        .artist-profile h2 { font-size: 20px; font-family: 'Orbitron', sans-serif; }
+
+        /* --- TABS NAVIGATION --- */
+        .tab-nav {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .tab-btn.active { color: #fff; border-bottom: 2px solid var(--primary); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
+
+        /* --- UPLOAD FORM --- */
+        .upload-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+        }
+        .form-layout { display: flex; gap: 30px; flex-wrap: wrap; }
+        
+        .cover-area {
+            width: 250px;
+            height: 250px;
+            border: 2px dashed var(--border);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            background: rgba(0,0,0,0.2);
+        }
+        .cover-area img { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .cover-area:hover { border-color: var(--primary); }
+
+        .form-fields { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 15px; }
+        .input-box label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 8px; font-weight: 700; }
+        .input-box input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            padding: 12px 15px;
+            border-radius: 10px;
+            color: #fff;
+            outline: none;
+        }
+        .input-box input[type="file"] {
+            padding: 8px;
+            font-size: 12px;
+        }
+        .input-box input:focus { border-color: var(--primary); }
+
+        .btn-main {
+            background: var(--primary);
+            color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* --- TRACK LIST --- */
+        .track-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 15px 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .track-info { display: flex; align-items: center; gap: 15px; }
+        .track-info img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+        .track-meta h5 { font-size: 14px; margin-bottom: 4px; }
+        .track-meta p { font-size: 12px; color: #94a3b8; }
+        .track-stats { display: flex; gap: 20px; font-size: 13px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            .form-layout { justify-content: center; }
+            .cover-area { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">SOPAN <span>REMIX</span></div>
+            <a href="index.html" class="btn-back">← Beranda</a>
+        </header>
+
+        <div class="artist-profile">
+            <img src="" id="artist-img" alt="Profile">
+            <div>
+                <h2 id="artist-name">Artist Name</h2>
+                <p id="artist-id" style="color: #64748b; font-size: 12px;">ID: -</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h4>Total Karya</h4>
+                <p id="stat-tracks">0</p>
+            </div>
+            <div class="stat-card">
+                <h4>Total Likes</h4>
+                <p id="stat-likes">0</p>
+            </div>
+            <div class="stat-card">
+                <h4>Pendengar</h4>
+                <p id="stat-views">0</p>
+            </div>
+        </div>
+
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="openTab('tracks', this)">Daftar Lagu</button>
+            <button class="tab-btn" onclick="openTab('upload', this)">Upload Lagu</button>
+        </div>
+
+        <div id="tracks" class="tab-content active">
+            <div id="my-tracks-list"></div>
+        </div>
+
+        <div id="upload" class="tab-content">
+            <div class="upload-container">
+                <div class="form-layout">
+                    <div class="cover-area" id="cover-trigger" onclick="document.getElementById('cover-input').click()">
+                        <img id="cover-preview" src="">
+                        <div id="placeholder" style="text-align:center">
+                            <span style="font-size: 30px;">🖼️</span><br>
+                            <span style="font-size: 11px; color:#94a3b8">Cover 1:1</span>
+                        </div>
+                        <input type="file" id="cover-input" accept="image/*" hidden>
+                    </div>
+
+                    <div class="form-fields">
+                        <div class="input-box">
+                            <label>JUDUL LAGU</label>
+                            <input type="text" id="track-title" placeholder="Contoh: Menghapus Jejakmu (Remix)">
+                        </div>
+                        <div class="input-box">
+                            <label>ARTIS</label>
+                            <input type="text" id="artist-display" readonly>
+                        </div>
+                        <div class="input-box">
+                            <label>FILE MP3</label>
+                            <input type="file" id="audio-input" accept=".mp3,audio/mpeg">
+                        </div>
+                        
+                        <button class="btn-main" id="btn-submit" onclick="handleUpload()">TERBITKAN LAGU</button>
+                        
+                        <div id="progress-container" style="display:none; margin-top:15px;">
+                            <div style="background:rgba(255,255,255,0.1); height:6px; border-radius:10px; overflow:hidden;">
+                                <div id="progress-bar" style="background:var(--primary); width:0%; height:100%; transition:0.3s;"></div>
+                            </div>
+                            <p id="status-text" style="font-size:11px; color:#94a3b8; margin-top:8px; text-align:center;">Mengunggah...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIG FIREBASE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
+            authDomain: "labelmusic-ee1b2.firebaseapp.com",
+            projectId: "labelmusic-ee1b2",
+            databaseURL: "https://labelmusic-ee1b2-default-rtdb.asia-southeast1.firebasedatabase.app",
+            storageBucket: "labelmusic-ee1b2.firebasestorage.app",
+            messagingSenderId: "634541524714",
+            appId: "1:634541524714:web:a2fc9d47a91e37f44a7993"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Update URL dengan Cloud Name baru Anda: dt2u1r8ni
+        const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dt2u1r8ni/auto/upload"; 
+        const UPLOAD_PRESET = "admin_super"; 
+
+        const userID = localStorage.getItem('labelMusic_userID');
+        let currentArtistName = "";
+
+        async function loadData() {
+            if (!userID) { window.location.href = 'index.html'; return; }
+            const snapshot = await database.ref('registrations').orderByChild('userID').equalTo(userID).once('value');
+            if (snapshot.exists()) {
+                snapshot.forEach(child => {
+                    const data = child.val();
+                    currentArtistName = data.artistName;
+                    document.getElementById('artist-name').innerText = data.artistName;
+                    document.getElementById('artist-img').src = data.profilePhoto;
+                    document.getElementById('artist-id').innerText = "ID: " + data.userID;
+                    document.getElementById('artist-display').value = data.artistName;
+                });
+                loadTracks();
+            }
+        }
+
+        function openTab(tabName, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        document.getElementById('cover-input').onchange = function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    document.getElementById('cover-preview').src = ev.target.result;
+                    document.getElementById('cover-preview').style.display = 'block';
+                    document.getElementById('placeholder').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        async function handleUpload() {
+            const title = document.getElementById('track-title').value;
+            const cover = document.getElementById('cover-input').files[0];
+            const audio = document.getElementById('audio-input').files[0];
+
+            if (!title || !cover || !audio) {
+                alert("Lengkapi semua data! (Judul, Cover, dan Audio)");
+                return;
+            }
+
+            const btn = document.getElementById('btn-submit');
+            btn.disabled = true;
+            document.getElementById('progress-container').style.display = 'block';
+
+            try {
+                // Upload Cover
+                updateStatus("Mengunggah Cover...", 20);
+                const coverUrl = await uploadFile(cover);
+
+                // Upload Audio
+                updateStatus("Mengunggah Audio...", 50);
+                const audioUrl = await uploadFile(audio, (p) => {
+                    const totalProgress = 50 + (p / 2);
+                    updateStatus(`Mengunggah Audio: ${Math.round(p)}%`, totalProgress);
+                });
+
+                await database.ref('tracks').push({
+                    artistID: userID,
+                    artistName: currentArtistName,
+                    title: title,
+                    coverUrl: coverUrl,
+                    audioUrl: audioUrl,
+                    views: 0,
+                    likes: 0,
+                    timestamp: Date.now()
+                });
+
+                alert("Lagu berhasil diterbitkan!");
+                location.reload();
+            } catch (e) {
+                console.error("Upload Error:", e);
+                alert("Gagal upload. Pastikan preset 'admin_super' di Cloudinary diatur ke 'Unsigned'.");
+                btn.disabled = false;
+                document.getElementById('progress-container').style.display = 'none';
+            }
+        }
+
+        function updateStatus(text, percent) {
+            document.getElementById('status-text').innerText = text;
+            document.getElementById('progress-bar').style.width = percent + '%';
+        }
+
+        function uploadFile(file, onProgress) {
+            return new Promise((resolve, reject) => {
+                const fd = new FormData();
+                fd.append('file', file);
+                fd.append('upload_preset', UPLOAD_PRESET);
+                
+                const xhr = new XMLHttpRequest();
+                // Menggunakan endpoint /auto/ agar Cloudinary mendeteksi tipe file secara otomatis
+                xhr.open('POST', CLOUDINARY_URL);
+                
+                if (onProgress) xhr.upload.onprogress = (e) => onProgress((e.loaded / e.total) * 100);
+                
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        resolve(response.secure_url);
+                    } else {
+                        const err = JSON.parse(xhr.responseText);
+                        reject(err);
+                    }
+                };
+                xhr.onerror = () => reject("Network error");
+                xhr.send(fd);
+            });
+        }
+
+        function loadTracks() {
+            database.ref('tracks').orderByChild('artistID').equalTo(userID).on('value', (snap) => {
+                const list = document.getElementById('my-tracks-list');
+                list.innerHTML = '';
+                let totalLikes = 0;
+                let totalViews = 0;
+                let count = 0;
+
+                if (snap.exists()) {
+                    snap.forEach(child => {
+                        const t = child.val();
+                        count++;
+                        totalLikes += (t.likes || 0);
+                        totalViews += (t.views || 0);
+
+                        list.innerHTML += `
+                            <div class="track-item">
+                                <div class="track-info">
+                                    <img src="${t.coverUrl}" onerror="this.src='https://via.placeholder.com/50'">
+                                    <div class="track-meta">
+                                        <h5>${t.title}</h5>
+                                        <p>${new Date(t.timestamp).toLocaleDateString('id-ID')}</p>
+                                    </div>
+                                </div>
+                                <div class="track-stats">
+                                    <span>🎧 ${t.views || 0}</span>
+                                    <span style="color:#ff4d4d">❤️ ${t.likes || 0}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    list.innerHTML = '<p style="text-align:center; color:#64748b; padding:20px;">Belum ada lagu yang diunggah.</p>';
+                }
+
+                document.getElementById('stat-tracks').innerText = count;
+                document.getElementById('stat-likes').innerText = totalLikes;
+                document.getElementById('stat-views').innerText = totalViews;
+            });
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
