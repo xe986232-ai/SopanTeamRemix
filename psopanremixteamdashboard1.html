@@ -49,6 +49,46 @@
 
         header span { color: #6366f1; font-weight: 800; font-size: 12px; letter-spacing: 2px; }
 
+        /* MODIFIKASI: Style untuk Switch OPMEM */
+        .status-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .status-label { font-size: 13px; font-weight: 700; color: #94a3b8; }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #334155;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; width: 18px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #6366f1; }
+        input:checked + .slider:before { transform: translateX(26px); }
+        .status-text { font-weight: 800; font-size: 12px; color: #6366f1; text-transform: uppercase; }
+
         .tabs { display: flex; gap: 15px; margin-bottom: 30px; }
         .tab-btn {
             background: rgba(255,255,255,0.05);
@@ -96,7 +136,6 @@
         .card-header img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; }
         .card-info h3 { font-size: 16px; margin-bottom: 2px; }
 
-        /* --- ANIMASI DROPDOWN SMOOTH & SLOWMO --- */
         .dropdown-content {
             max-height: 0;
             opacity: 0;
@@ -108,7 +147,7 @@
         }
 
         .dropdown-content.open {
-            max-height: 1000px; /* Nilai tinggi maksimal agar smooth */
+            max-height: 1000px;
             opacity: 1;
             padding: 0 20px 20px 20px;
         }
@@ -120,7 +159,6 @@
 
         .audio-player { width: 100%; margin: 10px 0; height: 35px; border-radius: 8px; }
 
-        /* --- PERAPIHAN TOMBOL --- */
         .actions { 
             display: flex; 
             gap: 12px; 
@@ -176,6 +214,15 @@
             <button class="tab-btn" onclick="location.reload()">Refresh Data</button>
         </header>
 
+        <div class="status-control">
+            <span class="status-label">STATUS PENDAFTARAN:</span>
+            <label class="switch">
+                <input type="checkbox" id="regStatusCheck" onchange="toggleRegStatus()">
+                <span class="slider"></span>
+            </label>
+            <span id="statusLabel" class="status-text">Checking...</span>
+        </div>
+
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('pendaftaran')">Pendaftaran Baru</button>
             <button class="tab-btn" onclick="switchTab('tracks')">Daftar Artist</button>
@@ -200,6 +247,22 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
+        // MODIFIKASI: Fungsi untuk Switch OPMEM/NO OPMEM
+        function fetchRegStatus() {
+            database.ref('settings/registrationStatus').on('value', (snapshot) => {
+                const isOpen = snapshot.val() === 'open';
+                document.getElementById('regStatusCheck').checked = isOpen;
+                document.getElementById('statusLabel').innerText = isOpen ? 'OP MEM' : 'NO OP MEM';
+                document.getElementById('statusLabel').style.color = isOpen ? '#10b981' : '#ef4444';
+            });
+        }
+
+        function toggleRegStatus() {
+            const isChecked = document.getElementById('regStatusCheck').checked;
+            const newStatus = isChecked ? 'open' : 'closed';
+            database.ref('settings/registrationStatus').set(newStatus);
+        }
+
         function switchTab(tab) {
             const btns = document.querySelectorAll('.tab-btn');
             btns.forEach(b => b.classList.remove('active'));
@@ -214,7 +277,6 @@
             }
         }
 
-        // FUNGSI TOGGLE DROPDOWN DENGAN CLASS UNTUK ANIMASI CSS
         function toggleDropdown(key) {
             const content = document.getElementById('drop-' + key);
             content.classList.toggle('open');
@@ -299,7 +361,9 @@
             }
         }
 
+        // Jalankan fungsi
         fetchRegistrations();
+        fetchRegStatus(); // Jalankan sinkronisasi status pendaftaran
     </script>
 </body>
 </html>
