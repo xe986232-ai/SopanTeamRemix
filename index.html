@@ -1003,35 +1003,47 @@
         }
 
         function toggleAudio(index, tracks, iconPrefix) {
-            if (activeTrackIndex === index && currentAudio) {
-                if (currentAudio.paused) { 
-                    currentAudio.play(); 
-                    updateIcons(index, true, iconPrefix); 
-                } else { 
-                    currentAudio.pause(); 
-                    updateIcons(index, false, iconPrefix); 
-                }
-            } else {
-                if (currentAudio) {
-                    currentAudio.pause();
-                    updateIcons(activeTrackIndex, false, iconPrefix);
-                }
-                activeTrackIndex = index;
-                const track = tracks[index];
-                currentAudio = new Audio(track.audioUrl);
-                currentAudio.play();
-                updateIcons(index, true, iconPrefix);
-                
-                // Update Floating Player
-                updateFloatingPlayer(track);
+    const track = tracks[index];
+    const trackKey = track.key; // Menggunakan key unik sebagai identitas lagu
 
-                currentAudio.onended = () => { 
-                    updateIcons(index, false, iconPrefix); 
-                    activeTrackIndex = null;
-                    document.getElementById('floating-player').classList.remove('active');
-                };
-            }
+    // CEK: Jika lagu yang diklik adalah lagu yang SAMA dengan yang ada di player
+    if (currentAudio && currentAudio.activeTrackKey === trackKey) {
+        if (currentAudio.paused) { 
+            currentAudio.play(); 
+            updateIcons(index, true, iconPrefix); 
+        } else { 
+            currentAudio.pause(); 
+            updateIcons(index, false, iconPrefix); 
         }
+    } 
+    // JIKA: Klik lagu baru (berbeda dari yang sedang diputar)
+    else {
+        // Hentikan lagu sebelumnya jika ada
+        if (currentAudio) {
+            currentAudio.pause();
+            // Reset ikon secara global agar tidak ada ikon pause yang tertinggal
+            document.querySelectorAll('.track-play-icon').forEach(el => el.innerHTML = PLAY_ICON);
+        }
+
+        activeTrackIndex = index;
+        currentAudio = new Audio(track.audioUrl);
+        currentAudio.activeTrackKey = trackKey; // Simpan key unik ke dalam objek audio
+        
+        currentAudio.play().catch(e => console.error("Gagal memutar audio:", e));
+        updateIcons(index, true, iconPrefix);
+        
+        // Perbarui tampilan Floating Player
+        updateFloatingPlayer(track);
+
+        currentAudio.onended = () => { 
+            updateIcons(index, false, iconPrefix); 
+            currentAudio.activeTrackKey = null;
+            activeTrackIndex = null;
+            document.getElementById('floating-player').classList.remove('active');
+        };
+    }
+}
+
 
         function updateFloatingPlayer(track) {
             document.getElementById('fp-img').src = track.coverUrl;
