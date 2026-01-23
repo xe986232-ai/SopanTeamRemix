@@ -578,6 +578,21 @@
     cursor: pointer;
     font-weight: bold;
 }
+/* Menghilangkan kotak biru saat klik di semua elemen yang bisa diklik */
+* {
+    -webkit-tap-highlight-color: transparent;
+    outline: none; /* Menghilangkan garis putus-putus pada beberapa browser */
+}
+
+/* Atau jika ingin lebih spesifik ke tombol dan kartu saja */
+.nft-card, 
+.track-card-random, 
+.btn-fill, 
+.fp-play-btn, 
+.play-btn-xl,
+.track-item {
+    -webkit-tap-highlight-color: transparent;
+}
 
     </style>
 </head>
