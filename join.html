@@ -184,7 +184,7 @@
         }
         .btn-auth:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        #upload-status { font-size: 11px; font-weight: 700; color: #6366f1; margin-top: 10px; display: none; }
+        #upload-status { font-size: 11px; font-weight: 700; color: #6366f1; margin-top: 10px; display: none; text-align: center; }
         
         .back-link { 
             display: block; 
@@ -227,6 +227,17 @@
             cursor: pointer;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        /* NEW INPUT STYLE FOR FILES */
+        .file-input-custom {
+            padding: 12px; 
+            background: rgba(255,255,255,0.02); 
+            border: 1px dashed rgba(255,255,255,0.1); 
+            border-radius: 12px; 
+            font-size: 12px; 
+            color: #94a3b8;
+            width: 100%;
         }
     </style>
 </head>
@@ -283,13 +294,22 @@
 
             <div class="input-group">
                 <label>Link YouTube</label>
-                <input type="url" id="youtube" placeholder="https://youtube.com/..." required>
+                <input type="url" id="youtube" placeholder="http://youtube.com/..." required>
             </div>
 
             <div class="input-group">
                 <label>Audio Preview (Karya Anda)</label>
-                <input type="file" id="audioFile" accept="audio/*" required 
-                style="padding: 12px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); border-radius: 12px; font-size: 12px; color: #94a3b8;">
+                <input type="file" id="audioFile" accept="audio/*" required class="file-input-custom">
+            </div>
+
+            <div class="input-group">
+                <label>Video Penampilan / Teaser</label>
+                <input type="file" id="videoFile" accept="video/*" required class="file-input-custom">
+            </div>
+
+            <div class="input-group">
+                <label>Bukti Tanggal Project (Screenshot)</label>
+                <input type="file" id="proofPhoto" accept="image/*" required class="file-input-custom">
             </div>
 
             <button type="submit" class="btn-auth" id="submitBtn">Kirim Pendaftaran</button>
@@ -342,7 +362,7 @@
                     btn.disabled = false;
                 }
             } else {
-                infoBox.innerHTML = "Pastikan koneksi internet stabil saat mengunggah foto dan audio.";
+                infoBox.innerHTML = "Pastikan koneksi internet stabil saat mengunggah foto, video, dan audio.";
             }
         }
 
@@ -390,15 +410,24 @@
             
             btn.disabled = true;
             statusLabel.style.display = 'block';
-            statusLabel.innerText = "SEDANG MENGUPLOAD FOTO...";
 
             try {
                 const photoFile = document.getElementById('profilePhoto').files[0];
                 const audioFile = document.getElementById('audioFile').files[0];
+                const videoFile = document.getElementById('videoFile').files[0];
+                const proofFile = document.getElementById('proofPhoto').files[0];
 
+                statusLabel.innerText = "SEDANG MENGUPLOAD FOTO PROFIL...";
                 const photoUrl = await uploadToCloudinary(photoFile);
+
                 statusLabel.innerText = "SEDANG MENGUPLOAD AUDIO...";
                 const audioUrl = await uploadToCloudinary(audioFile);
+
+                statusLabel.innerText = "SEDANG MENGUPLOAD VIDEO...";
+                const videoUrl = await uploadToCloudinary(videoFile);
+
+                statusLabel.innerText = "SEDANG MENGUPLOAD BUKTI PROJECT...";
+                const proofUrl = await uploadToCloudinary(proofFile);
 
                 statusLabel.innerText = "MENYIMPAN DATA...";
                 const generatedID = "SOPAN-" + Math.random().toString(36).substr(2, 6).toUpperCase();
@@ -410,6 +439,8 @@
                     whatsapp: document.getElementById('whatsapp').value,
                     youtube: document.getElementById('youtube').value,
                     audioUrl: audioUrl,
+                    videoUrl: videoUrl,
+                    projectProofUrl: proofUrl,
                     status: "pending",
                     submittedAt: new Date().toLocaleString()
                 };
