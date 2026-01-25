@@ -49,7 +49,6 @@
 
         header span { color: #6366f1; font-weight: 800; font-size: 12px; letter-spacing: 2px; }
 
-        /* MODIFIKASI: Style untuk Switch OPMEM */
         .status-control {
             display: flex;
             align-items: center;
@@ -147,7 +146,7 @@
         }
 
         .dropdown-content.open {
-            max-height: 1000px;
+            max-height: 2000px; /* Diperbesar agar muat video */
             opacity: 1;
             padding: 0 20px 20px 20px;
         }
@@ -158,12 +157,17 @@
         .details b { color: #fff; text-align: right; }
 
         .audio-player { width: 100%; margin: 10px 0; height: 35px; border-radius: 8px; }
+        
+        /* UPDATE: Style Video & Image Bukti */
+        .video-player { width: 100%; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        .proof-img { width: 100%; border-radius: 12px; margin-bottom: 15px; cursor: zoom-in; border: 1px solid rgba(255,255,255,0.1); }
 
         .actions { 
             display: flex; 
             gap: 12px; 
             width: 100%;
             justify-content: stretch;
+            margin-top: 10px;
         }
         .btn {
             flex: 1;
@@ -247,7 +251,6 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // MODIFIKASI: Fungsi untuk Switch OPMEM/NO OPMEM
         function fetchRegStatus() {
             database.ref('settings/registrationStatus').on('value', (snapshot) => {
                 const isOpen = snapshot.val() === 'open';
@@ -266,7 +269,7 @@
         function switchTab(tab) {
             const btns = document.querySelectorAll('.tab-btn');
             btns.forEach(b => b.classList.remove('active'));
-            if(event) event.target.classList.add('active');
+            if(window.event) window.event.target.classList.add('active');
 
             if(tab === 'pendaftaran') {
                 document.getElementById('pendaftaran-section').style.display = 'grid';
@@ -301,6 +304,7 @@
                     const key = child.key;
                     const statusClass = data.status === 'verified' ? 'status-verified' : 'status-pending';
 
+                    // Update: Menampilkan Video & Bukti Project di dalam Dropdown
                     const cardHtml = `
                         <div class="admin-card">
                             <div class="card-header" onclick="toggleDropdown('${key}')">
@@ -319,8 +323,18 @@
                                     <div><span>Waktu Daftar</span> <b>${data.submittedAt}</b></div>
                                 </div>
 
-                                <p style="font-size:11px; color:#94a3b8; margin-bottom:5px; font-weight: 600;">PREVIEW KARYA:</p>
+                                <p style="font-size:11px; color:#94a3b8; margin-bottom:5px; font-weight: 600;">PREVIEW AUDIO:</p>
                                 <audio src="${data.audioUrl}" controls class="audio-player"></audio>
+
+                                ${data.videoUrl ? `
+                                    <p style="font-size:11px; color:#94a3b8; margin-top:10px; margin-bottom:5px; font-weight: 600;">TEASER VIDEO:</p>
+                                    <video src="${data.videoUrl}" controls class="video-player"></video>
+                                ` : ''}
+
+                                ${data.projectProofUrl ? `
+                                    <p style="font-size:11px; color:#94a3b8; margin-top:5px; margin-bottom:5px; font-weight: 600;">BUKTI PROJECT:</p>
+                                    <img src="${data.projectProofUrl}" class="proof-img" onclick="window.open(this.src)">
+                                ` : ''}
 
                                 <div class="actions">
                                     ${data.status === 'pending' ? `
@@ -361,9 +375,8 @@
             }
         }
 
-        // Jalankan fungsi
         fetchRegistrations();
-        fetchRegStatus(); // Jalankan sinkronisasi status pendaftaran
+        fetchRegStatus();
     </script>
 </body>
 </html>
