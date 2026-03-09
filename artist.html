@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Artist Profile - Sopan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-main: #14171C;
+            --accent-green: #23C55E;
+            --text-main: #FFFFFF;
+            --text-muted: #636E7A;
+            --card-bg: #1A1E26;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 500px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #1f242d 0%, var(--bg-main) 400px);
+            padding-bottom: 100px;
+        }
+
+        .nav-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px 30px 20px;
+            text-align: center;
+        }
+
+        .artist-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            margin-bottom: 25px;
+            border: 3px solid rgba(255,255,255,0.05);
+        }
+
+        .artist-name {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        /* Follow Button Style */
+        .follow-btn {
+            background: var(--text-main);
+            color: black;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            outline: none;
+        }
+
+        .follow-btn.following {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            backdrop-filter: blur(10px);
+        }
+
+        .follow-btn:active { transform: scale(0.95); }
+        .follow-btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+        .stats-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .stat-item i { font-size: 18px; }
+
+        .genre-container {
+            padding: 0 20px;
+            margin-bottom: 40px;
+        }
+
+        .genre-tag {
+            display: inline-block;
+            background: #1e2329;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 13px;
+            color: #bdc3c7;
+        }
+
+        .songs-section {
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .song-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 12px;
+            transition: background 0.3s;
+        }
+
+        .song-cover {
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
+            position: relative;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .song-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+
+        .song-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .song-title {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .song-artist {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Improved Seekable Progress Bar */
+        .progress-container {
+            height: 12px;
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .progress-bg {
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            width: 100%;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-green);
+            border-radius: 2px;
+            width: 0%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .progress-knob {
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            display: none; /* Only show when playing */
+        }
+
+        .playing-now .progress-knob { display: block; }
+
+        .visualizer {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 20px;
+            padding-left: 10px;
+        }
+
+        .v-bar {
+            width: 3px;
+            background: var(--accent-green);
+            border-radius: 1px;
+            height: 3px;
+        }
+
+        .playing .v-bar { animation: bounce 0.6s ease infinite alternate; }
+        .playing .v-bar:nth-child(2) { animation-delay: 0.1s; }
+        .playing .v-bar:nth-child(3) { animation-delay: 0.2s; }
+
+        @keyframes bounce {
+            from { height: 3px; }
+            to { height: 18px; }
+        }
+
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader"><i class="fas fa-circle-notch fa-spin fa-2x"></i></div>
+
+    <div class="app-container" id="profileContent" style="display: none;">
+        <div class="nav-header">
+            <div class="back-btn" onclick="history.back()">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+        </div>
+
+        <div class="profile-hero">
+            <img src="" id="artistImg" class="artist-img" alt="Artist">
+            <h1 class="artist-name" id="artistName">Loading...</h1>
+            
+            <button class="follow-btn" id="mainFollowBtn">
+                <svg viewBox="0 0 24 24"><path d="M15 14C12.33 14 7 15.33 7 18V20H23V18C23 15.33 17.67 14 15 14M6 10V7H4V10H1V12H4V15H6V12H9V10H6M15 12C17.21 12 19 10.21 19 8C19 5.79 17.21 4 15 4C12.79 4 11 5.79 11 8C11 10.21 12.79 12 15 12Z"/></svg>
+                <span>Follow</span>
+            </button>
+
+            <div class="stats-row">
+                <div class="stat-item" id="ytLink"><i class="fab fa-youtube"></i> Open in YouTube</div>
+                <div class="stat-item" style="margin-top:5px;"><span id="followerCount">0</span> Followers</div>
+            </div>
+        </div>
+
+        <div class="genre-container">
+            <div class="genre-tag" id="artistGenre">General</div>
+        </div>
+
+        <div class="songs-section">
+            <h2 class="section-title">Songs</h2>
+            <p class="section-subtitle">songs by <span id="artistNameMini">Artist</span>.</p>
+            <div id="songList"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
+            authDomain: "labelmusic-ee1b2.firebaseapp.com",
+            databaseURL: "https://labelmusic-ee1b2-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "labelmusic-ee1b2",
+            storageBucket: "labelmusic-ee1b2.firebasestorage.app",
+            messagingSenderId: "634541524714",
+            appId: "1:634541524714:web:a2fc9d47a91e37f44a7993"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const rtdb = getDatabase(app);
+        const db = getFirestore(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('p');
+
+        let currentAudio = new Audio();
+        let currentPlayingId = null;
+        let artistKey = null;
+        let isFollowing = false;
+
+        onValue(ref(rtdb, 'users'), (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                let foundArtist = null;
+
+                Object.keys(data).forEach(key => {
+                    const artist = data[key];
+                    const artistSlug = artist.username.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
+                    if (artistSlug === slug) {
+                        foundArtist = artist;
+                        artistKey = key;
+                    }
+                });
+
+                if (foundArtist) renderProfile(foundArtist);
+            }
+        });
+
+        async function renderProfile(artist) {
+            document.getElementById('artistImg').src = artist.profilePic;
+            document.getElementById('artistName').innerText = artist.username;
+            document.getElementById('artistNameMini').innerText = artist.username;
+            document.getElementById('followerCount').innerText = artist.followers || 0;
+            document.getElementById('artistGenre').innerText = artist.genre || "General";
+
+            // Fungsikan Follow/Unfollow Button
+            const followBtn = document.getElementById('mainFollowBtn');
+            followBtn.onclick = async () => {
+                let count = parseInt(artist.followers || 0);
+                if (!isFollowing) {
+                    count++;
+                    isFollowing = true;
+                    followBtn.classList.add('following');
+                    followBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg> <span>Following</span>';
+                } else {
+                    count--;
+                    isFollowing = false;
+                    followBtn.classList.remove('following');
+                    followBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M15 14C12.33 14 7 15.33 7 18V20H23V18C23 15.33 17.67 14 15 14M6 10V7H4V10H1V12H4V15H6V12H9V10H6M15 12C17.21 12 19 10.21 19 8C19 5.79 17.21 4 15 4C12.79 4 11 5.79 11 8C11 10.21 12.79 12 15 12Z"/></svg> <span>Follow</span>';
+                }
+                await update(ref(rtdb, `users/${artistKey}`), { followers: count });
+            };
+
+            const songList = document.getElementById('songList');
+            songList.innerHTML = '';
+
+            const q = query(collection(db, "products"), where("artis", "==", artist.username));
+            const querySnapshot = await getDocs(q);
+
+            querySnapshot.forEach((doc) => {
+                const song = doc.data();
+                const songId = doc.id;
+
+                const html = `
+                    <div class="song-item" id="item-${songId}">
+                        <div class="song-cover" onclick="togglePlay('${song.audio}', '${songId}')">
+                            <img src="${song.avatar || artist.profilePic}">
+                            <div class="play-overlay"><i class="fas fa-play" id="icon-${songId}"></i></div>
+                        </div>
+                        <div class="song-info">
+                            <div class="song-title">${song.judul}</div>
+                            <div class="song-artist">${song.artis}</div>
+                            <div class="progress-container" onclick="seek(event, '${songId}')">
+                                <div class="progress-bg">
+                                    <div class="progress-bar" id="progress-${songId}">
+                                        <div class="progress-knob"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="visualizer" id="viz-${songId}">
+                            <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                        </div>
+                    </div>
+                `;
+                songList.insertAdjacentHTML('beforeend', html);
+                if(song.youtube) document.getElementById('ytLink').onclick = () => window.open(song.youtube, '_blank');
+            });
+
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('profileContent').style.display = 'block';
+        }
+
+        window.togglePlay = function(url, id) {
+            const icon = document.getElementById(`icon-${id}`);
+            const viz = document.getElementById(`viz-${id}`);
+            const item = document.getElementById(`item-${id}`);
+
+            if (currentPlayingId === id) {
+                if (currentAudio.paused) {
+                    currentAudio.play();
+                    icon.className = 'fas fa-pause';
+                    viz.classList.add('playing');
+                } else {
+                    currentAudio.pause();
+                    icon.className = 'fas fa-play';
+                    viz.classList.remove('playing');
+                }
+            } else {
+                if (currentPlayingId) {
+                    document.getElementById(`icon-${currentPlayingId}`).className = 'fas fa-play';
+                    document.getElementById(`viz-${currentPlayingId}`).classList.remove('playing');
+                    document.getElementById(`progress-${currentPlayingId}`).style.width = '0%';
+                    document.getElementById(`item-${currentPlayingId}`).classList.remove('playing-now');
+                }
+                currentAudio.src = url;
+                currentAudio.play();
+                currentPlayingId = id;
+                icon.className = 'fas fa-pause';
+                viz.classList.add('playing');
+                item.classList.add('playing-now');
+
+                currentAudio.ontimeupdate = () => {
+                    const p = (currentAudio.currentTime / currentAudio.duration) * 100;
+                    document.getElementById(`progress-${id}`).style.width = p + '%';
+                };
+            }
+        };
+
+        window.seek = function(e, id) {
+            if (currentPlayingId !== id) return;
+            const bg = e.currentTarget.querySelector('.progress-bg');
+            const rect = bg.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            currentAudio.currentTime = pos * currentAudio.duration;
+        };
+
+    </script>
+</body>
+</html>
