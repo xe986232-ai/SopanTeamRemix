@@ -3,1272 +3,1304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEAM SOPAN REMIX - Official Website</title>
+    <title>TSR - Team Sopan Remix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
     <style>
-        html, body { background-color: #020212 !important; scroll-behavior: smooth; }
-    </style>
-
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;700;800&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
-    <style>
-        /* --- CSS BASE & RESET --- */
+        /* RESET & BASE STYLES */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
         }
 
         body {
-            background-color: #020212;
-            color: #ffffff;
-            line-height: 1.6;
-            font-family: 'Inter', sans-serif;
+            background-color: #14171C;
+            color: #FFFFFF;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             overflow-x: hidden;
-            background: radial-gradient(circle at top right, #1a1a4e, #020212 60%);
         }
 
-        /* --- LOGO UPGRADE --- */
-        .logo { 
-            font-family: 'Syncopate', sans-serif; 
-            font-size: 22px; 
-            font-weight: 400; 
-            letter-spacing: 6px; 
-            color: #ffffff;
-            text-transform: uppercase;
-            position: relative;
-            cursor: default;
-        }
-        .logo span { 
-            color: #6366f1; 
-            font-weight: 700; 
-            text-shadow: 0 0 15px rgba(99, 102, 241, 0.6);
-            position: relative;
-        }
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 40px;
-            height: 1px;
-            background: #6366f1;
-            box-shadow: 0 0 10px #6366f1;
-        }
-
-        /* --- NAVIGATION --- */
-        nav {
+        /* HEADER SECTION */
+        header {
+            width: 100%;
+            max-width: 500px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
+            padding: 25px 20px;
             position: sticky;
             top: 0;
-            background: rgba(2, 2, 18, 0.9);
-            backdrop-filter: blur(12px);
+            background-color: #14171C;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .nav-links { display: flex; list-style: none; gap: 25px; align-items: center; }
-        .nav-links li a { font-size: 14px; color: #cbd5e1; transition: 0.3s; text-decoration: none; }
-        .nav-links li a:hover { color: #6366f1; }
-
-        /* --- NEW: SEARCH BAR --- */
-        .search-container {
-            position: relative;
-            margin-right: 15px;
-        }
-        .search-container input {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 15px 8px 35px;
-            border-radius: 20px;
-            color: white;
-            font-size: 13px;
-            outline: none;
-            transition: 0.3s;
-            width: 180px;
-        }
-        .search-container input:focus { width: 240px; border-color: #6366f1; background: rgba(255,255,255,0.1); }
-        .search-container svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); fill: #64748b; width: 14px; }
-
-        /* --- SIDEBAR & HAMBURGER --- */
-        .nav-right { display: flex; align-items: center; }
-        
-        .hamburger {
-            width: 30px;
-            height: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
-            z-index: 10001;
-            position: relative;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 100%;
-            height: 2px;
-            background-color: #fff;
-            border-radius: 2px;
-            transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-        }
-
-        .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
-        .hamburger.active span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
-        .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 300px;
-            height: 100vh;
-            background: linear-gradient(135deg, #0a0a2e 0%, #020212 100%);
-            backdrop-filter: blur(25px);
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            padding: 100px 40px;
-            transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            border-left: 1px solid rgba(99, 102, 241, 0.1);
-            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-        }
-
-        .sidebar.active { right: 0; }
-
-        .sidebar-links {
-            list-style: none;
-            margin-bottom: 40px;
-        }
-
-        .sidebar-links li { margin-bottom: 25px; opacity: 0; transform: translateX(20px); transition: 0.4s; }
-        .sidebar.active .sidebar-links li { opacity: 1; transform: translateX(0); }
-        .sidebar.active .sidebar-links li:nth-child(1) { transition-delay: 0.1s; }
-        .sidebar.active .sidebar-links li:nth-child(2) { transition-delay: 0.2s; }
-        .sidebar.active .sidebar-links li:nth-child(3) { transition-delay: 0.3s; }
-
-        .sidebar-links li a {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 18px;
-            text-decoration: none;
-            color: #fff;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
-        .sidebar-links li a:hover { color: #6366f1; padding-left: 10px; }
-
-        .btn-reg {
-            background: linear-gradient(90deg, #4f46e5, #9333ea);
-            padding: 15px 28px;
-            border-radius: 30px;
-            border: none;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            width: 100%;
-            font-family: 'Inter', sans-serif;
-            opacity: 0;
-            transform: translateY(20px);
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
-        .sidebar.active .btn-reg { opacity: 1; transform: translateY(0); transition: 0.5s 0.4s; }
-        .btn-reg:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(147, 51, 234, 0.4); }
-
-        /* --- PROFILE SIDEBAR STYLE --- */
-        .user-profile-nav {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .user-profile-nav img {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 2px solid #6366f1;
-            object-fit: cover;
-        }
-        .user-info-text h4 { font-size: 16px; color: #fff; margin: 5px 0 2px; font-family: 'Orbitron', sans-serif; }
-        .user-info-text p { font-size: 11px; color: #6366f1; font-weight: bold; }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            display: flex;
-            padding: 60px 8%;
-            align-items: center;
-            gap: 40px;
-            min-height: 70vh; 
-        }
-
-        .hero-text { flex: 1; }
-        .hero-text h1 { font-size: clamp(32px, 5vw, 60px); line-height: 1.1; margin-bottom: 25px; font-weight: 600; }
-        .hero-text p { color: #94a3b8; margin-bottom: 35px; max-width: 480px; font-size: 18px; }
-
-        .btn-group { display: flex; gap: 15px; margin-bottom: 50px; }
-        .btn-fill { background: #6366f1; padding: 14px 35px; border-radius: 30px; border: none; color: white; font-weight: bold; cursor: pointer; text-decoration: none; }
-
-        .stats { display: flex; gap: 50px; }
-        .stats h3 { font-size: 28px; margin-bottom: 5px; color: #fff; }
-        .stats p { font-size: 13px; color: #64748b; text-transform: uppercase; }
-
-        .hero-img { flex: 1; }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            padding: 20px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        .glass-card img { width: 100%; border-radius: 20px; display: block; }
-
-        /* --- PARTNERS --- */
-        .partners {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: nowrap;
-            gap: clamp(15px, 4vw, 50px);
-            padding: 50px 5%;
-            opacity: 0.5;
+        .logo {
             font-weight: 800;
+            font-size: 24px;
             letter-spacing: 2px;
-            background: rgba(255,255,255,0.01);
-            overflow: hidden;
-        }
-        .partners span { font-size: clamp(10px, 2vw, 14px); }
-
-        .section-title { text-align: center; font-size: 24px; margin: 80px 0 40px; font-family: 'Inter', sans-serif; font-weight: 600; scroll-margin-top: 100px; }
-
-/* --- MUSIC GRID (POTONGAN TERBARU) --- */
-.nft-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-    padding: 0 5%;
-    /* Memastikan grid dan isinya benar-benar rata tengah */
-    justify-content: center;
-    justify-items: center;
-}
-
-.nft-card {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 24px;
-    padding: 15px;
-    transition: 0.4s;
-    border: 1px solid rgba(255,255,255,0.05);
-    cursor: pointer;
-    position: relative;
-    width: 100%;
-    /* FIX: Hilangkan kotak biru/highlight saat klik di HP */
-    -webkit-tap-highlight-color: transparent;
-    /* FIX: Memastikan konten di dalam kartu simetris di tengah */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-/* Tambahan fix untuk tampilan HP agar simetris 2 kolom */
-@media (max-width: 768px) {
-    .nft-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-        padding: 0 4%; /* Margin kiri-kanan diseimbangkan */
-    }
-    .nft-card {
-        padding: 10px;
-        max-width: 170px; /* Menjaga lebar kartu tetap ideal */
-    }
-}
-
-        .nft-card:hover { border-color: #6366f1; background: rgba(99, 102, 241, 0.05); }
-        .nft-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 18px; margin-bottom: 15px; }
-        .nft-card h4 { font-size: 15px; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .nft-card .meta { display: flex; justify-content: space-between; font-size: 12px; color: #818cf8; font-weight: bold; align-items: center;}
-        .nft-card .meta span svg { width: 12px; height: 12px; vertical-align: middle; margin-right: 4px; fill: #6366f1; }
-
-        /* --- SKELETON LOADING --- */
-        .skeleton {
-            background: linear-gradient(90deg, #121235 25%, #1d1d4d 50%, #121235 75%);
-            background-size: 200% 100%;
-            animation: skeleton-loading 1.5s infinite;
-            border-radius: 10px;
-        }
-        @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-        /* --- FULLSCREEN OVERLAY --- */
-        #artist-overlay {
-            display: none;
-            position: fixed;
-            background: transparent;
-            z-index: 9999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            overflow: hidden;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: 24px;
-            will-change: top, left, width, height, background;
-        }
-
-        #artist-overlay.active {
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            border-radius: 0;
-            background: radial-gradient(circle at top right, #1a1a4e, #020212 60%) !important;
-            overflow-y: auto;
-        }
-
-        .overlay-content {
-            opacity: 0;
-            transition: all 0.4s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 600px;
-            margin: 60px auto;
-            transform: translateY(40px);
-        }
-
-        #artist-overlay.active .overlay-content {
-            opacity: 1;
-            transform: translateY(0);
-            transition-delay: 0.4s;
-        }
-
-        #artist-overlay .close-btn {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            font-size: 30px;
-            color: #fff;
-            cursor: pointer;
-            font-weight: bold;
-            z-index: 10001;
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        #artist-overlay.active .close-btn { opacity: 1; transition-delay: 0.6s; }
-
-        .profile-circle-xl {
-            width: 180px; height: 180px; border-radius: 50%; margin-bottom: 25px;
-            background-size: cover; background-position: center; border: 4px solid #6366f1;
-            position: relative; box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
-            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: scale(0.6) translateY(-50px); opacity: 0; flex-shrink: 0;
-        }
-
-        #artist-overlay.active .profile-circle-xl { transform: scale(1) translateY(0); opacity: 1; transition-delay: 0.2s; }
-
-        .artist-badge-xl {
-            position: absolute; top: 15px; left: -10px; background: #334155;
-            font-size: 11px; padding: 4px 12px; border-radius: 4px; font-weight: 800;
-            color: #fff; letter-spacing: 1px;
-        }
-
-        .artist-name-xl { font-size: 42px; font-weight: 900; margin-bottom: 10px; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
-
-        /* --- Follow Section --- */
-        .follow-section { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
-        .btn-follow {
-            background: #6366f1; color: white; border: none; padding: 8px 25px; 
-            border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.3s;
-        }
-        .btn-follow.following { background: rgba(255,255,255,0.1); color: #94a3b8; }
-
-        .action-play-xl { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 40px; font-weight: 800; font-size: 20px; text-transform: uppercase; }
-
-        .play-btn-xl {
-            width: 60px; height: 60px; border: 3px solid #fff; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; background: transparent;
-            color: #fff; cursor: pointer; transition: 0.3s; padding: 0;
-        }
-        .play-btn-xl svg { width: 24px; height: 24px; fill: currentColor; }
-        .play-btn-xl:hover { background: #fff; color: #020212; transform: scale(1.1); }
-
-        .spotify-container-xl { display: flex; flex-direction: column; gap: 15px; width: 100%; padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.1); }
-        .external-links-row { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
-        .spotify-link-xl { display: flex; align-items: center; justify-content: center; gap: 10px; color: #fff; text-decoration: none; font-size: 14px; font-weight: 700; transition: 0.3s; }
-        .spotify-link-xl:hover { opacity: 0.8; transform: translateY(-2px); }
-        
-        .sp-icon { width: 20px; height: 20px; fill: #1DB954; }
-        .yt-icon { width: 20px; height: 20px; fill: #FF0000; }
-
-        .followers-xl { font-size: 14px; color: #94a3b8; font-weight: 700; }
-
-        .tracklist-box { width: 100%; background: rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 20px; text-align: left; }
-        .tracklist-header { font-size: 18px; font-weight: 800; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        
-        .track-item { display: flex; align-items: center; padding: 12px 10px; border-radius: 10px; transition: 0.3s; cursor: pointer; margin-bottom: 5px; position: relative; }
-        .track-item:hover { background: rgba(255,255,255,0.1); }
-        .track-item.active-track { background: rgba(99, 102, 241, 0.2); }
-        .track-num { width: 30px; color: #64748b; font-weight: bold; }
-        
-        .track-artist-thumb { width: 40px; height: 40px; border-radius: 8px; margin-right: 12px; border: 1px solid rgba(255,255,255,0.1); object-fit: cover; }
-        
-        .track-info { flex: 1; }
-        .track-info h6 { font-size: 14px; margin: 0; color: #fff; }
-        .track-info p { font-size: 11px; color: #94a3b8; }
-        
-        .track-controls { display: flex; align-items: center; gap: 15px; }
-        .track-play-icon { width: 24px; height: 24px; color: #6366f1; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-        .track-play-icon svg { width: 14px; height: 14px; fill: currentColor; }
-
-        /* --- VISUALIZER BARS --- */
-        .visualizer-mini { display: none; align-items: flex-end; gap: 2px; height: 15px; margin-left: 10px; }
-        .visualizer-mini span { width: 3px; background: #6366f1; animation: bounce 1s infinite alternate; }
-        .visualizer-mini span:nth-child(2) { animation-delay: 0.2s; }
-        .visualizer-mini span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes bounce { from { height: 3px; } to { height: 15px; } }
-        .active-track .visualizer-mini { display: flex; }
-
-        /* --- FLOATING PLAYER --- */
-        #floating-player {
-            position: fixed;
-            bottom: -100px;
+            position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            width: 90%;
-            max-width: 500px;
-            background: rgba(10, 10, 46, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 50px;
-            padding: 10px 20px;
+            color: #FFFFFF;
+            transition: all 0.4s ease;
+        }
+
+        .header-icons {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            z-index: 9998;
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            cursor: pointer;
+            gap: 15px;
+            margin-left: auto;
+            z-index: 1002;
+            position: relative;
         }
-        #floating-player.active { bottom: 20px; }
-        .fp-info { display: flex; align-items: center; gap: 12px; flex: 1; }
-        .fp-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #6366f1; }
-        .fp-text h6 { font-size: 13px; margin: 0; color: #fff; width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .fp-text p { font-size: 10px; color: #6366f1; margin: 0; }
-        .fp-controls { display: flex; align-items: center; gap: 15px; }
-        .fp-play-btn { background: #fff; color: #020212; border: none; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .fp-play-btn svg { width: 16px; height: 16px; fill: currentColor; }
 
-        /* --- Like Button Ungu & Icon --- */
-        .track-like-btn { background: transparent; border: none; color: #64748b; cursor: pointer; padding: 5px; transition: 0.3s; display: flex; align-items: center; justify-content: center; position: relative; }
-        .track-like-btn svg { width: 18px; height: 18px; fill: currentColor; }
-        .track-like-btn.liked { color: #6366f1; }
-        .track-like-btn.liked svg { fill: #6366f1; animation: heartBeat 0.4s forwards; }
+        .header-icons i {
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
 
-        @keyframes heartBeat { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
-        .floating-heart-svg { position: absolute; color: #6366f1; pointer-events: none; z-index: 10; width: 18px; height: 18px; animation: floatUp 0.8s ease-out forwards; }
-        @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-40px) scale(1.5); opacity: 0; } }
+        .header-icons i:hover {
+            color: #23C55E;
+        }
 
-        /* --- TOP SELLERS --- */
-        .sellers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 0 5%; }
-        .seller-item { display: flex; align-items: center; gap: 15px; background: rgba(255, 255, 255, 0.03); padding: 12px 20px; border-radius: 15px; border: 1px solid transparent; transition: 0.3s; }
-        .seller-item:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.1); }
-        .seller-item img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #6366f1; }
-        .seller-item div h5 { font-size: 15px; }
-        .seller-item div p { font-size: 12px; color: #818cf8; }
+        .btn-menu-trigger {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 5px;
+        }
 
-        /* --- EXPLORE (Daftar Karya - Global Album Box) --- */
-        .explore-grid { padding: 0 5%; margin-bottom: 60px; max-width: 900px; margin-left: auto; margin-right: auto; }
-        .global-album-box {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 30px;
-            padding: 30px;
+        .btn-menu-trigger:active { transform: scale(0.8); }
+
+        .btn-signup-nav {
+            background-color: #23C55E;
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.4s;
+            text-transform: uppercase;
+            text-align: center;
+            display: block;
+            width: 100%;
+            margin-bottom: 30px;
+            text-decoration: none;
+        }
+
+        .user-photo {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid #FFFFFF;
+            cursor: pointer;
+            display: none;
+            object-fit: cover;
+            background-color: #090A0C;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .user-photo:active { transform: scale(0.8); }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: #090A0C;
+            border: 1px solid #FFFFFF;
+            border-radius: 12px;
+            width: 170px;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            z-index: 2000;
+            transform-origin: top right;
+            animation: growIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        @keyframes growIn {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .profile-dropdown.active {
+            display: flex;
+        }
+
+        .profile-dropdown a, .profile-dropdown button {
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .profile-dropdown a:hover, .profile-dropdown button:hover {
+            background: #14171C;
+            color: #23C55E;
+        }
+
+        .hero {
+            width: 100%;
+            max-width: 500px;
+            padding: 40px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, #14171C 0%, #090A0C 100%);
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        /* CSS SWIPER - VERSI SUPER SMOOTH & RINGAN */
+        .swiper-section {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px 0;
+            overflow: hidden;
+        }
+
+        .swiper { 
+            width: 100%; 
+            padding-top: 20px; 
+            padding-bottom: 50px; 
+        }
+
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            width: 280px;
+            /* Pakai cubic-bezier supaya gerakan zoom-nya lebih elegan/berkelas */
+            transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), 
+                        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                        filter 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+            
+            /* Hapus blur, ganti dengan opacity agar tidak berat saat digeser */
+            filter: brightness(0.4); 
+            opacity: 0.4;
+            transform: scale(0.82); 
+            will-change: transform, opacity; /* Optimasi hardware acceleration */
+        }
+
+        /* Slide yang sedang di tengah/aktif */
+        .swiper-slide-active { 
+            filter: brightness(1); 
+            opacity: 1; 
+            transform: scale(1); 
+        }
+
+        .playlist-card {
+            background: #090A0C;
+            border-radius: 24px;
+            padding: 20px;
             border: 1px solid rgba(255,255,255,0.05);
             display: flex;
             flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .pl-cover { width: 100%; aspect-ratio: 1/1; border-radius: 18px; object-fit: cover; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .pl-info h4 { font-size: 18px; font-weight: 800; margin-bottom: 5px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .pl-info p { font-size: 13px; color: #636E7A; margin-bottom: 15px; }
+        .pl-controls { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+        .pl-play-btn {
+            width: 50px; height: 50px; background: #23C55E; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; cursor: pointer;
+        }
+        .pl-progress-box { flex: 1; }
+        .pl-progress-bg { width: 100%; height: 5px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+        .pl-progress-bar { width: 0%; height: 100%; background: #23C55E; transition: width 0.1s linear; }
+
+        .services-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .fixed-bg-decor {
+            position: fixed;
+            z-index: -1;
+            opacity: 0.05;
+            pointer-events: none;
+            filter: invert(1);
+        }
+
+        .decor-tone { bottom: 15%; left: -30px; width: 120px; transform: rotate(-15deg); }
+        .decor-clef { top: 50%; right: -40px; width: 150px; transform: rotate(20deg); }
+        .decor-note { bottom: 5%; right: 10px; width: 80px; transform: rotate(-10deg); }
+
+        .services-container h2 {
+            font-size: 16px;
+            color: #636E7A;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .grid-layanan {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: #090A0C;
+            padding: 25px 20px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            border: 1px solid transparent;
+            text-decoration: none;
+        }
+
+        .card:hover {
+            background-color: #14171C;
+            border-color: #23C55E;
+            transform: translateY(-8px) scale(1.03);
+        }
+
+        .card i { font-size: 24px; color: #23C55E; }
+        .card span { font-weight: 600; font-size: 14px; color: #FFFFFF; }
+
+        .tools-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .tool-pill {
+            flex: 0 1 calc(50% - 5px); 
+            background: #090A0C;
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .tool-pill:hover {
+            border-color: #23C55E;
+            background: #14171C;
+            transform: scale(1.05);
+        }
+
+        .tool-pill i { font-size: 14px; color: #23C55E; }
+        .tool-pill span { font-size: 12px; font-weight: 600; color: #FFFFFF; }
+
+        .preview-list {
+            display: flex;
+            flex-direction: column;
             gap: 12px;
+            margin-bottom: 40px;
         }
-        .track-card-random { 
-            display: flex; align-items: center; padding: 12px 20px; 
-            background: rgba(255, 255, 255, 0.02); border-radius: 15px; 
-            border: 1px solid transparent; transition: 0.3s; cursor: pointer;
-        }
-        .track-card-random:hover { background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.3); }
-        .track-card-random .cover { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; margin-right: 15px; }
 
-        /* --- FOOTER --- */
-        footer { padding: 60px 5%; background: #01010a; border-top: 1px solid rgba(255,255,255,0.1); display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
-
-        @media (max-width: 1024px) { .nft-grid { grid-template-columns: repeat(3, 1fr); } .sellers-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero { flex-direction: column; text-align: center; padding: 40px 5%; min-height: auto; }
-            .nft-grid { grid-template-columns: repeat(2, 1fr); }
-            .sellers-grid { grid-template-columns: 1fr; }
-            footer { grid-template-columns: 1fr; text-align: center; }
-            .search-container { display: none; }
+        .preview-item {
+            background: #090A0C;
+            border-radius: 18px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
-        /* --- UPDATE TOMBOL HERO & SHADOW BOX --- */
-.btn-fill {
-    background: var(--accent, #6366f1) !important; /* Warna dasar mengikuti tema */
+        .preview-item:hover {
+            transform: scale(1.02);
+            border-color: rgba(35, 197, 94, 0.3);
+        }
+
+        .preview-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .playing .preview-avatar { transform: scale(1.1) rotate(5deg); }
+
+        .preview-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .preview-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .preview-info p {
+            font-size: 12px;
+            color: #636E7A;
+            margin-bottom: 4px;
+        }
+
+        .spectrum {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .playing .spectrum { opacity: 1; }
+
+        .bar {
+            width: 2px;
+            height: 3px;
+            background: #23C55E;
+            border-radius: 1px;
+        }
+
+        .playing .bar {
+            animation: bounce 0.6s infinite alternate cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .bar:nth-child(2) { animation-delay: 0.1s; }
+        .bar:nth-child(3) { animation-delay: 0.2s; }
+        .bar:nth-child(4) { animation-delay: 0.3s; }
+
+        @keyframes bounce {
+            from { height: 3px; transform: scaleY(1); }
+            to { height: 10px; transform: scaleY(1.2); }
+        }
+
+        .play-btn {
+            width: 38px;
+            height: 38px;
+            background: #23C55E;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .play-btn:active { transform: scale(0.7) rotate(-20deg); }
+        .playing .play-btn { background: #FFFFFF; color: #23C55E; transform: scale(1.1); }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 5px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #23C55E;
+            width: 0%;
+            border-radius: 3px;
+            transition: width 0.1s linear;
+        }
+
+        .footer-text {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-text p { color: #636E7A; font-size: 13px; font-style: italic; line-height: 1.6; }
+
+        .active-indicator {
+            width: 40px;
+            height: 4px;
+            background-color: #23C55E;
+            margin: 10px auto;
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .hero:hover .active-indicator { width: 80px; }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100%;
+            background: #090A0C;
+            z-index: 2000;
+            transition: right 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            padding: 30px;
+            border-left: 1px solid #23C55E;
+            overflow-y: auto;
+        }
+
+        .side-menu.active { right: 0; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+            text-decoration: none;
+            padding: 12px 0;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.3s;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .nav-item i {
+            width: 20px;
+            color: #23C55E;
+            font-size: 18px;
+        }
+
+        .nav-item:hover { transform: translateX(5px); color: #23C55E; }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1999;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+
+        @keyframes revealUp { 
+            from { opacity: 0; transform: translateY(40px) scale(0.8); } 
+            to { opacity: 1; transform: translateY(0) scale(1); } 
+        }
+        
+        .animate-in { 
+            opacity: 0; 
+            animation: revealUp 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+        }
+
+        .brand-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            left: 0;
+            transform: none;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 100;
+        }
+        .brand-wrapper:hover { transform: scale(1.05); }
+
+        .logo-box { width: 34px; height: 34px; filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.1)); }
+        .logo-text { font-weight: 800; font-size: 22px; letter-spacing: 2px; color: #FFFFFF; text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+
+        .features-section { display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
+        .feature-item { display: flex; align-items: flex-start; gap: 15px; background-color: #090A0C; padding: 20px; border-radius: 20px; border: 1px solid transparent; transition: 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+        .feature-item:hover { transform: scale(1.02); border-color: rgba(35, 197, 94, 0.2); }
+        .feature-icon { color: #FFFFFF; flex-shrink: 0; animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .feature-content h3 { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+        .feature-content p { font-size: 12px; line-height: 1.5; }
+        
+        .biodata-footer {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            background-color: #090A0C;
+            padding: 40px 20px;
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bio-brand { display: flex; align-items: center; gap: 10px; }
+        .bio-logo-svg { width: 28px; height: 28px; }
+        .bio-name-text { font-weight: 800; font-size: 18px; letter-spacing: 2px; color: #FFFFFF; }
+
+        .wa-simple {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #23C55E;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+            margin-top: 5px;
+        }
+        .wa-simple:hover { opacity: 0.7; }
+        .wa-simple svg { width: 20px; height: 20px; fill: #23C55E; }
+
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .custom-alert-box {
+            background: #090A0C;
+            border: 1px solid #23C55E;
+            border-radius: 20px;
+            padding: 25px;
+            width: 85%;
+            max-width: 320px;
+            text-align: center;
+            animation: alertZoom 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        @keyframes alertZoom { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+        .custom-alert-box i { font-size: 40px; color: #23C55E; margin-bottom: 15px; }
+        .custom-alert-box p { font-size: 14px; font-weight: 600; color: #FFFFFF; margin-bottom: 20px; line-height: 1.5; }
+        .custom-alert-btn {
+            background: #23C55E; color: #FFFFFF; border: none; padding: 10px 30px; border-radius: 12px; font-weight: 800; font-size: 13px; cursor: pointer; transition: 0.3s;
+        }
+        .custom-alert-btn:active { transform: scale(0.9); }
+        /* Progress Bar Baru dengan Knob/Bulatan */
+.pl-progress-box {
+    flex: 1;
     position: relative;
-    transition: all 0.4s ease;
-    border: none;
-    display: inline-block;
-    /* Efek Shadow Box Luar */
-    box-shadow: 0 0 20px var(--accent-glow, rgba(99, 102, 241, 0.5));
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 14px;
-    z-index: 1;
-    overflow: hidden;
+    padding: 10px 0; /* Area sentuh lebih luas */
+    cursor: pointer;
 }
 
-.btn-fill::before {
+.pl-progress-bg {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    position: relative;
+    overflow: visible; /* Biar knob tidak terpotong */
+}
+
+.pl-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #23C55E;
+    border-radius: 10px;
+    position: relative;
+    transition: width 0.1s linear;
+}
+
+/* Bulatan Kecil (Knob) */
+.pl-progress-bar::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        120deg,
-        transparent,
-        rgba(255, 255, 255, 0.3),
-        transparent
-    );
-    transition: 0.5s;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(35, 197, 94, 0.8);
 }
 
-.btn-fill:hover {
-    transform: translateY(-3px) scale(1.05);
-    /* Shadow lebih terang saat di hover */
-    box-shadow: 0 0 35px var(--accent, #6366f1);
-    color: #fff !important;
-}
-
-.btn-fill:hover::before {
-    left: 100%;
-}
-
-/* Penyesuaian agar selaras dengan Tema Hijau yang baru */
-[data-theme="cyber-emerald"] .btn-fill {
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
-}
-
-[data-theme="cyber-emerald"] .btn-fill:hover {
-    box-shadow: 0 0 35px #10b981;
-}
-/* --- MODAL PEMBERITAHUAN CLOSED --- */
-.modal-closed {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(2, 2, 18, 0.9);
-    backdrop-filter: blur(8px);
-    z-index: 20000;
-    justify-content: center;
+/* Visualizer Animasi (Bar Waves) */
+.pl-visualizer {
+    display: flex;
     align-items: center;
-    padding: 20px;
-}
-.modal-box {
-    background: linear-gradient(135deg, #1a1a4e 0%, #020212 100%);
-    border: 1px solid #6366f1;
-    padding: 30px;
-    border-radius: 20px;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
-}
-.modal-box h3 { font-family: 'Orbitron', sans-serif; margin-bottom: 15px; color: #fff; }
-.modal-box p { color: #94a3b8; margin-bottom: 25px; }
-.btn-close-modal {
-    background: #6366f1;
-    color: white;
-    border: none;
-    padding: 10px 25px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: bold;
-}
-/* Menghilangkan kotak biru saat klik di semua elemen yang bisa diklik */
-* {
-    -webkit-tap-highlight-color: transparent;
-    outline: none; /* Menghilangkan garis putus-putus pada beberapa browser */
+    gap: 3px;
+    height: 20px;
+    margin-bottom: 10px;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
-/* Atau jika ingin lebih spesifik ke tombol dan kartu saja */
-.nft-card, 
-.track-card-random, 
-.btn-fill, 
-.fp-play-btn, 
-.play-btn-xl,
-.track-item {
-    -webkit-tap-highlight-color: transparent;
+.pl-visualizer.active { opacity: 1; }
+
+.v-bar {
+    width: 3px;
+    height: 4px;
+    background: #23C55E;
+    border-radius: 2px;
+}
+
+.pl-visualizer.active .v-bar {
+    animation: v-bounce 0.5s infinite alternate ease-in-out;
+}
+
+@keyframes v-bounce {
+    0% { height: 4px; }
+    100% { height: 20px; }
+}
+
+/* Durasi Teks */
+.pl-time-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #636E7A;
+    margin-top: 5px;
+    font-weight: 600;
+}
+.footer-minimal {
+    width: 100%;
+    max-width: 500px;
+    padding: 50px 20px;
+    text-align: left;
+    margin-top: 30px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Mobile 2 kolom */
+    gap: 30px;
+}
+
+/* Kolom ketiga (Bantuan) memanjang di bawah jika layar kecil */
+.footer-col:last-child {
+    grid-column: span 2;
+}
+
+.footer-col h4 {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 8px;
+}
+
+.footer-col ul li a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.footer-col ul li a:hover {
+    color: #23C55E;
+    padding-left: 5px;
+}
+
+/* Jika layar lebih besar dari 400px, buat jadi 3 kolom sebaris */
+@media (min-width: 400px) {
+    .footer-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .footer-col:last-child {
+        grid-column: span 1;
+    }
 }
 
     </style>
 </head>
 <body>
 
-    <div id="main-content">
-        <nav>
-            <div class="logo">SOPAN <span>REMIX</span></div>
-            <div class="nav-links-wrapper" style="display:flex; align-items:center;">
-                <div class="search-container">
-                    <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    <input type="text" id="artistSearch" placeholder="Cari artist..." onkeyup="filterArtists()">
-                </div>
-                <ul class="nav-links">
-                    <li><a href="index.html">Beranda</a></li>
-                    <li><a href="member.html">Anggota</a></li>
-                    <li><a href="galeri.html">Galeri</a></li>
-                    <li><a href="kontak.html">Kontak</a></li>
-                    <li><a href="join.html">Join</a></li>
-                </ul>
-            </div>
-            <div class="nav-right">
-                <div class="hamburger" id="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-        </nav>
-
-        <div class="sidebar" id="sidebar">
-            <div class="user-profile-nav" id="user-profile-box">
-                <img src="" id="user-nav-img">
-                <div class="user-info-text">
-                    <h4 id="user-nav-name">Artist Name</h4>
-                    <p id="user-nav-id">ID: SOPAN-XXXX</p>
-                </div>
-            </div>
-
-            <ul class="sidebar-links">
-                <li id="nav-dashboard" style="display: none;"><a href="dashboard-user.html">Dashboard Artist</a></li>
-                <li><a href="#members-section">Struktur Team</a></li>
-                <li><a href="mailto:admin@sopansremix.com">Hubungi Kami</a></li>
-            </ul>
-<a href="join.html" id="btnJoinSidebar" class="btn-reg">Join Member</a>
-
-        </div>
-
-        <section class="hero">
-            <div class="hero-text" data-aos="fade-right">
-                <h1>Era Baru <br>Kreativitas <br>Team Sopan Remix</h1>
-                <p>Wadah bagi para kreator musik remix. Bersama kita bangun komunitas yang solid, kreatif, dan tetap sopan dalam berkarya.</p>
-                <div class="btn-group">
-                    <a href="#members-section" class="btn-fill">Dengarkan Lagu Team Sopan</a>
-                </div>
-                <div class="stats">
-                    <div><h3 id="stat-active-members">0</h3><p>Active Members</p></div>
-                    <div><h3>1</h3><p>Main Admins</p></div>
-                    <div><h3 id="stat-tracks-released">0</h3><p>Tracks Released</p></div>
-                </div>
-            </div>
-<div class="hero-img" data-aos="zoom-in">
-    <div class="glass-card" style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 20px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);">
+<img src="https://cdn-icons-png.flaticon.com/512/10815/10815635.png" class="fixed-bg-decor decor-tone" alt="tone icon">
+<img src="https://cdn-icons-png.flaticon.com/512/26/26274.png" class="fixed-bg-decor decor-clef" alt="clef icon">
+<img src="https://cdn-icons-png.flaticon.com/512/651/651717.png" class="fixed-bg-decor decor-note" alt="note icon">
+<header id="mainHeader">
+    <div class="brand-wrapper">
+<div class="logo-box">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100" height="100" rx="25" fill="#FFFFFF"/>
         
-        <div style="width: 100%; height: 200px; overflow: hidden; border-radius: 12px;">
-            <img src="pendiri/IMG_6540.PNG" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-        </div>
-
-        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-            <div>
-                <small style="color: #94a3b8;">Name Team:</small><br>
-                <strong>Team Sopan Remix</strong>
-            </div>
-            <div style="text-align: right;">
-    <small style="color: #94a3b8;">Status:</small><br>
-    <strong id="hero-status-text" style="color: #818cf8;">Checking...</strong>
+        <path d="M68,32 C60,24 40,24 32,32 C24,40 32,50 50,50 C68,50 76,60 68,68 C60,76 40,76 32,68" 
+              stroke="#14171C" 
+              stroke-width="12" 
+              stroke-linecap="round" 
+              fill="none"/>
+    </svg>
 </div>
 
+        <div class="logo-text">Sopan</div>
+    </div>
+
+    <div class="header-icons">
+        <img id="userAvatar" class="user-photo" onclick="toggleProfileMenu()" referrerpolicy="no-referrer" style="display: none; border: 2px solid #23C55E; border-radius: 12px;">
+        
+        <button class="btn-menu-trigger" onclick="toggleMenu()" style="background: rgba(255,255,255,0.05); border-radius: 12px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+            <i class="fa-solid fa-bars-staggered" style="font-size: 18px;"></i>
+        </button>
+
+<div id="profileDropdown" class="profile-dropdown">
+    <div style="padding: 12px 15px; font-size: 10px; color: #636E7A; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 800;">
+        Member Area
+    </div>
+
+    <a href="dashboard.html" style="display: flex; align-items: center; gap: 10px;">
+        <i class="fa-solid fa-gauge-high" style="color: #23C55E; width: 18px;"></i> 
+        <span>Dashboard</span>
+    </a>
+    <button onclick="handleLogOut()" style="color: #FF4B4B; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; padding: 12px 15px;">
+        <i class="fa-solid fa-right-from-bracket" style="width: 18px;"></i> 
+        <span>Sign Out</span>
+    </button>
+</div>
+
+</header>
+
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+<div class="side-menu" id="sideMenu">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <div style="display: flex; flex-direction: column;">
+            <span style="font-size: 10px; color: #636E7A; text-transform: uppercase; letter-spacing: 2px;">Navigation</span>
+            <div class="logo-text" style="font-size: 20px; background: linear-gradient(to right, #fff, #23C55E); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DASHBOARD</div>
+        </div>
+        <div onclick="toggleMenu()" style="width: 35px; height: 35px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+            <i class="fa-solid fa-xmark" style="font-size: 18px; color: #23C55E;"></i>
+        </div>
+    </div>
+
+    <div id="sideNavContent">
+        <a href="login.html" id="sideSignUpBtn" class="btn-signup-nav" style="margin-bottom: 25px; box-shadow: 0 10px 20px rgba(35, 197, 94, 0.2);">
+            <i class="fa-solid fa-user-plus" style="margin-right: 10px;"></i> Gabung Team
+        </a>
+
+        <p style="font-size: 11px; color: #636E7A; margin-bottom: 10px; font-weight: 700;">MAIN SERVICES</p>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="membersopan.html" class="nav-item"><i class="fa-solid fa-compact-disc"></i> SopanArtist</a>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-music"></i> Songs</a>
+        <div style="height: 1px; background: rgba(255,255,255,0.05); margin: 20px 0;"></div>
+
+        <p style="font-size: 11px; color: #636E7A; margin-bottom: 10px; font-weight: 700;">OTHERS</p>
+        <a href="rules.html" class="nav-item"><i class="fa-solid fa-shield-halved"></i> Rules & Syarat</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-circle-question"></i> Pusat Bantuan</a>
+        
+        <div style="margin-top: 40px; display: flex; gap: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 15px;">
+            <a href="https://instagram.com/teamsopanremix" style="color: #636E7A; font-size: 18px;"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://tiktok.com/@team.sopan.remix" style="color: #636E7A; font-size: 18px;"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#" style="color: #636E7A; font-size: 18px;"><i class="fa-brands fa-youtube"></i></a>
         </div>
     </div>
 </div>
 
-        </section>
+<section class="hero">
+    <p id="userGreeting" style="font-size: 14px; color: #23C55E; font-weight: 700; margin-bottom: 10px; opacity: 0; transition: opacity 0.8s ease; text-transform: uppercase; letter-spacing: 1px;"></p>
+    <h1 class="animate-in" style="animation-delay: 0.1s;">Welcome To,<br>Team Sopan Remix!.</h1>
+    <div class="active-indicator animate-in" style="animation-delay: 0.2s;"></div>
+</section>
 
-        <div class="partners" data-aos="fade-up">
-            <span>SOUNDCLOUD</span><span>YOUTUBE MUSIC</span><span>TIKTOK</span><span>SPOTIFY</span><span>INSTAGRAM</span>
-        </div>
+<div style="width: 100%; max-width: 500px; text-align: center; margin: 30px 0 10px 0;">
+    <h2 class="animate-in" style="animation-delay: 0.25s; font-size: 16px; color: #636E7A; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
+        Artist Album
+    </h2>
+</div>
 
-        <h2 id="members-section" class="section-title" data-aos="fade-up">Members Team Aktif</h2>
-        <section class="nft-grid" id="artist-grid-container">
-            <div class="nft-card skeleton" style="height:250px;"></div>
-            <div class="nft-card skeleton" style="height:250px;"></div>
-            <div class="nft-card skeleton" style="height:250px;"></div>
-            <div class="nft-card skeleton" style="height:250px;"></div>
-            <div class="nft-card skeleton" style="height:250px;"></div>
-        </section>
-
-        <h2 class="section-title" data-aos="fade-up">Management Info</h2>
-        <section class="sellers-grid">
-            <div class="seller-item" data-aos="fade-right" data-aos-delay="100">
-                <img src="pendiri/dj_sopan.jpg">
-                <div><h5>Dj Sopan</h5><p>Pendiri</p></div>
-            </div>
-            <div class="seller-item" data-aos="fade-right" data-aos-delay="300"><img src="pendiri/candra_sopan.jpg"><div><h5>Candra Sopan</h5><p>Admin Team</p></div></div>
-        </section>
-
-        <h2 class="section-title" data-aos="fade-up">Daftar Karya Team</h2>
-        <section class="explore-grid">
-            <div class="global-album-box" id="explore-grid-random">
-                <div class="track-card-random skeleton" style="height:70px; margin-bottom:10px;"></div>
-                <div class="track-card-random skeleton" style="height:70px;"></div>
-            </div>
-        </section>
-
-        <footer>
-            <div class="footer-logo">
-                <h2 class="logo">SOPAN <span>REMIX</span></h2>
-                <p style="color: #94a3b8; font-size: 14px; margin-top: 15px;">Official Website Team Sopan Remix. Kreativitas tanpa batas, persaudaraan selamanya.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Menu</h4>
-                <ul style="list-style: none; color: #94a3b8; font-size: 14px; line-height: 2;">
-                    <li><a href="member.html" style="color: inherit; text-decoration: none;">Member List</a></li>
-                    <li><a href="rules.html" style="color: inherit; text-decoration: none;">Rules Team</a></li>
-                    <li><a href="syarat.html" style="color: inherit; text-decoration: none;">Syarat Join</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Sosial Media</h4>
-                <ul style="list-style: none; color: #94a3b8; font-size: 14px; line-height: 2;">
-                    <li><a href="https://instagram.com/teamsopanremix" style="color: inherit; text-decoration: none;">Instagram</a></li>
-                    <li><a href="
-                    https://www.tiktok.com/@team.sopan.remix?_r=1&_t=ZS-93HVFf2Dbm8" style="color: inherit; text-decoration: none;">TikTok</a></li>
-                    <li><a href="https://youtube.com/" style="color: inherit; text-decoration: none;">YouTube</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Pusat Bantuan</h4>
-                <ul style="list-style: none; color: #94a3b8; font-size: 14px; line-height: 2;">
-                    <li><a href="https://wa.me/628xxx" style="color: inherit; text-decoration: none;">Admin 1</a></li>
-                    <li><a href="https://wa.me/628xxx" style="color: inherit; text-decoration: none;">Admin 2</a></li>
-                    <li><a href="faq.html" style="color: inherit; text-decoration: none;">FAQ</a></li>
-                </ul>
-            </div>
-        </footer>
-    </div>
-
-    <div id="floating-player" onclick="reOpenArtist()">
-        <div class="fp-info">
-            <img src="" id="fp-img" class="fp-img">
-            <div class="fp-text">
-                <h6 id="fp-title">Judul Lagu</h6>
-                <p id="fp-artist">Nama Artis</p>
-            </div>
-            <div class="visualizer-mini" style="display:flex;">
-                <span></span><span></span><span></span>
-            </div>
-        </div>
-        <div class="fp-controls">
-            <button class="fp-play-btn" id="fp-play-trigger" onclick="event.stopPropagation(); togglePlayFromFloating();">
-                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-        </div>
-    </div>
-
-    <div id="artist-overlay">
-        <div class="close-btn" onclick="closeArtist()">✕</div>
-        <div class="overlay-content">
-            <div class="profile-circle-xl" id="ov-img"><span class="artist-badge-xl" id="ov-badge">ARTIST</span></div>
-            <div class="artist-name-xl" id="ov-name">NAMA ARTIS</div>
-            
-            <div class="follow-section">
-                <span class="followers-xl" id="ov-follow-count">0 Followers</span>
-                <button class="btn-follow" id="btn-follow-main" onclick="handleFollow()">Follow</button>
-            </div>
-
-            <div class="action-play-xl"><button class="play-btn-xl" id="play-ov"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button></div>
-            
-            <div class="spotify-container-xl">
-                <div class="external-links-row">
-                    <a href="#" class="spotify-link-xl"><svg class="sp-icon" viewBox="0 0 496 512"><path d="M248 8C111.1 8 0 119.1 0 256s111.1 248 248 248 248-111.1 248-248S384.9 8 248 8zm100.7 364.7c-4.2 0-8.9-1.2-13.3-4-51.1-30.7-115.4-37.8-191.2-20.4-15.7 3.6-31.5-6.4-35.1-22.1-3.6-15.7 6.4-31.5 22.1-35.1 86.1-19.8 158.3-11.2 216.7 23.9 13.6 8.2 18.1 25.9 9.9 39.6-4.9 8.3-13.1 18.1-19.1 18.1zm28.4-71.1c-5.4 0-10.9-1.5-16.1-4.7-61.9-38.1-156.4-49.1-229.3-27-18.3 5.6-37.5-4.6-43.1-22.8-5.6-18.3 4.6-37.5 22.8-43.1 85.5-25.9 191.1-12.7 263.8 32.1 16.1 9.9 21.2 30.9 11.3 47-6.2 10.1-17.1 18.5-29.4 18.5zm2.3-75.1c-7.2 0-14.4-2.1-20.6-6-74.8-44.4-198.1-48.5-270.3-26.6-21.6 6.5-44.2-5.7-50.7-27.3-6.5-21.6 5.7-44.2 27.3-50.7 85.4-25.8 223.4-21 311.2 31.1 19.4 11.5 25.8 36.6 14.3 56-7.8 13.1-21.3 23.5-35.2 23.5z"/></svg> Spotify</a>
-                    <a href="#" class="spotify-link-xl"><svg class="yt-icon" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.781 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg> YouTube</a>
+<section class="swiper-section animate-in" style="animation-delay: 0.3s; margin-top: 0;">
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper" id="swiperPreviewContainer">
+            <div class="swiper-slide">
+                <div class="playlist-card">
+                    <div style="height: 200px; background: #14171C; border-radius: 18px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-spinner fa-spin" style="font-size: 30px; color: #23C55E;"></i>
+                    </div>
                 </div>
-                <div class="tracklist-box"><div class="tracklist-header">Album / Daftar Lagu</div><div id="ov-tracks"></div></div>
             </div>
         </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
+
+<main class="services-container">
+
+
+    <h2 class="animate-in" style="animation-delay: 0.75s;">MUSIC TOOLS RECOMEND</h2>
+    <div class="tools-row animate-in" style="animation-delay: 0.8s;">
+        <a href="https://tunebat.com/Analyzer" target="_blank" class="tool-pill"><i class="fa-solid fa-magnifying-glass-chart"></i><span>Bpm & Key Finder</span></a>
+        <a href="https://chordify.net/" target="_blank" class="tool-pill"><i class="fa-solid fa-lines-leaning"></i><span>Chord Lagu</span></a>
+        <a href="https://vocalremover.org/id/" target="_blank" class="tool-pill"><i class="fa-solid fa-scissors"></i><span>Vocal Remover</span></a>
+        <a href="https://ytmp3.sc/" target="_blank" class="tool-pill"><i class="fa-brands fa-youtube" style="color: #FF0000;"></i><span>YT to MP3</span></a>
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
-            authDomain: "labelmusic-ee1b2.firebaseapp.com",
-            projectId: "labelmusic-ee1b2",
-            databaseURL: "https://labelmusic-ee1b2-default-rtdb.asia-southeast1.firebasedatabase.app",
-            storageBucket: "labelmusic-ee1b2.firebasestorage.app",
-            messagingSenderId: "634541524714",
-            appId: "1:634541524714:web:a2fc9d47a91e37f44a7993"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+    <div id="playlistSection" style="display: none;">
+        <h2 class="animate-in">SOPAN MUSIC</h2>
+        <div class="preview-list animate-in" id="previewContainer"></div>
+    </div>
 
-        AOS.init({ once: false, mirror: true, duration: 800, offset: 100 });
+    <h2 class="animate-in" style="animation-delay: 0.85s;">SOPAN BERBAGI</h2>
+    <div class="grid-layanan" id="sampleGrid">
+        <a href="javascript:void(0)" onclick="showAlert('Sample sedang disiapkan')" class="card animate-in" style="animation-delay: 0.9s;">
+            <i class="fa-solid fa-box-open" style="color: #23C55E;"></i><span>Asset Free</span>
+            <p style="font-size: 10px; color: #636E7A; margin-top: -10px;">Koleksi sound gratis buat project kamu.</p>
+        </a>
+        <a href="acapella.html" class="card animate-in" style="animation-delay: 1s;">
+            <i class="fa-solid fa-microphone-lines" style="color: #23C55E;"></i><span>Acapella Free</span>
+            <p style="font-size: 10px; color: #636E7A; margin-top: -10px;">Vokal jernih gratis untuk project kamu.</p>
+        </a>
+    </div>
 
-        const HEART_ICON = `<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
-        const PLAY_ICON = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
-        const PAUSE_ICON = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+    <h2 class="animate-in" style="animation-delay: 0.82s; margin-top: 30px;">DAW DOWNLOAD</h2>
+    <div class="tools-row animate-in" style="animation-delay: 0.85s;">
+        <a href="https://liteapks.com/download/fl-studio-mobile-6151/1" download class="tool-pill" style="flex: 0 1 100%; justify-content: flex-start; padding: 15px 20px;">
+            <i class="fa-solid fa-file-download" style="color: #23C55E; font-size: 18px;"></i>
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
+                <span style="font-size: 14px;">FL Studio Mobile V 4.9.1 G</span>
+                <span style="font-size: 10px; color: #636E7A;">Klik untuk langsung mendownload file</span>
+            </div>
+        </a>
+    </div>
 
-        let currentAudio = null;
-        let activeTrackIndex = null;
-        let activeArtistID = null;
-        let lastCardSource = null;
-        let globalTrackList = []; 
-        let activeArtistData = null; // Store for floating player return
-
-        async function checkMemberStatus() {
-            const savedID = localStorage.getItem('labelMusic_userID');
-            const dashboardLink = document.getElementById('nav-dashboard');
-            const profileBox = document.getElementById('user-profile-box');
-            
-            if (savedID) {
-                const snapshot = await database.ref('registrations').orderByChild('userID').equalTo(savedID).once('value');
-                if (snapshot.exists()) {
-                    let userData;
-                    snapshot.forEach(child => { userData = child.val(); });
-                    
-                    if (userData.status === "verified") {
-                        dashboardLink.style.display = 'block';
-                        profileBox.style.display = 'flex';
-                        document.getElementById('user-nav-img').src = userData.profilePhoto;
-                        document.getElementById('user-nav-name').innerText = userData.artistName;
-                        document.getElementById('user-nav-id').innerText = "ID: " + userData.userID;
-                    }
-                }
-            }
-        }
-
-        function filterArtists() {
-            const query = document.getElementById('artistSearch').value.toLowerCase();
-            const cards = document.querySelectorAll('.nft-card:not(.skeleton)');
-            cards.forEach(card => {
-                const name = card.querySelector('h4').innerText.toLowerCase();
-                card.style.display = name.includes(query) ? 'block' : 'none';
-            });
-        }
-
-        function loadActiveMembers() {
-            const grid = document.getElementById('artist-grid-container');
-            const statActive = document.getElementById('stat-active-members');
-
-            database.ref('registrations').on('value', (snapshot) => {
-                grid.innerHTML = ''; 
-                let count = 0;
-                snapshot.forEach((childSnapshot) => {
-                    const data = childSnapshot.val();
-                    if (data.status === "verified") {
-                        count++;
-                        const card = document.createElement('div');
-                        card.className = 'nft-card';
-                        card.setAttribute('data-aos', 'fade-up');
-                        
-                        const likeCount = data.totalLikes || 0;
-                        card.onclick = function() { openArtist(this, data); };
-                        
-                        card.innerHTML = `
-                            <img src="${data.profilePhoto}">
-                            <h4>${data.artistName}</h4>
-                            <div class="meta"><span>Artist</span><span>${HEART_ICON} ${likeCount}</span></div>
-                        `;
-                        grid.appendChild(card);
-                    }
-                });
-                statActive.innerText = count + "+";
-                if (count === 0) grid.innerHTML = '<div style="grid-column: span 5; text-align: center; color: #94a3b8;">Belum ada member aktif.</div>';
-            });
-        }
-
-        function loadTeamWorks() {
-            const exploreGrid = document.getElementById('explore-grid-random');
-            const statTracks = document.getElementById('stat-tracks-released');
-
-            database.ref('tracks').on('value', async (snapshot) => {
-                exploreGrid.innerHTML = '';
-                globalTrackList = [];
-                let i = 0;
-                let totalTracks = 0;
-
-                snapshot.forEach(child => {
-                    const track = child.val();
-                    const trackKey = child.key;
-                    track.key = trackKey;
-                    globalTrackList.push(track);
-                    totalTracks++;
-                    
-                    const isLiked = localStorage.getItem('liked_track_' + trackKey);
-                    const card = document.createElement('div');
-                    card.className = 'track-card-random';
-                    card.innerHTML = `
-                        <img src="${track.coverUrl}" class="cover">
-                        <div style="flex:1">
-                            <strong style="display:block; font-size:14px;">${track.title}</strong>
-                            <small style="color:#64748b">${track.artistName || 'Official Track'}</small>
-                        </div>
-                        <div class="track-controls">
-                            <div class="visualizer-mini" id="viz-explore-${i}"><span></span><span></span><span></span></div>
-                            <button class="track-like-btn ${isLiked ? 'liked' : ''}" data-key="${trackKey}">${HEART_ICON}</button>
-                            <span class="track-play-icon" id="explore-play-${i}">${PLAY_ICON}</span>
-                        </div>
-                    `;
-                    
-                    const currentIndex = i;
-                    card.onclick = (e) => {
-                        if(e.target.closest('.track-like-btn')) return;
-                        toggleAudio(currentIndex, globalTrackList, 'explore-play-');
-                    };
-
-                    const likeBtn = card.querySelector('.track-like-btn');
-                    likeBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        handleTrackLike(likeBtn, trackKey, track.artistID);
-                    };
-
-                    exploreGrid.appendChild(card);
-                    i++;
-                });
-                statTracks.innerText = totalTracks + "+";
-            });
-        }
-
-        async function openArtist(card, data) {
-            const rect = card.getBoundingClientRect();
-            lastCardSource = rect;
-            activeArtistID = data.userID;
-            activeArtistData = data;
-
-            const overlay = document.getElementById('artist-overlay');
-            overlay.style.transition = 'none';
-            overlay.style.display = 'block'; 
-            overlay.style.top = rect.top + 'px';
-            overlay.style.left = rect.left + 'px';
-            overlay.style.width = rect.width + 'px';
-            overlay.style.height = rect.height + 'px';
-            overlay.style.background = 'rgba(255, 255, 255, 0.03)';
-            overlay.style.opacity = '1';
-
-            document.getElementById('ov-name').innerText = data.artistName;
-            document.getElementById('ov-img').style.backgroundImage = `url('${data.profilePhoto}')`;
-            document.getElementById('ov-follow-count').innerText = (data.totalFollowers || 0) + " Followers";
-            
-            const btnFollow = document.getElementById('btn-follow-main');
-            if(localStorage.getItem('followed_' + data.userID)) {
-                btnFollow.innerText = "Following";
-                btnFollow.classList.add('following');
-            } else {
-                btnFollow.innerText = "Follow";
-                btnFollow.classList.remove('following');
-            }
-
-            loadArtistTracks(data.userID, data.artistName);
-
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    overlay.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-                    overlay.classList.add('active');
-                    setTimeout(() => { if(overlay.classList.contains('active')) document.getElementById('main-content').style.visibility = 'hidden'; }, 600);
-                });
-            });
-        }
-
-        function loadArtistTracks(userID, artistName) {
-            const container = document.getElementById('ov-tracks');
-            container.innerHTML = '<p style="color:#64748b">Mencari album...</p>';
-
-            database.ref('tracks').orderByChild('artistID').equalTo(userID).once('value', (snapshot) => {
-                container.innerHTML = '';
-                let index = 0;
-                let trackList = [];
-                
-                if(!snapshot.exists()) {
-                    container.innerHTML = '<p style="color:#64748b; font-size:12px">Belum ada lagu yang diunggah.</p>';
-                    return;
-                }
-
-                snapshot.forEach(child => {
-                    const track = child.val();
-                    const trackKey = child.key;
-                    track.key = trackKey;
-                    trackList.push(track);
-
-                    const isLiked = localStorage.getItem('liked_track_' + trackKey);
-                    const trackEl = document.createElement('div');
-                    trackEl.className = 'track-item';
-                    trackEl.id = `track-item-row-${index}`;
-                    trackEl.innerHTML = `
-                        <span class="track-num">${index + 1}</span>
-                        <img src="${track.coverUrl}" class="track-artist-thumb">
-                        <div class="track-info"><h6>${track.title}</h6><p>${artistName}</p></div>
-                        <div class="track-controls">
-                            <div class="visualizer-mini"><span></span><span></span><span></span></div>
-                            <button class="track-like-btn ${isLiked ? 'liked' : ''}" data-key="${trackKey}">${HEART_ICON}</button>
-                            <span class="track-play-icon" id="track-icon-${index}">${PLAY_ICON}</span>
-                        </div>
-                    `;
-
-                    const currentIndex = index;
-                    trackEl.onclick = (e) => {
-                        if(e.target.closest('.track-like-btn')) return;
-                        toggleAudio(currentIndex, trackList, 'track-icon-');
-                    };
-
-                    const likeBtn = trackEl.querySelector('.track-like-btn');
-                    likeBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        handleTrackLike(likeBtn, trackKey, userID);
-                    };
-
-                    container.appendChild(trackEl);
-                    index++;
-                });
-
-                document.getElementById('play-ov').onclick = () => toggleAudio(0, trackList, 'track-icon-');
-            });
-        }
-
-        function toggleAudio(index, tracks, iconPrefix) {
-    const track = tracks[index];
-    const trackKey = track.key; // Menggunakan key unik sebagai identitas lagu
-
-    // CEK: Jika lagu yang diklik adalah lagu yang SAMA dengan yang ada di player
-    if (currentAudio && currentAudio.activeTrackKey === trackKey) {
-        if (currentAudio.paused) { 
-            currentAudio.play(); 
-            updateIcons(index, true, iconPrefix); 
-        } else { 
-            currentAudio.pause(); 
-            updateIcons(index, false, iconPrefix); 
-        }
-    } 
-    // JIKA: Klik lagu baru (berbeda dari yang sedang diputar)
-    else {
-        // Hentikan lagu sebelumnya jika ada
-        if (currentAudio) {
-            currentAudio.pause();
-            // Reset ikon secara global agar tidak ada ikon pause yang tertinggal
-            document.querySelectorAll('.track-play-icon').forEach(el => el.innerHTML = PLAY_ICON);
-        }
-
-        activeTrackIndex = index;
-        currentAudio = new Audio(track.audioUrl);
-        currentAudio.activeTrackKey = trackKey; // Simpan key unik ke dalam objek audio
-        
-        currentAudio.play().catch(e => console.error("Gagal memutar audio:", e));
-        updateIcons(index, true, iconPrefix);
-        
-        // Perbarui tampilan Floating Player
-        updateFloatingPlayer(track);
-
-        currentAudio.onended = () => { 
-            updateIcons(index, false, iconPrefix); 
-            currentAudio.activeTrackKey = null;
-            activeTrackIndex = null;
-            document.getElementById('floating-player').classList.remove('active');
-        };
-    }
-}
-
-
-        function updateFloatingPlayer(track) {
-            document.getElementById('fp-img').src = track.coverUrl;
-            document.getElementById('fp-title').innerText = track.title;
-            document.getElementById('fp-artist').innerText = track.artistName || 'Team Sopan Member';
-            
-            // Only show floating player if overlay is closed
-            if(!document.getElementById('artist-overlay').classList.contains('active')) {
-                document.getElementById('floating-player').classList.add('active');
-            }
-        }
-
-        function togglePlayFromFloating() {
-            if(!currentAudio) return;
-            if(currentAudio.paused) currentAudio.play();
-            else currentAudio.pause();
-            
-            const isPlaying = !currentAudio.paused;
-            document.getElementById('fp-play-trigger').innerHTML = isPlaying ? PAUSE_ICON : PLAY_ICON;
-        }
-
-        function reOpenArtist() {
-            if(activeArtistData) {
-                // Find card to get rect for smooth transition
-                const cards = document.querySelectorAll('.nft-card');
-                let targetCard = cards[0]; // fallback
-                cards.forEach(c => {
-                    if(c.querySelector('h4').innerText === activeArtistData.artistName) targetCard = c;
-                });
-                openArtist(targetCard, activeArtistData);
-                document.getElementById('floating-player').classList.remove('active');
-            }
-        }
-
-        function updateIcons(index, isPlaying, iconPrefix) {
-            const playBtnMain = document.getElementById('play-ov');
-            const fpTrigger = document.getElementById('fp-play-trigger');
-            const icon = isPlaying ? PAUSE_ICON : PLAY_ICON;
-
-            // Reset all visualizers & active states
-            document.querySelectorAll('.track-item').forEach(el => el.classList.remove('active-track'));
-            document.querySelectorAll('.track-card-random .visualizer-mini').forEach(el => el.style.display = 'none');
-
-            const activeIconBox = document.getElementById(`${iconPrefix}${index}`);
-            if(activeIconBox) {
-                activeIconBox.innerHTML = icon;
-                // Add active class to track row for visualizer
-                if(iconPrefix === 'track-icon-') {
-                    const row = document.getElementById(`track-item-row-${index}`);
-                    if(row && isPlaying) row.classList.add('active-track');
-                } else if(iconPrefix === 'explore-play-') {
-                    const viz = document.getElementById(`viz-explore-${index}`);
-                    if(viz && isPlaying) viz.style.display = 'flex';
-                }
-            }
-
-            if(playBtnMain && iconPrefix === 'track-icon-') playBtnMain.innerHTML = icon;
-            if(fpTrigger) fpTrigger.innerHTML = icon;
-        }
-
-        function closeArtist() {
-            document.getElementById('main-content').style.visibility = 'visible';
-            const overlay = document.getElementById('artist-overlay');
-            overlay.classList.remove('active');
-            overlay.style.top = lastCardSource.top + 'px';
-            overlay.style.left = lastCardSource.left + 'px';
-            overlay.style.width = lastCardSource.width + 'px';
-            overlay.style.height = lastCardSource.height + 'px';
-            
-            // Show floating player if audio is still playing
-            if(currentAudio && !currentAudio.paused) {
-                document.getElementById('floating-player').classList.add('active');
-            }
-
-            setTimeout(() => { if(!overlay.classList.contains('active')) overlay.style.display = 'none'; }, 600);
-        }
-
-        function handleTrackLike(btn, trackKey, artistUserID) {
-            if(localStorage.getItem('liked_track_' + trackKey)) return;
-
-            btn.classList.add('liked');
-            localStorage.setItem('liked_track_' + trackKey, 'true');
-
-            const heart = document.createElement('div');
-            heart.innerHTML = HEART_ICON;
-            heart.className = 'floating-heart-svg';
-            btn.appendChild(heart);
-            setTimeout(() => heart.remove(), 800);
-
-            database.ref('tracks/' + trackKey + '/likes').transaction(c => (c || 0) + 1);
-            
-            database.ref('registrations').orderByChild('userID').equalTo(artistUserID).once('value', (snap) => {
-                snap.forEach(child => {
-                    child.ref.child('totalLikes').transaction(c => (c || 0) + 1);
-                });
-            });
-        }
-
-        function handleFollow() {
-            const btn = document.getElementById('btn-follow-main');
-            if(localStorage.getItem('followed_' + activeArtistID)) return;
-
-            localStorage.setItem('followed_' + activeArtistID, 'true');
-            btn.innerText = "Following";
-            btn.classList.add('following');
-
-            database.ref('registrations').orderByChild('userID').equalTo(activeArtistID).once('value', (snap) => {
-                snap.forEach(child => {
-                    child.ref.child('totalFollowers').transaction(c => (c || 0) + 1);
-                    document.getElementById('ov-follow-count').innerText = ((child.val().totalFollowers || 0) + 1) + " Followers";
-                });
-            });
-        }
-
-        const hamburger = document.getElementById('hamburger');
-        const sidebar = document.getElementById('sidebar');
-        
-        hamburger.onclick = (e) => {
-            e.stopPropagation();
-            hamburger.classList.toggle('active');
-            sidebar.classList.toggle('active');
-        };
-
-        document.onclick = (e) => {
-            if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                sidebar.classList.remove('active');
-                hamburger.classList.remove('active');
-            }
-        };
-
-        checkMemberStatus();
-        loadActiveMembers();
-        loadTeamWorks();
-        // Fungsi untuk mengecek status pendaftaran dari Firebase
-// Fungsi Terbaru: Cek Status Pendaftaran & Update Teks Hero
-function checkRegistrationStatus() {
-    const btnJoin = document.getElementById('btnJoinSidebar');
-    const heroStatus = document.getElementById('hero-status-text'); // Pastikan ID ini ada di HTML Hero
+<div class="features-section animate-in" style="animation-delay: 0.9s;">
+    <h2 style="font-size: 14px; color: #636E7A; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1.5px;">DIBALIK LAYAR TEAM SOPAN REMIX</h2>
     
-    database.ref('settings/registrationStatus').on('value', (snapshot) => {
-        const status = snapshot.val();
+    <div class="feature-item">
+        <div class="feature-icon"><i class="fa-solid fa-users-gear"></i></div>
+        <div class="feature-content">
+            <h3>Project Management & FLM</h3>
+            <p style="color: #636E7A;">Kami mengelola kolaborasi antar member untuk memastikan setiap project remix memiliki standar kualitas TSR.</p>
+        </div>
+    </div>
 
-        // 1. Logika Update Teks di Bagian Hero
-        if (heroStatus) {
-            if (status === "open") {
-                heroStatus.innerText = "OPMEM";
-                heroStatus.style.color = "#10b981"; // Hijau cerah saat buka
-            } else {
-                heroStatus.innerText = "NO OPMEM";
-                heroStatus.style.color = "#ef4444"; // Merah saat tutup
-            }
-        }
+    <div class="feature-item">
+        <div class="feature-icon"><i class="fa-solid fa-sliders"></i></div>
+        <div class="feature-content">
+            <h3>Remixing & Arranging</h3>
+            <p style="color: #636E7A;">Menyusun ulang alur musik, chord, hingga melodi agar menjadi karya remix yang unik dan 'sopan' di telinga.</p>
+        </div>
+    </div>
 
-        // 2. Logika Tombol Sidebar (Join Member)
-        if (btnJoin) {
-            btnJoin.onclick = function(e) {
-                if (status === "closed") {
-                    e.preventDefault(); // Mencegah pindah ke join.html
-                    document.getElementById('modalClosed').style.display = 'flex';
+    <div class="feature-item">
+        <div class="feature-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="feature-content">
+            <h3>Community Support</h3>
+            <p style="color: #636E7A;">Membantu talenta baru untuk berkembang, menyediakan resource vokal, hingga sharing ilmu seputar dunia remix.</p>
+        </div>
+    </div>
+</div>
+
+</main>
+
+<footer class="footer-text animate-in" style="animation-delay: 1s;">
+    <p>"Musik adalah bahasa universal, dan WNFX adalah jembatan untuk setiap inspirasi yang ingin Anda suarakan ke dunia."</p>
+    <div class="biodata-footer animate-in" style="animation-delay: 0.95s;">
+        <div class="bio-brand">
+            <div class="bio-logo-svg">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100" height="100" rx="25" fill="#FFFFFF"/>
+                    <path d="M68,32 C60,24 40,24 32,32 C24,40 32,50 50,50 C68,50 76,60 68,68 C60,76 40,76 32,68" 
+                          stroke="#14171C" 
+                          stroke-width="12" 
+                          stroke-linecap="round" 
+                          fill="none"/>
+                </svg>
+            </div>
+            <span class="bio-name-text">Sopan</span>
+        </div>
+        </div>
+
+</footer>
+
+<div class="custom-alert-overlay" id="customAlert">
+    <div class="custom-alert-box">
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+        <p id="alertMessage">Pesan sedang disiapkan</p>
+        <button class="custom-alert-btn" onclick="closeAlert()">OKE</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+    import { getFirestore, collection, getDocs, limit, query } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    // UPDATE: Import Database
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+    // UPDATE: Konfigurasi Firebase LabelMusic
+    const firebaseConfig = {
+        apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
+        authDomain: "labelmusic-ee1b2.firebaseapp.com",
+        databaseURL: "https://labelmusic-ee1b2-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "labelmusic-ee1b2",
+        storageBucket: "labelmusic-ee1b2.firebasestorage.app",
+        messagingSenderId: "634541524714",
+        appId: "1:634541524714:web:a2fc9d47a91e37f44a7993",
+        measurementId: "G-MMFG3N1VV9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const rtdb = getDatabase(app); // Inisialisasi Real-time Database
+
+    const userAvatar = document.getElementById('userAvatar');
+    const sideSignUpBtn = document.getElementById('sideSignUpBtn');
+
+    window.handleLogOut = () => { signOut(auth).then(() => { 
+        document.getElementById('profileDropdown').classList.remove('active'); 
+        window.location.reload();
+    }); };
+
+    // UPDATE: Logika pengecekan Status (Pending/Success)
+    onAuthStateChanged(auth, async (user) => {
+        const greetingElement = document.getElementById('userGreeting');
+        if (user) {
+            try {
+                const userRef = ref(rtdb, 'users/' + user.uid);
+                const snapshot = await get(userRef);
+
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    const name = userData.username || 'User';
+                    const status = userData.status; // Ambil nilai status
+
+                    if (status === "success") {
+                        // Jika status success: Tampilkan foto dan sambutan normal
+                        userAvatar.src = userData.profilePic || 'https://via.placeholder.com/150';
+                        userAvatar.style.display = 'block';
+                        if (greetingElement) { 
+                            greetingElement.innerText = `Welcome, ${name}!`; 
+                            greetingElement.style.opacity = '1'; 
+                        }
+                    } else {
+                        // Jika status pending: Sembunyikan foto, ganti teks sambutan
+                        userAvatar.style.display = 'none';
+                        if (greetingElement) { 
+                            greetingElement.innerText = `${name}, sedang ditinjau admin`; 
+                            greetingElement.style.opacity = '1'; 
+                        }
+                    }
                 }
-            };
+            } catch (error) {
+                console.error("Gagal memuat data:", error);
+            }
+
+            if(sideSignUpBtn) sideSignUpBtn.style.display = 'none';
+        } else {
+            userAvatar.style.display = 'none';
+            if(sideSignUpBtn) sideSignUpBtn.style.display = 'block';
+            if (greetingElement) { greetingElement.style.opacity = '0'; greetingElement.innerText = ''; }
         }
     });
-}
-
-// Fungsi menutup pop-up pemberitahuan
-function closeModal() {
-    document.getElementById('modalClosed').style.display = 'none';
-}
-
-// Menjalankan fungsi saat semua elemen HTML sudah siap
-window.addEventListener('DOMContentLoaded', () => {
-    checkRegistrationStatus();
-});
 
 
-    </script>
-    <div id="modalClosed" class="modal-closed">
-    <div class="modal-box">
-        <h3>OPMEM DITUTUP</h3>
-        <p>Maaf, saat ini Team Sopan Remix tidak sedang membuka pendaftaran member baru. Pantau terus sosial media kami untuk info selanjutnya!</p>
-        <button class="btn-close-modal" onclick="closeModal()">Oke, Mengerti</button>
+    // --- PLAYLIST LOGIC TETAP SAMA (TIDAK DIUBAH) ---
+
+
+    // --- PLAYLIST LOGIC ---
+    let currentPlayingAudio = null;
+    let currentPlayingBtn = null;
+    let currentPlayingItem = null;
+    let mainSwiper; // Tambahkan variabel global swiper
+
+    async function fetchPlaylist() {
+        const swiperContainer = document.getElementById('swiperPreviewContainer');
+        const listContainer = document.getElementById('previewContainer');
+        const section = document.getElementById('playlistSection');
+        
+        try {
+            const q = query(collection(db, "products"), limit(8));
+            const snap = await getDocs(q);
+            
+            if (snap.empty) return;
+            
+            section.style.display = 'block';
+            swiperContainer.innerHTML = '';
+            listContainer.innerHTML = '';
+
+            snap.forEach((doc) => {
+                const data = doc.data();
+                
+                const swSlide = document.createElement('div');
+                swSlide.className = 'swiper-slide';
+                swSlide.innerHTML = `
+                    <div class="playlist-card">
+                        <img src="${data.avatar}" class="pl-cover">
+                        <div class="pl-info">
+                            <div class="pl-visualizer" style="display: flex; align-items: flex-end; gap: 3px; height: 15px; margin-bottom: 8px; opacity: 0; transition: 0.3s; justify-content: center;">
+                                <div class="bar" style="width:3px; background:#23C55E; height:4px;"></div>
+                                <div class="bar" style="width:3px; background:#23C55E; height:4px;"></div>
+                                <div class="bar" style="width:3px; background:#23C55E; height:4px;"></div>
+                                <div class="bar" style="width:3px; background:#23C55E; height:4px;"></div>
+                            </div>
+                            <h4>${data.judul}</h4>
+                            <p>${data.artis}</p>
+                            <div class="pl-controls">
+                                <div class="pl-play-btn"><i class="fa-solid fa-play"></i></div>
+                                <div class="pl-progress-box" style="flex: 1; cursor: pointer; position: relative;">
+                                    <div class="pl-progress-bg" style="position: relative; overflow: visible;">
+                                        <div class="pl-progress-bar" style="position: relative;">
+                                            <div style="position: absolute; right: -5px; top: 50%; transform: translateY(-50%); width: 10px; height: 10px; background: #fff; border-radius: 50%; border: 2px solid #23C55E;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; font-size: 10px; color: #636E7A; margin-top: 5px; font-family: monospace;">
+                                        <span class="curr-time">0:00</span>
+                                        <span class="total-time">0:00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                const listItem = document.createElement('div');
+                listItem.className = 'preview-item';
+                listItem.innerHTML = `
+                    <img src="${data.avatar}" class="preview-avatar">
+                    <div class="preview-info">
+                        <div class="title-wrapper">
+                            <h4>${data.judul}</h4>
+                            <div class="spectrum">
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                            </div>
+                        </div>
+                        <p>${data.artis}</p>
+                        <div class="progress-container"><div class="progress-bar"></div></div>
+                    </div>
+                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
+                `;
+
+                const audio = new Audio(data.audio);
+                const swBtn = swSlide.querySelector('.pl-play-btn');
+                const swBar = swSlide.querySelector('.pl-progress-bar');
+                const swProgressBox = swSlide.querySelector('.pl-progress-box');
+                const swVisualizer = swSlide.querySelector('.pl-visualizer');
+                const liBtn = listItem.querySelector('.play-btn');
+                const liBar = listItem.querySelector('.progress-bar');
+                
+                // Helper untuk format waktu
+                const formatTime = (secs) => {
+                    if(!secs) return "0:00";
+                    const m = Math.floor(secs / 60);
+                    const s = Math.floor(secs % 60);
+                    return `${m}:${s < 10 ? '0' + s : s}`;
+                };
+
+                // Tampilkan durasi asli lagu
+                audio.onloadedmetadata = () => {
+                    swSlide.querySelector('.total-time').innerText = formatTime(audio.duration);
+                };
+
+                const handlePlay = (btn, bar, itemType) => {
+                    if (currentPlayingAudio && currentPlayingAudio !== audio) {
+                        currentPlayingAudio.pause();
+                        if (currentPlayingBtn) currentPlayingBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                        if (currentPlayingItem) {
+                            currentPlayingItem.classList.remove('playing');
+                            // Reset visualizer swiper sebelumnya
+                            const prevViz = currentPlayingItem.closest('.playlist-card')?.querySelector('.pl-visualizer');
+                            if(prevViz) prevViz.style.opacity = "0";
+                        }
+                        if (mainSwiper && mainSwiper.autoplay) mainSwiper.autoplay.start();
+                    }
+
+                    if (audio.paused) {
+                        audio.play();
+                        btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                        swVisualizer.style.opacity = "1"; // Munculkan visualizer swiper
+                        
+                        if (mainSwiper && mainSwiper.autoplay) mainSwiper.autoplay.stop();
+
+                        if(itemType === 'list') {
+                            listItem.classList.add('playing');
+                        } else {
+                            swSlide.classList.add('playing');
+                        }
+
+                        currentPlayingAudio = audio; 
+                        currentPlayingBtn = btn; 
+                        currentPlayingItem = (itemType === 'list' ? listItem : swSlide);
+                    } else {
+                        audio.pause();
+                        btn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                        swVisualizer.style.opacity = "0"; // Sembunyikan visualizer
+                        
+                        if (mainSwiper && mainSwiper.autoplay) mainSwiper.autoplay.start();
+
+                        listItem.classList.remove('playing');
+                        swSlide.classList.remove('playing');
+                    }
+                };
+
+                // FITUR GESER (Seeking)
+                swProgressBox.onclick = (e) => {
+                    const rect = swSlide.querySelector('.pl-progress-bg').getBoundingClientRect();
+                    const movePos = (e.clientX - rect.left) / rect.width;
+                    if(movePos >= 0 && movePos <= 1) {
+                        audio.currentTime = movePos * audio.duration;
+                    }
+                };
+
+                audio.onended = () => {
+                    swBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    liBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                    swVisualizer.style.opacity = "0";
+                    listItem.classList.remove('playing');
+                    swSlide.classList.remove('playing');
+                    if (mainSwiper && mainSwiper.autoplay) mainSwiper.autoplay.start();
+                };
+
+                swBtn.onclick = () => handlePlay(swBtn, swBar, 'swiper');
+                liBtn.onclick = () => handlePlay(liBtn, liBar, 'list');
+
+                audio.ontimeupdate = () => {
+                    if (audio.duration) {
+                        const prog = (audio.currentTime / audio.duration) * 100;
+                        swBar.style.width = prog + "%";
+                        liBar.style.width = prog + "%";
+                        // Update teks durasi berjalan
+                        swSlide.querySelector('.curr-time').innerText = formatTime(audio.currentTime);
+                    }
+                };
+
+                swiperContainer.appendChild(swSlide);
+                listContainer.appendChild(listItem);
+            });
+
+
+            // Simpan inisialisasi ke dalam variabel mainSwiper
+            mainSwiper = new Swiper(".mySwiper", {
+                effect: "coverflow",
+                grabCursor: true,
+                centeredSlides: true,
+                slidesPerView: "auto",
+                speed: 700,
+                touchRatio: 1.8,
+                followFinger: true,
+                resistanceRatio: 0.5,
+                coverflowEffect: { 
+                    rotate: 0, 
+                    stretch: 15, 
+                    depth: 120, 
+                    modifier: 1.4, 
+                    slideShadows: false 
+                },
+                loop: true,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                }
+            });
+
+        } catch (e) { console.error("Error loading playlist:", e); }
+    }
+
+    fetchPlaylist();
+
+
+</script>
+
+<script>
+    function toggleProfileMenu() { document.getElementById('profileDropdown').classList.toggle('active'); }
+    window.onclick = function(event) {
+        if (!event.target.matches('.user-photo')) {
+            const dropdown = document.getElementById('profileDropdown');
+            if (dropdown && dropdown.classList.contains('active')) dropdown.classList.remove('active');
+        }
+    }
+    function toggleMenu() {
+        const menu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('overlay');
+        menu.classList.toggle('active');
+        overlay.style.display = menu.classList.contains('active') ? 'block' : 'none';
+    }
+    function showAlert(msg) {
+        document.getElementById('alertMessage').innerText = msg;
+        document.getElementById('customAlert').style.display = 'flex';
+    }
+    function closeAlert() { document.getElementById('customAlert').style.display = 'none'; }
+</script>
+<footer class="footer-minimal">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Menu</h4>
+            <ul>
+                <li><a href="membersopan.html">Member List</a></li>
+                <li><a href="rules.html">Rules Team</a></li>
+                <li><a href="syarat.html">Syarat Join</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-col">
+            <h4>Sosial Media</h4>
+            <ul>
+                <li><a href="https://instagram.com/teamsopanremix">Instagram</a></li>
+                <li><a href="https://www.tiktok.com/@team.sopan.remix?_r=1&_t=ZS-93HVFf2Dbm8">TikTok</a></li>
+                <li><a href="#">YouTube</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-col">
+            <h4>Pusat Bantuan</h4>
+            <ul>
+                <li>
+                    <a href="https://wa.me/6283129555763" style="display: flex; align-items: center; gap: 5px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        Admin 1
+                    </a>
+                </li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </div>
     </div>
-</div>
+    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: #636E7A;">
+        &copy; 2026 WNFX Music. All Rights Reserved.
+    </div>
+</footer>
 
 </body>
 </html>
