@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - WNFX Music</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #14171C; color: #FFFFFF; min-height: 100vh; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        
+        .container { width: 100%; max-width: 500px; }
+
+        .dash-header { display: flex; align-items: center; gap: 15px; background: #090A0C; padding: 20px; border-radius: 24px; border: 1px solid rgba(35, 197, 94, 0.3); margin-bottom: 25px; }
+        .dash-avatar { width: 60px; height: 60px; border-radius: 15px; object-fit: cover; border: 2px solid #23C55E; }
+        .dash-user-info h2 { font-size: 18px; font-weight: 800; }
+        .dash-user-info p { font-size: 12px; color: #636E7A; }
+        .follower-count { font-size: 11px; background: rgba(35, 197, 94, 0.1); color: #23C55E; padding: 2px 8px; border-radius: 5px; margin-top: 5px; display: inline-block; font-weight: 700; }
+
+        .tab-menu { display: flex; gap: 10px; margin-bottom: 15px; }
+        .tab-btn { flex: 1; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); background: #090A0C; color: #636E7A; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.3s; }
+        .tab-btn.active { background: #23C55E; color: white; border-color: #23C55E; }
+
+        .card-form { background: #090A0C; padding: 25px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; }
+        .card-form h3 { font-size: 16px; margin-bottom: 20px; color: #23C55E; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 12px; color: #636E7A; margin-bottom: 8px; font-weight: 600; }
+        .input-group input { width: 100%; background: #14171C; border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; color: white; font-size: 14px; }
+        .input-group input:focus { border-color: #23C55E; }
+
+        .upload-progress { height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 15px 0; overflow: hidden; display: none; }
+        .progress-fill { width: 0%; height: 100%; background: #23C55E; transition: width 0.3s; }
+
+        .btn-submit { width: 100%; background: #23C55E; color: white; border: none; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn-submit:disabled { background: #444; cursor: not-allowed; }
+
+        /* Catalog UI */
+        .catalog-section { width: 100%; margin-top: 20px; }
+        .catalog-title { font-size: 14px; font-weight: 800; color: #23C55E; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .catalog-card { background: #090A0C; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); padding: 15px; display: flex; align-items: center; gap: 15px; margin-bottom: 12px; transition: 0.3s; }
+        .cat-img { width: 55px; height: 55px; border-radius: 12px; object-fit: cover; }
+        .cat-info { flex: 1; }
+        .cat-info h4 { font-size: 14px; margin-bottom: 2px; }
+        .cat-info p { font-size: 11px; color: #636E7A; }
+        .cat-btns { display: flex; gap: 10px; }
+        .btn-icon { background: rgba(255,255,255,0.05); border: none; color: #636E7A; padding: 8px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .btn-icon:hover { background: #23C55E; color: white; }
+        .btn-del:hover { background: #ff4444; }
+
+        .back-home { display: block; text-align: center; color: #636E7A; text-decoration: none; font-size: 13px; margin: 30px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="dash-header">
+        <img id="displayAvatar" src="https://via.placeholder.com/150" class="dash-avatar">
+        <div class="dash-user-info">
+            <h2 id="displayUsername">Memuat...</h2>
+            <p id="displayEmail">user@email.com</p>
+            <div class="follower-count"><i class="fas fa-users"></i> <span id="displayFollowers">0</span> Followers</div>
+        </div>
+    </div>
+
+    <div class="tab-menu">
+        <button class="tab-btn active" onclick="switchTab('album')">Create Album</button>
+        <button class="tab-btn" onclick="switchTab('acapella')">Bagi Acapella</button>
+    </div>
+
+    <div class="card-form">
+        <h3 id="formTitle">Create New Album</h3>
+        <div class="input-group">
+            <label id="titleLabel">Judul Musik</label>
+            <input type="text" id="musicTitle" placeholder="Contoh: Remix Sopan V1">
+        </div>
+        <div class="input-group">
+            <label>Nama Artis (Otomatis)</label>
+            <input type="text" id="artistName" readonly style="opacity: 0.6;">
+        </div>
+        <div class="input-group" id="ytGroup">
+            <label>Link YouTube (Opsional)</label>
+            <input type="text" id="youtubeLink" placeholder="http://youtube.com/...">
+        </div>
+        <div class="input-group">
+            <label id="audioLabel">Upload Audio (MP3)</label>
+            <input type="file" id="audioFile" accept="audio/*">
+        </div>
+        <div class="input-group">
+            <label>Upload Cover / Avatar</label>
+            <input type="file" id="avatarFile" accept="image/*">
+        </div>
+        <div class="upload-progress" id="progressWrapper">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+        <p id="statusTxt" style="font-size: 11px; text-align: center; color: #23C55E; margin-bottom: 10px; display: none;"></p>
+        <button class="btn-submit" id="btnUpload">SUBMIT</button>
+    </div>
+
+    <div class="catalog-section">
+        <div class="catalog-title"><i class="fa-solid fa-list-ul"></i> MY MUSIC CATALOG</div>
+        <div id="catalogList">
+            <p style="text-align: center; font-size: 12px; color: #636E7A; padding: 20px;">Memuat catalog...</p>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda</a>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, doc, updateDoc, deleteDoc, serverTimestamp, orderBy } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
+        authDomain: "labelmusic-ee1b2.firebaseapp.com",
+        databaseURL: "https://labelmusic-ee1b2-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "labelmusic-ee1b2",
+        storageBucket: "labelmusic-ee1b2.firebasestorage.app",
+        messagingSenderId: "634541524714",
+        appId: "1:634541524714:web:a2fc9d47a91e37f44a7993"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const rtdb = getDatabase(app);
+
+    const CLOUD_NAME = "dt2u1r8ni";
+    const UPLOAD_PRESET = "admin_super";
+
+    let currentUser = null;
+    let currentTab = 'album';
+
+    // --- FITUR CATALOG & EDIT ---
+    async function loadCatalog(artistName) {
+        const list = document.getElementById('catalogList');
+        try {
+            // Sesuai gambar, cari berdasarkan field 'artis'
+            const q = query(collection(db, "products"), where("artis", "==", artistName));
+            const snap = await getDocs(q);
+            list.innerHTML = '';
+
+            if (snap.empty) {
+                list.innerHTML = '<p style="text-align: center; font-size: 12px; color: #636E7A; padding: 20px;">Belum ada karya.</p>';
+                return;
+            }
+
+            snap.forEach((docSnap) => {
+                const data = docSnap.data();
+                const id = docSnap.id;
+                const card = document.createElement('div');
+                card.className = 'catalog-card';
+                card.innerHTML = `
+                    <img src="${data.avatar}" class="cat-img" id="img-${id}">
+                    <div class="cat-info">
+                        <h4 id="title-${id}">${data.judul}</h4>
+                        <p>${data.artis} • ${data.type || 'Music'}</p>
+                    </div>
+                    <div class="cat-btns">
+                        <button class="btn-icon" onclick="editItem('${id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn-icon btn-del" onclick="deleteItem('${id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        } catch (e) { console.error(e); }
+    }
+
+    window.deleteItem = async (id) => {
+        if(confirm("Hapus lagu ini?")) {
+            await deleteDoc(doc(db, "products", id));
+            location.reload();
+        }
+    }
+
+    window.editItem = async (id) => {
+        const newTitle = prompt("Masukkan Judul Baru:");
+        if (!newTitle) return;
+
+        const changeImg = confirm("Ingin ganti Avatar/Cover juga?");
+        let newAvatar = null;
+
+        if (changeImg) {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.onchange = async (e) => {
+                const file = e.target.files[0];
+                alert("Sedang mengupload gambar baru...");
+                newAvatar = await uploadToCloudinary(file);
+                await updateDoc(doc(db, "products", id), { judul: newTitle, avatar: newAvatar });
+                alert("Berhasil diupdate!");
+                location.reload();
+            };
+            fileInput.click();
+        } else {
+            await updateDoc(doc(db, "products", id), { judul: newTitle });
+            alert("Judul diupdate!");
+            location.reload();
+        }
+    }
+
+    window.switchTab = (type) => {
+        currentTab = type;
+        const btns = document.querySelectorAll('.tab-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById('formTitle').innerText = type === 'album' ? "Create New Album" : "Bagi Acapella";
+    };
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            currentUser = user;
+            const userRef = ref(rtdb, 'users/' + user.uid);
+            onValue(userRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    document.getElementById('displayUsername').innerText = data.username || "User";
+                    document.getElementById('displayEmail').innerText = user.email;
+                    document.getElementById('displayAvatar').src = data.profilePic || 'https://via.placeholder.com/150';
+                    document.getElementById('artistName').value = data.username || "User";
+                    document.getElementById('displayFollowers').innerText = data.followers || 0;
+                    loadCatalog(data.username); // Load catalog sesuai nama Artist
+                }
+            });
+        } else { window.location.href = "login.html"; }
+    });
+
+    async function uploadToCloudinary(file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", UPLOAD_PRESET);
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, { method: "POST", body: formData });
+        const data = await res.json();
+        return data.secure_url;
+    }
+
+    document.getElementById('btnUpload').addEventListener('click', async () => {
+        const title = document.getElementById('musicTitle').value;
+        const artist = document.getElementById('artistName').value;
+        const audioFile = document.getElementById('audioFile').files[0];
+        const avatarFile = document.getElementById('avatarFile').files[0];
+
+        if (!title || !audioFile || !avatarFile) return alert("Lengkapi data!");
+
+        const btn = document.getElementById('btnUpload');
+        btn.disabled = true;
+        document.getElementById('progressWrapper').style.display = 'block';
+        
+        try {
+            const audioUrl = await uploadToCloudinary(audioFile);
+            const avatarUrl = await uploadToCloudinary(avatarFile);
+
+            await addDoc(collection(db, currentTab === 'album' ? "products" : "acapellas"), {
+                judul: title,
+                artis: artist,
+                audio: audioUrl,
+                avatar: avatarUrl,
+                uploader: artist,
+                ownerEmail: currentUser.email,
+                type: currentTab,
+                createdAt: serverTimestamp()
+            });
+
+            alert("Berhasil!");
+            location.reload();
+        } catch (err) {
+            alert("Gagal upload.");
+            btn.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>
