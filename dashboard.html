@@ -20,8 +20,18 @@
             font-weight: 800;
         }
 
-        .dash-header { display: flex; align-items: center; gap: 15px; background: #090A0C; padding: 20px; border-radius: 24px; border: 1px solid rgba(35, 197, 94, 0.3); margin-bottom: 25px; }
+        .dash-header { display: flex; align-items: center; gap: 15px; background: #090A0C; padding: 20px; border-radius: 24px; border: 1px solid rgba(35, 197, 94, 0.3); margin-bottom: 25px; position: relative; }
+        
+        /* EDIT PROFILE PIC UI */
+        .avatar-wrapper { position: relative; width: 60px; height: 60px; }
         .dash-avatar { width: 60px; height: 60px; border-radius: 15px; object-fit: cover; border: 2px solid #23C55E; }
+        .btn-edit-pic { 
+            position: absolute; bottom: -5px; right: -5px; 
+            background: #23C55E; color: white; width: 22px; height: 22px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 10px; cursor: pointer; border: 2px solid #090A0C;
+        }
+
         .dash-user-info h2 { font-size: 18px; font-weight: 800; }
         .dash-user-info p { font-size: 12px; color: #636E7A; }
         .follower-count { font-size: 11px; background: rgba(35, 197, 94, 0.1); color: #23C55E; padding: 2px 8px; border-radius: 5px; margin-top: 5px; display: inline-block; font-weight: 700; }
@@ -85,9 +95,16 @@
     <span id="alertMsg" style="font-weight: 600; font-size: 14px;">Pesan</span>
 </div>
 
+<input type="file" id="profileFileInput" accept="image/*" style="display: none;">
+
 <div class="container">
     <div class="dash-header">
-        <img id="displayAvatar" src="https://via.placeholder.com/150" class="dash-avatar">
+        <div class="avatar-wrapper">
+            <img id="displayAvatar" src="https://via.placeholder.com/150" class="dash-avatar">
+            <label for="profileFileInput" class="btn-edit-pic">
+                <i class="fa-solid fa-pencil"></i>
+            </label>
+        </div>
         <div class="dash-user-info">
             <h2 id="displayUsername" class="premium-text">Memuat...</h2>
             <p id="displayEmail">user@email.com</p>
@@ -173,7 +190,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, query, where, doc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
@@ -247,6 +264,28 @@
         } else { window.location.href = "login.html"; }
     });
 
+    // LOGIKA UPDATE PROFILE PIC
+    document.getElementById('profileFileInput').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if(!file) return;
+
+        showSopanAlert("Mengganti foto profil...");
+        
+        try {
+            // Re-use fungsi upload yang sudah ada
+            const newPhotoUrl = await uploadFileCloudinary(file, "New Profile Pic");
+            
+            // Update URL ke RTDB
+            await update(ref(rtdb, 'users/' + currentUser.uid), {
+                profilePic: newPhotoUrl
+            });
+
+            showSopanAlert("Foto profil diperbarui!");
+        } catch (err) {
+            showSopanAlert("Gagal mengganti foto", true);
+        }
+    });
+
     async function loadCatalog(artistName) {
         const list = document.getElementById('catalogList');
         list.innerHTML = '';
@@ -291,8 +330,16 @@
             xhr.upload.onprogress = (e) => {
                 if (e.lengthComputable) {
                     const percent = Math.round((e.loaded / e.total) * 100);
-                    document.getElementById('uploadProgressBar').style.width = percent + '%';
-                    document.getElementById('progressText').innerText = `Uploading ${typeLabel}: ${percent}%`;
+                    const bar = document.getElementById('uploadProgressBar');
+                    const text = document.getElementById('progressText');
+                    
+                    // Aktifkan progress bar hanya jika sedang upload karya (bukan ganti profil)
+                    if(document.getElementById('formWrapper').style.display === 'block') {
+                        document.getElementById('uploadProgressContainer').style.display = 'block';
+                        text.style.display = 'block';
+                        bar.style.width = percent + '%';
+                        text.innerText = `Uploading ${typeLabel}: ${percent}%`;
+                    }
                 }
             };
 
