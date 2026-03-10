@@ -108,10 +108,17 @@
         header.searching .brand-wrapper { opacity: 0; transform: translate(-50%, 20px); pointer-events: none; }
         header.searching .search-container { opacity: 1; transform: translateX(0); }
 
-        /* SECTION INFO */
-        .section-info { padding: 30px 20px 10px 20px; }
-        .section-info h1 { font-size: 32px; font-weight: 800; }
-        .section-info p { color: var(--text-muted); font-size: 14px; font-weight: 600; }
+        /* SECTION INFO UPDATED */
+        .section-info { 
+            padding: 30px 20px 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start;
+        }
+        .info-left h1, .info-right h1 { font-size: 32px; font-weight: 800; }
+        .info-left p, .info-right p { color: var(--text-muted); font-size: 14px; font-weight: 600; }
+        .info-right { text-align: right; }
+        .info-right h1 { color: var(--accent-green); }
 
         /* GRID ARTIS DIPERKECIL */
         .artist-grid {
@@ -197,8 +204,14 @@
         </header>
 
         <div class="section-info">
-            <h1>Artists</h1>
-            <p>Sopan Team's roster.</p>
+            <div class="info-left">
+                <h1>Artists</h1>
+                <p>Sopan Team's roster.</p>
+            </div>
+            <div class="info-right">
+                <h1 id="totalArtists">0+</h1>
+                <p>Artist</p>
+            </div>
         </div>
 
         <div id="loading">Memuat daftar artis...</div>
@@ -226,16 +239,19 @@
         onValue(usersRef, (snapshot) => {
             const listContainer = document.getElementById('artistList');
             const loading = document.getElementById('loading');
+            const countDisplay = document.getElementById('totalArtists');
             listContainer.innerHTML = '';
             
             if (snapshot.exists()) {
                 loading.style.display = 'none';
                 const data = snapshot.val();
                 let index = 0;
+                let count = 0;
 
                 Object.keys(data).forEach(key => {
                     const artist = data[key];
                     if (artist.username && artist.profilePic) {
+                        count++;
                         
                         // LOGIKA AUTO-SLUG: Bikin link otomatis dari nama (p=nama-artis)
                         const autoSlug = artist.username.toLowerCase()
@@ -252,8 +268,10 @@
                         index++;
                     }
                 });
+                countDisplay.innerText = `${count}+`;
             } else {
                 loading.innerText = "Belum ada artis terdaftar.";
+                countDisplay.innerText = "0+";
             }
         });
 
