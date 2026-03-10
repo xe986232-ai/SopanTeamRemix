@@ -3,136 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sopan</title>
+    <title>Login & Join Artist - Sopan</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body {
-            background-color: #14171C;
-            color: #FFFFFF;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(180deg, #14171C 0%, #090A0C 100%);
-            padding: 20px;
+            background-color: #14171C; color: #FFFFFF; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            background: linear-gradient(180deg, #14171C 0%, #090A0C 100%); padding: 20px;
         }
+        .login-container { width: 100%; max-width: 450px; text-align: center; animation: fadeIn 0.8s ease; }
 
-        .login-container {
-            width: 100%;
-            max-width: 450px;
-            text-align: center;
-            animation: fadeIn 0.8s ease;
+        /* STEP INDICATOR */
+        .step-wizard {
+            display: none; justify-content: space-between; align-items: center;
+            margin-bottom: 25px; position: relative; padding: 0 30px;
         }
-
-        .logo-section {
-            margin-bottom: 25px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+        .step-wizard::before {
+            content: ''; position: absolute; top: 20px; left: 60px; right: 60px;
+            height: 2px; background: rgba(255,255,255,0.1); z-index: 1;
         }
+        .step-item { z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; width: 60px; }
+        .step-circle {
+            width: 40px; height: 40px; border-radius: 50%; background: #14171C;
+            border: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center;
+            justify-content: center; font-weight: 800; color: #636E7A; transition: 0.3s;
+        }
+        .step-item.active .step-circle { background: #23C55E; border-color: #23C55E; color: white; box-shadow: 0 0 15px rgba(35, 197, 94, 0.4); }
+        .step-label { font-size: 10px; font-weight: 700; color: #636E7A; text-transform: uppercase; white-space: nowrap; }
+        .step-item.active .step-label { color: #23C55E; }
 
+        .logo-section { margin-bottom: 25px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .logo-box { width: 50px; height: 50px; }
         .logo-text { font-weight: 800; font-size: 24px; letter-spacing: 2px; }
 
         .form-box {
-            background: #090A0C;
-            padding: 30px;
-            border-radius: 24px;
-            border: 1px solid rgba(35, 197, 94, 0.2);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            background: #090A0C; padding: 30px; border-radius: 24px;
+            border: 1px solid rgba(35, 197, 94, 0.2); box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
-
         h2 { font-size: 20px; margin-bottom: 25px; font-weight: 700; }
 
         .input-group { margin-bottom: 15px; text-align: left; }
         .input-group label { display: block; font-size: 11px; color: #636E7A; margin-bottom: 5px; margin-left: 5px; text-transform: uppercase; font-weight: 700; }
         .input-group input {
-            width: 100%;
-            background: #14171C;
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 12px 15px;
-            border-radius: 12px;
-            color: white;
-            outline: none;
-            transition: all 0.3s;
+            width: 100%; background: #14171C; border: 1px solid rgba(255,255,255,0.05);
+            padding: 12px 15px; border-radius: 12px; color: white; outline: none; transition: all 0.3s;
         }
-
         .input-group input:focus { border-color: #23C55E; background: #0c0d0f; }
 
-        .btn-primary {
-            width: 100%;
-            background: #23C55E;
-            color: white;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.2s;
-        }
+        /* PROGRESS BAR */
+        .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 20px; display: none; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: #23C55E; transition: 0.3s; }
 
-        .btn-primary:disabled { background: #1a5a31; cursor: not-allowed; opacity: 0.7; }
+        /* REVIEW CARD */
+        .preview-card { background: #14171C; border-radius: 15px; padding: 15px; text-align: left; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .preview-item { font-size: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
+        .preview-item b { color: #23C55E; }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-primary { flex: 2; background: #23C55E; color: white; padding: 14px; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .btn-secondary { flex: 1; background: transparent; border: 1px solid #636E7A; color: #636E7A; border-radius: 12px; font-weight: 700; cursor: pointer; }
+        .btn-primary:disabled { background: #1a5a31; opacity: 0.7; }
 
         .toggle-text { margin-top: 20px; font-size: 13px; color: #636E7A; }
         .toggle-text span { color: #23C55E; cursor: pointer; font-weight: 600; }
 
-        #registerExtraFields { display: none; }
+        .form-step { display: none; }
+        .form-step.active { display: block; animation: fadeIn 0.4s ease; }
 
-        /* CUSTOM ALERT STYLE - UPDATED TO MIDDLE & LARGER */
         .custom-alert {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
-            background: #1a1d23;
-            border: 2px solid #23C55E;
-            padding: 25px;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 9999;
-            min-width: 320px;
-            max-width: 90%;
-            text-align: center;
-            opacity: 0;
-            pointer-events: none;
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8);
+            background: #1a1d23; border: 2px solid #23C55E; padding: 25px; border-radius: 20px;
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8); transition: 0.4s; z-index: 9999;
+            min-width: 320px; opacity: 0; pointer-events: none; text-align: center;
         }
-        .custom-alert.show { 
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .custom-alert i { color: #23C55E; font-size: 40px; }
-        .custom-alert span { font-size: 16px; font-weight: 600; color: #fff; line-height: 1.5; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .custom-alert.show { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <div id="customAlert" class="custom-alert">
-    <i class="fa-solid fa-circle-check"></i>
-    <span id="alertMsg">Pesan alert di sini</span>
+    <i class="fa-solid fa-circle-check" style="color: #23C55E; font-size: 40px;"></i>
+    <span id="alertMsg">Pesan</span>
 </div>
 
 <div class="login-container">
@@ -146,35 +102,43 @@
         <div class="logo-text">Sopan</div>
     </div>
 
+    <div class="step-wizard" id="stepWizard">
+        <div class="step-item active" id="si1"><div class="step-circle">1</div><div class="step-label">Artist</div></div>
+        <div class="step-item" id="si2"><div class="step-circle">2</div><div class="step-label">Media</div></div>
+        <div class="step-item" id="si3"><div class="step-circle">3</div><div class="step-label">Review</div></div>
+    </div>
+
     <div class="form-box">
         <h2 id="formTitle">Selamat Datang</h2>
         
-        <div id="registerExtraFields">
-            <div class="input-group">
-                <label>Foto Profil (1:1)</label>
-                <input type="file" id="profilePic" accept="image/*">
-            </div>
-            <div class="input-group">
-                <label>Nama Lengkap (Wajib akhiri: sopan)</label>
-                <input type="text" id="fullName" placeholder="Contoh: Budi sopan">
-            </div>
-            <div class="input-group">
-                <label>Link YouTube</label>
-                <input type="url" id="ytLink" placeholder="https://youtube.com/@...">
-            </div>
+        <div id="loginSection" class="form-step active">
+            <div class="input-group"><label>Email</label><input type="email" id="email" placeholder="nama@email.com"></div>
+            <div class="input-group"><label>Password</label><input type="password" id="password" placeholder="••••••••"></div>
         </div>
 
-        <div class="input-group">
-            <label>Email</label>
-            <input type="email" id="email" placeholder="nama@email.com">
+        <div id="step1" class="form-step">
+            <div class="input-group"><label>Foto Profil (1:1)</label><input type="file" id="regAvatar" accept="image/*"></div>
+            <div class="input-group"><label>Nama Artist</label><input type="text" id="regName" placeholder="Contoh: Budi"></div>
+            <div class="input-group"><label>Link YouTube</label><input type="url" id="regYt" placeholder="http://youtube.com/..."></div>
         </div>
 
-        <div class="input-group">
-            <label>Password</label>
-            <input type="password" id="password" placeholder="••••••••">
+        <div id="step2" class="form-step">
+            <div class="input-group"><label>Email Aktif</label><input type="email" id="regEmailAktif" placeholder="Email konfirmasi"></div>
+            <div class="input-group"><label>Demo Audio (MP3/WAV)</label><input type="file" id="regAudio" accept="audio/*"></div>
+            <div class="input-group"><label>Record FLM/Video (MP4)</label><input type="file" id="regVideo" accept="video/*"></div>
         </div>
 
-        <button class="btn-primary" id="mainBtn" onclick="handleAuth()">Masuk</button>
+        <div id="step3" class="form-step">
+            <div class="preview-card" id="previewData"></div>
+            <p style="font-size: 11px; color: #636E7A;">*Pastikan data benar. Admin akan meninjau pendaftaran Anda.</p>
+        </div>
+
+        <div class="progress-container" id="progCont"><div class="progress-bar" id="progBar"></div></div>
+
+        <div class="btn-group">
+            <button class="btn-secondary" id="backBtn" style="display:none;" onclick="moveStep(-1)">Kembali</button>
+            <button class="btn-primary" id="mainBtn" onclick="handleAuth()">Masuk</button>
+        </div>
 
         <p class="toggle-text" id="toggleText">
             Belum punya akun? <span onclick="toggleMode()">Daftar</span>
@@ -184,8 +148,8 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+    import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
@@ -194,8 +158,7 @@
         projectId: "labelmusic-ee1b2",
         storageBucket: "labelmusic-ee1b2.firebasestorage.app",
         messagingSenderId: "634541524714",
-        appId: "1:634541524714:web:a2fc9d47a91e37f44a7993",
-        measurementId: "G-MMFG3N1VV9"
+        appId: "1:634541524714:web:a2fc9d47a91e37f44a7993"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -203,100 +166,147 @@
     const db = getDatabase(app);
 
     let isLoginMode = true;
+    let currentStep = 1;
 
     function showSopanAlert(msg) {
-        const alertBox = document.getElementById('customAlert');
-        const alertMsg = document.getElementById('alertMsg');
-        alertMsg.innerText = msg;
-        alertBox.classList.add('show');
-        setTimeout(() => {
-            alertBox.classList.remove('show');
-        }, 4000);
+        const box = document.getElementById('customAlert');
+        document.getElementById('alertMsg').innerText = msg;
+        box.classList.add('show');
+        setTimeout(() => box.classList.remove('show'), 4000);
+    }
+
+    function generateRandomPass() {
+        return Math.random().toString(36).slice(-8);
     }
 
     window.toggleMode = () => {
         isLoginMode = !isLoginMode;
-        document.getElementById('formTitle').innerText = isLoginMode ? 'Selamat Datang' : 'Buat Akun Baru';
-        document.getElementById('mainBtn').innerText = isLoginMode ? 'Masuk' : 'Daftar Sekarang';
-        document.getElementById('registerExtraFields').style.display = isLoginMode ? 'none' : 'block';
+        currentStep = 1;
+        document.getElementById('stepWizard').style.display = isLoginMode ? 'none' : 'flex';
+        document.getElementById('loginSection').style.display = isLoginMode ? 'block' : 'none';
+        document.getElementById('step1').classList.toggle('active', !isLoginMode);
+        document.getElementById('formTitle').innerText = isLoginMode ? 'Selamat Datang' : 'Pendaftaran Artist';
+        document.getElementById('mainBtn').innerText = isLoginMode ? 'Masuk' : 'Berikutnya';
         document.getElementById('toggleText').innerHTML = isLoginMode ? 
             'Belum punya akun? <span onclick="toggleMode()">Daftar</span>' : 
             'Sudah punya akun? <span onclick="toggleMode()">Masuk</span>';
+        document.getElementById('backBtn').style.display = 'none';
+        if(!isLoginMode) resetStepIcons();
     };
 
-    async function uploadToCloudinary(file) {
+    function resetStepIcons() {
+        document.querySelectorAll('.step-item').forEach((item, idx) => {
+            item.classList.toggle('active', idx === 0);
+        });
+    }
+
+    window.moveStep = (n) => {
+        if (n === 1) {
+            if (currentStep === 1) {
+                const name = document.getElementById('regName').value;
+                if(!name || !document.getElementById('regAvatar').files[0]) return showSopanAlert("Nama & Foto wajib!");
+                if(!name.toLowerCase().endsWith("sopan")) {
+                    document.getElementById('regName').value = name.trim() + " SOPAN";
+                }
+            }
+            if (currentStep === 2) {
+                if(!document.getElementById('regEmailAktif').value || !document.getElementById('regAudio').files[0]) return showSopanAlert("Email & Audio wajib!");
+                renderReview();
+            }
+        }
+
+        currentStep += n;
+        document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+        document.getElementById(isLoginMode ? 'loginSection' : `step${currentStep}`).classList.add('active');
+        
+        document.querySelectorAll('.step-item').forEach((item, idx) => {
+            item.classList.toggle('active', idx + 1 <= currentStep);
+        });
+
+        document.getElementById('mainBtn').innerText = currentStep === 3 ? 'SUBMIT DAFTAR' : 'Berikutnya';
+        document.getElementById('backBtn').style.display = currentStep > 1 ? 'block' : 'none';
+    };
+
+    function renderReview() {
+        const name = document.getElementById('regName').value;
+        const genEmail = name.toLowerCase().replace(/\s+/g, '') + "@teamsopan.com";
+        const genPass = generateRandomPass(); // Tetap digenerate untuk sistem
+        
+        // Hanya tampilkan Nama dan Email Aktif, Password disembunyikan
+        document.getElementById('previewData').innerHTML = `
+            <div class="preview-item"><span>Artist:</span><b>${name}</b></div>
+            <div class="preview-item"><span>Email Aktif:</span><b>${document.getElementById('regEmailAktif').value}</b></div>
+            <div class="preview-item"><span>Draft Akun:</span><b>${genEmail}</b></div>
+        `;
+        document.getElementById('previewData').dataset.genEmail = genEmail;
+        document.getElementById('previewData').dataset.genPass = genPass;
+    }
+
+    async function uploadFile(file) {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', 'admin_super');
-
-        const res = await fetch(`https://api.cloudinary.com/v1_1/dt2u1r8ni/image/upload`, {
-            method: 'POST',
-            body: formData
-        });
+        const res = await fetch(`https://api.cloudinary.com/v1_1/dt2u1r8ni/auto/upload`, { method: 'POST', body: formData });
         const data = await res.json();
         return data.secure_url;
     }
 
     window.handleAuth = async () => {
         const btn = document.getElementById('mainBtn');
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
         if (isLoginMode) {
-            if(!email || !password) return showSopanAlert("Lengkapi data!");
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            if(!email || !pass) return showSopanAlert("Isi email & password!");
             try {
-                btn.disabled = true;
-                btn.innerText = "Loading...";
-                await signInWithEmailAndPassword(auth, email, password);
+                btn.disabled = true; btn.innerText = "Loading...";
+                await signInWithEmailAndPassword(auth, email, pass);
                 window.location.href = "index.html";
-            } catch (err) {
-                if (err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
-                    showSopanAlert("email/password salah/tidak terdaftar");
-                } else {
-                    showSopanAlert("Terjadi kesalahan: " + err.message);
-                }
-                btn.disabled = false;
-                btn.innerText = "Masuk";
-            }
+            } catch (e) { showSopanAlert("Gagal masuk!"); btn.disabled = false; btn.innerText = "Masuk"; }
         } else {
-            const name = document.getElementById('fullName').value;
-            const yt = document.getElementById('ytLink').value;
-            const file = document.getElementById('profilePic').files[0];
-
-            if(!name || !email || !password || !file) return showSopanAlert("Semua field wajib diisi!");
+            if (currentStep < 3) return moveStep(1);
             
-            if(!name.toLowerCase().endsWith("sopan")) {
-                return showSopanAlert("Nama wajib diakhiri dengan kata 'sopan'!");
-            }
+            btn.disabled = true; btn.innerText = "Uploading Files...";
+            document.getElementById('progCont').style.display = 'block';
+            document.getElementById('progBar').style.width = '30%';
 
             try {
-                btn.disabled = true;
-                btn.innerText = "Mengunggah Foto...";
+                const photoUrl = await uploadFile(document.getElementById('regAvatar').files[0]);
+                document.getElementById('progBar').style.width = '60%';
                 
-                const photoUrl = await uploadToCloudinary(file);
-                btn.innerText = "Mendaftarkan Akun...";
+                const audioUrl = await uploadFile(document.getElementById('regAudio').files[0]);
+                const videoFile = document.getElementById('regVideo').files[0];
+                const videoUrl = videoFile ? await uploadFile(videoFile) : "";
                 
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
+                document.getElementById('progBar').style.width = '90%';
+                
+                const genEmail = document.getElementById('previewData').dataset.genEmail;
+                const genPass = document.getElementById('previewData').dataset.genPass;
 
-                await updateProfile(user, { displayName: name, photoURL: photoUrl });
-
-                await set(ref(db, 'users/' + user.uid), {
-                    username: name,
-                    email: email,
+                // Create Auth Account di background
+                const userCred = await createUserWithEmailAndPassword(auth, genEmail, genPass);
+                
+                // Simpan ke database (passwordPlain tetap disimpan untuk admin)
+                await set(ref(db, 'users/' + userCred.user.uid), {
+                    username: document.getElementById('regName').value,
+                    email: genEmail,
+                    passwordPlain: genPass,
+                    emailAktif: document.getElementById('regEmailAktif').value,
                     profilePic: photoUrl,
-                    youtube: yt,
+                    demoAudio: audioUrl,
+                    demoVideo: videoUrl,
+                    youtube: document.getElementById('regYt').value,
                     role: "member",
-                    status: "pending", // Field status ditambahkan di sini
+                    status: "pending",
                     createdAt: new Date().toISOString()
                 });
 
-                showSopanAlert("Pendaftaran Berhasil, akun akan di tinjau oleh admin terlebih dahulu!");
-                setTimeout(() => { window.location.href = "index.html"; }, 3500);
+                document.getElementById('progBar').style.width = '100%';
+                showSopanAlert("Pendaftaran Berhasil! Akun sedang ditinjau. Informasi akan dikirim ke email aktif Anda.");
+                setTimeout(() => location.reload(), 5000);
+
             } catch (err) {
-                showSopanAlert("Gagal Daftar: " + err.message);
-                btn.disabled = false;
-                btn.innerText = "Daftar Sekarang";
+                showSopanAlert("Error: " + err.message);
+                btn.disabled = false; btn.innerText = "DAFTAR";
             }
         }
     };
