@@ -3,380 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - SOPAN REMIX</title>
+    <title>Admin Dashboard - Team Sopan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background-color: #020212;
-            color: #ffffff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            min-height: 100vh;
-            background: radial-gradient(circle at top right, #11113a 0%, #020212 100%);
-            padding: 30px;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #14171C; color: #FFFFFF; min-height: 100vh; padding: 20px; }
+
+        header {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; }
-        
-        header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 40px;
+        .admin-title h1 { font-size: 20px; font-weight: 800; letter-spacing: 1px; }
+        .admin-title p { font-size: 12px; color: #636E7A; }
+
+        .container { width: 100%; max-width: 600px; margin: 0 auto; }
+
+        /* Group Styling */
+        .user-group { margin-bottom: 40px; }
+        .group-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
             border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 20px;
+        }
+        .group-header i { color: #23C55E; }
+        .group-header h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #636E7A; }
+        .count-badge { background: #23C55E; color: white; font-size: 10px; padding: 2px 8px; border-radius: 20px; }
+
+        /* User Card Wrapper */
+        .user-wrapper {
+            background: #090A0C;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.03);
+            overflow: hidden;
+            transition: 0.3s;
         }
 
-        header h1 { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 28px;
-            background: linear-gradient(90deg, #ffffff, #475569, #ffffff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: moveGradient 4s linear infinite;
-        }
-        @keyframes moveGradient {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-
-        header span { color: #6366f1; font-weight: 800; font-size: 12px; letter-spacing: 2px; }
-
-        .status-control {
+        .user-card {
+            padding: 15px;
             display: flex;
             align-items: center;
             gap: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px 20px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
         }
-        .status-label { font-size: 13px; font-weight: 700; color: #94a3b8; }
-        .switch {
-            position: relative;
-            display: inline-block;
+        .user-card:hover { background: rgba(255,255,255,0.02); }
+
+        .user-avatar {
             width: 50px;
-            height: 24px;
-        }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #334155;
-            transition: .4s;
-            border-radius: 24px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px; width: 18px;
-            left: 3px; bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        input:checked + .slider { background-color: #6366f1; }
-        input:checked + .slider:before { transform: translateX(26px); }
-        .status-text { font-weight: 800; font-size: 12px; color: #6366f1; text-transform: uppercase; }
-
-        .tabs { display: flex; gap: 15px; margin-bottom: 30px; }
-        .tab-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #94a3b8;
-            padding: 12px 25px;
+            height: 50px;
             border-radius: 12px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: 0.3s;
-        }
-        .tab-btn.active {
-            background: #6366f1;
-            color: white;
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
+        .user-info { flex: 1; }
+        .user-info h4 { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+        .user-info p { font-size: 11px; color: #636E7A; }
+
+        /* Detail Selection Content */
+        .detail-content {
+            display: none;
+            padding: 0 15px 15px 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: #0d0f13;
+            animation: slideDown 0.3s ease;
+        }
+        .user-wrapper.active .detail-content { display: block; }
+        .user-wrapper.active { border-color: #23C55E; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .admin-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 0;
-            backdrop-filter: blur(20px);
-            transition: 0.3s;
-            overflow: hidden;
-            height: fit-content;
-        }
-
-        .card-header { 
-            display: flex; 
-            gap: 15px; 
-            align-items: center; 
-            padding: 20px;
-            cursor: pointer;
-            background: rgba(255,255,255,0.01);
-            transition: background 0.3s;
-        }
-        .card-header:hover { background: rgba(255,255,255,0.05); }
-        .card-header img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; }
-        .card-info h3 { font-size: 16px; margin-bottom: 2px; }
-
-        .dropdown-content {
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
-                        opacity 0.6s ease-in-out,
-                        padding 0.6s ease;
-            padding: 0 20px;
-        }
-
-        .dropdown-content.open {
-            max-height: 2000px; /* Diperbesar agar muat video */
-            opacity: 1;
-            padding: 0 20px 20px 20px;
-        }
-
-        .details { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin-bottom: 15px; width: 100%; }
-        .details div { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; }
-        .details span { color: #94a3b8; }
-        .details b { color: #fff; text-align: right; }
-
-        .audio-player { width: 100%; margin: 10px 0; height: 35px; border-radius: 8px; }
+        .detail-grid { display: grid; gap: 15px; margin-top: 15px; }
+        .detail-item { font-size: 12px; }
+        .detail-item label { color: #636E7A; display: block; margin-bottom: 5px; text-transform: uppercase; font-weight: 800; font-size: 10px; }
         
-        /* UPDATE: Style Video & Image Bukti */
-        .video-player { width: 100%; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); }
-        .proof-img { width: 100%; border-radius: 12px; margin-bottom: 15px; cursor: zoom-in; border: 1px solid rgba(255,255,255,0.1); }
+        .media-player { width: 100%; border-radius: 8px; background: #14171C; margin-top: 5px; }
+        video.media-player { aspect-ratio: 16/9; }
 
-        .actions { 
-            display: flex; 
-            gap: 12px; 
+        .btn-approve {
             width: 100%;
-            justify-content: stretch;
-            margin-top: 10px;
-        }
-        .btn {
-            flex: 1;
+            background: #23C55E;
+            color: white;
+            border: none;
             padding: 12px;
             border-radius: 10px;
-            border: none;
+            font-size: 13px;
             font-weight: 800;
-            font-size: 11px;
             cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            letter-spacing: 0.5px;
+            margin-top: 15px;
+            transition: 0.3s;
         }
-        .btn-accept { background: #10b981; color: white; }
-        .btn-reject { background: #ef4444; color: white; }
-        .btn-accept:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); }
-        .btn-reject:hover { background: #dc2626; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3); }
+        .btn-approve:hover { filter: brightness(1.2); }
+
+        .status-badge { font-size: 10px; padding: 4px 10px; border-radius: 6px; font-weight: 700; }
+        .status-success { background: rgba(35, 197, 94, 0.1); color: #23C55E; }
         
-        .status-pill {
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-        .status-pending { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-        .status-verified { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-
-        #empty-msg { text-align: center; grid-column: 1/-1; padding: 50px; color: #475569; }
-
-        @media (max-width: 600px) {
-            body { padding: 15px; }
-            .card-grid { grid-template-columns: 1fr; }
-        }
+        .loading-state { text-align: center; padding: 40px; color: #636E7A; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <div>
-                <span>CONTROL PANEL</span>
-                <h1>Admin Dashboard</h1>
-            </div>
-            <button class="tab-btn" onclick="location.reload()">Refresh Data</button>
-        </header>
-
-        <div class="status-control">
-            <span class="status-label">STATUS PENDAFTARAN:</span>
-            <label class="switch">
-                <input type="checkbox" id="regStatusCheck" onchange="toggleRegStatus()">
-                <span class="slider"></span>
-            </label>
-            <span id="statusLabel" class="status-text">Checking...</span>
-        </div>
-
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('pendaftaran')">Pendaftaran Baru</button>
-            <button class="tab-btn" onclick="switchTab('tracks')">Daftar Artist</button>
-        </div>
-
-        <div id="pendaftaran-section" class="card-grid"></div>
-
-        <div id="tracks-section" class="card-grid" style="display: none;"></div>
+<header>
+    <div class="admin-title">
+        <h1>Admin Panel</h1>
+        <p>Manajemen Member Team Sopan</p>
     </div>
+    <a href="index.html" style="color: #636E7A; text-decoration: none; font-size: 20px;"><i class="fa-solid fa-house"></i></a>
+</header>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
-            authDomain: "labelmusic-ee1b2.firebaseapp.com",
-            projectId: "labelmusic-ee1b2",
-            databaseURL: "https://labelmusic-ee1b2-default-rtdb.asia-southeast1.firebasedatabase.app",
-            storageBucket: "labelmusic-ee1b2.firebasestorage.app",
-            messagingSenderId: "634541524714",
-            appId: "1:634541524714:web:a2fc9d47a91e37f44a7993"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+<div class="container">
+    <section class="user-group" id="groupPending">
+        <div class="group-header">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <h2>Menunggu Persetujuan</h2>
+            <span class="count-badge" id="countPending">0</span>
+        </div>
+        <div id="listPending">
+            <div class="loading-state"><i class="fa-solid fa-spinner fa-spin"></i> Memuat data...</div>
+        </div>
+    </section>
 
-        function fetchRegStatus() {
-            database.ref('settings/registrationStatus').on('value', (snapshot) => {
-                const isOpen = snapshot.val() === 'open';
-                document.getElementById('regStatusCheck').checked = isOpen;
-                document.getElementById('statusLabel').innerText = isOpen ? 'OP MEM' : 'NO OP MEM';
-                document.getElementById('statusLabel').style.color = isOpen ? '#10b981' : '#ef4444';
-            });
-        }
+    <section class="user-group" id="groupSuccess">
+        <div class="group-header">
+            <i class="fa-solid fa-circle-check"></i>
+            <h2>Member Aktif</h2>
+            <span class="count-badge" id="countSuccess" style="background: #636E7A;">0</span>
+        </div>
+        <div id="listSuccess"></div>
+    </section>
+</div>
 
-        function toggleRegStatus() {
-            const isChecked = document.getElementById('regStatusCheck').checked;
-            const newStatus = isChecked ? 'open' : 'closed';
-            database.ref('settings/registrationStatus').set(newStatus);
-        }
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-        function switchTab(tab) {
-            const btns = document.querySelectorAll('.tab-btn');
-            btns.forEach(b => b.classList.remove('active'));
-            if(window.event) window.event.target.classList.add('active');
+    const firebaseConfig = {
+        apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
+        authDomain: "labelmusic-ee1b2.firebaseapp.com",
+        databaseURL: "https://labelmusic-ee1b2-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "labelmusic-ee1b2",
+        storageBucket: "labelmusic-ee1b2.firebasestorage.app",
+        messagingSenderId: "634541524714",
+        appId: "1:634541524714:web:a2fc9d47a91e37f44a7993"
+    };
 
-            if(tab === 'pendaftaran') {
-                document.getElementById('pendaftaran-section').style.display = 'grid';
-                document.getElementById('tracks-section').style.display = 'none';
-            } else {
-                document.getElementById('pendaftaran-section').style.display = 'none';
-                document.getElementById('tracks-section').style.display = 'grid';
+    const app = initializeApp(firebaseConfig);
+    const rtdb = getDatabase(app);
+
+    // Fungsi Global Toggle Detail
+    window.toggleDetail = (element) => {
+        element.closest('.user-wrapper').classList.toggle('active');
+    };
+
+    // Fungsi Update Status
+    window.approveUser = async (uid, event) => {
+        event.stopPropagation(); // Biar detail gak ketutup pas klik tombol
+        const userRef = ref(rtdb, 'users/' + uid);
+        try {
+            if(confirm("Terima artist ini sebagai member aktif?")) {
+                await update(userRef, { status: 'success' });
             }
+        } catch (error) {
+            alert("Gagal mengupdate status");
         }
+    };
 
-        function toggleDropdown(key) {
-            const content = document.getElementById('drop-' + key);
-            content.classList.toggle('open');
-        }
+    const usersRef = ref(rtdb, 'users');
+    onValue(usersRef, (snapshot) => {
+        const listPending = document.getElementById('listPending');
+        const listSuccess = document.getElementById('listSuccess');
+        const countPending = document.getElementById('countPending');
+        const countSuccess = document.getElementById('countSuccess');
 
-        function fetchRegistrations() {
-            const ref = database.ref('registrations');
-            ref.on('value', (snapshot) => {
-                const pendingContainer = document.getElementById('pendaftaran-section');
-                const tracksContainer = document.getElementById('tracks-section');
+        listPending.innerHTML = '';
+        listSuccess.innerHTML = '';
+
+        let pendingCount = 0;
+        let successCount = 0;
+
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            
+            Object.keys(data).forEach(uid => {
+                const user = data[uid];
+                const wrapper = document.createElement('div');
+                wrapper.className = 'user-wrapper';
                 
-                pendingContainer.innerHTML = '';
-                tracksContainer.innerHTML = '';
-                
-                if(!snapshot.exists()) {
-                    pendingContainer.innerHTML = '<div id="empty-msg">Tidak ada data di Firebase.</div>';
-                    return;
-                }
-
-                snapshot.forEach((child) => {
-                    const data = child.val();
-                    const key = child.key;
-                    const statusClass = data.status === 'verified' ? 'status-verified' : 'status-pending';
-
-                    // Update: Menampilkan Video & Bukti Project di dalam Dropdown
-                    const cardHtml = `
-                        <div class="admin-card">
-                            <div class="card-header" onclick="toggleDropdown('${key}')">
-                                <img src="${data.profilePhoto}" alt="Foto">
-                                <div class="card-info">
-                                    <h3>${data.artistName}</h3>
-                                    <span class="status-pill ${statusClass}">${data.status}</span>
-                                </div>
+                const htmlContent = `
+                    <div class="user-card" onclick="toggleDetail(this)">
+                        <img src="${user.profilePic || 'https://via.placeholder.com/150'}" class="user-avatar">
+                        <div class="user-info">
+                            <h4>${user.username || 'Anonymous'}</h4>
+                            <p>${user.email || 'No Email'}</p>
+                        </div>
+                        ${user.status === 'success' ? '<span class="status-badge status-success">ACTIVE</span>' : '<i class="fa-solid fa-chevron-down" style="color:#636E7A; font-size:12px;"></i>'}
+                    </div>
+                    
+                    <div class="detail-content">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <label>Email Aktif (Konfirmasi)</label>
+                                <p style="font-size:13px;">${user.emailAktif || '-'}</p>
+                            </div>
+                            <div class="detail-item">
+                                <label>Link YouTube</label>
+                                <a href="${user.youtube}" target="_blank" style="color:#23C55E; font-size:11px; text-decoration:none;">${user.youtube || 'Tidak ada link'}</a>
                             </div>
                             
-                            <div class="dropdown-content" id="drop-${key}">
-                                <div class="details">
-                                    <div><span>ID Member</span> <b>${data.userID}</b></div>
-                                    <div><span>WhatsApp</span> <b>${data.whatsapp}</b></div>
-                                    <div><span>YouTube</span> <a href="${data.youtube}" target="_blank" style="color:#6366f1; text-decoration: none; font-weight: 600;">Lihat Channel</a></div>
-                                    <div><span>Waktu Daftar</span> <b>${data.submittedAt}</b></div>
+                            ${user.demoAudio ? `
+                                <div class="detail-item">
+                                    <label>Demo Audio</label>
+                                    <audio controls class="media-player">
+                                        <source src="${user.demoAudio}" type="audio/mpeg">
+                                    </audio>
                                 </div>
+                            ` : ''}
 
-                                <p style="font-size:11px; color:#94a3b8; margin-bottom:5px; font-weight: 600;">PREVIEW AUDIO:</p>
-                                <audio src="${data.audioUrl}" controls class="audio-player"></audio>
-
-                                ${data.videoUrl ? `
-                                    <p style="font-size:11px; color:#94a3b8; margin-top:10px; margin-bottom:5px; font-weight: 600;">TEASER VIDEO:</p>
-                                    <video src="${data.videoUrl}" controls class="video-player"></video>
-                                ` : ''}
-
-                                ${data.projectProofUrl ? `
-                                    <p style="font-size:11px; color:#94a3b8; margin-top:5px; margin-bottom:5px; font-weight: 600;">BUKTI PROJECT:</p>
-                                    <img src="${data.projectProofUrl}" class="proof-img" onclick="window.open(this.src)">
-                                ` : ''}
-
-                                <div class="actions">
-                                    ${data.status === 'pending' ? `
-                                        <button class="btn btn-accept" onclick="updateStatus('${key}', 'verified')">Terima</button>
-                                        <button class="btn btn-reject" onclick="deleteEntry('${key}')">Tolak</button>
-                                    ` : `
-                                        <button class="btn btn-reject" style="width:100%" onclick="deleteEntry('${key}')">Hapus Artist</button>
-                                    `}
+                            ${user.demoVideo ? `
+                                <div class="detail-item">
+                                    <label>Demo Video / Record FLM</label>
+                                    <video controls class="media-player">
+                                        <source src="${user.demoVideo}" type="video/mp4">
+                                    </video>
                                 </div>
-                            </div>
+                            ` : ''}
                         </div>
-                    `;
 
-                    if(data.status === 'pending') {
-                        pendingContainer.innerHTML += cardHtml;
-                    } else {
-                        tracksContainer.innerHTML += cardHtml;
-                    }
-                });
+                        ${user.status === 'pending' ? `
+                            <button class="btn-approve" onclick="approveUser('${uid}', event)">
+                                <i class="fa-solid fa-check-circle"></i> TERIMA SEBAGAI ARTIST
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+                
+                wrapper.innerHTML = htmlContent;
 
-                if(pendingContainer.innerHTML === '') pendingContainer.innerHTML = '<div id="empty-msg">Tidak ada pendaftar baru.</div>';
-                if(tracksContainer.innerHTML === '') tracksContainer.innerHTML = '<div id="empty-msg">Belum ada Artist yang diverifikasi.</div>';
+                if (user.status === 'success') {
+                    listSuccess.appendChild(wrapper);
+                    successCount++;
+                } else {
+                    listPending.appendChild(wrapper);
+                    pendingCount++;
+                }
             });
         }
 
-        function updateStatus(key, status) {
-            if(confirm('Terima member ini sebagai official artist?')) {
-                database.ref('registrations/' + key).update({
-                    status: status
-                }).then(() => alert('Member berhasil diverifikasi!'));
-            }
-        }
+        countPending.innerText = pendingCount;
+        countSuccess.innerText = successCount;
 
-        function deleteEntry(key) {
-            if(confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                database.ref('registrations/' + key).remove()
-                .then(() => alert('Data berhasil dihapus!'));
-            }
-        }
+        if (pendingCount === 0) listPending.innerHTML = '<p style="font-size:12px; color:#636E7A; text-align:center;">Tidak ada permintaan pending.</p>';
+        if (successCount === 0) listSuccess.innerHTML = '<p style="font-size:12px; color:#636E7A; text-align:center;">Belum ada member aktif.</p>';
+    });
+</script>
 
-        fetchRegistrations();
-        fetchRegStatus();
-    </script>
 </body>
 </html>
