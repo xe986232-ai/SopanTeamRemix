@@ -991,6 +991,15 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const rtdb = getDatabase(app); // Inisialisasi Real-time Database
+    // Fungsi untuk mengacak array (Fisher-Yates Shuffle)
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 
     const userAvatar = document.getElementById('userAvatar');
     const sideSignUpBtn = document.getElementById('sideSignUpBtn');
@@ -1058,18 +1067,32 @@
         const section = document.getElementById('playlistSection');
         
         try {
-            const q = query(collection(db, "products"), limit(8));
+            // Kita ambil 20 data agar pilihan acaknya lebih banyak
+            const q = query(collection(db, "products"), limit(20));
             const snap = await getDocs(q);
             
             if (snap.empty) return;
+
+            // --- UPDATE LOGIKA RANDOM START ---
+            let items = [];
+            snap.forEach((doc) => {
+                items.push({ id: doc.id, ...doc.data() });
+            });
+
+            // Acak urutan item
+            items = shuffleArray(items);
+
+            // Ambil 8 saja untuk ditampilkan
+            const displayedItems = items.slice(0, 8);
+            // --- UPDATE LOGIKA RANDOM END ---
             
             section.style.display = 'block';
             swiperContainer.innerHTML = '';
             listContainer.innerHTML = '';
 
-            snap.forEach((doc) => {
-                const data = doc.data();
-                
+            // Looping menggunakan data yang sudah diacak (displayedItems)
+            displayedItems.forEach((data) => {
+                // Sisa kode di bawah ini tetap sama persis seperti kode asli Anda
                 const swSlide = document.createElement('div');
                 swSlide.className = 'swiper-slide';
                 swSlide.innerHTML = `
@@ -1101,6 +1124,9 @@
                         </div>
                     </div>
                 `;
+
+                // ... (Teruskan sisa logika pembuatan listItem, audio handling, dan mainSwiper Anda)
+
                 
                 const listItem = document.createElement('div');
                 listItem.className = 'preview-item';
