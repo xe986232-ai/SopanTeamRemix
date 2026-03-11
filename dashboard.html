@@ -127,11 +127,11 @@
                 <p>Berbagi file vokal murni tanpa musik.</p>
             </div>
         </div>
-        <div class="menu-card" onclick="openForm('project')">
-            <i class="fa-solid fa-folder-tree"></i>
+        <div class="menu-card" onclick="openForm('visualizer')">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
             <div>
-                <h4>Share Project</h4>
-                <p>Upload link mentahan project FLM/Drive.</p>
+                <h4>Share Visualizer</h4>
+                <p>Upload template Avee Player (.viz / .zip).</p>
             </div>
         </div>
     </div>
@@ -146,24 +146,17 @@
 
         <div id="standardInputs">
             <div class="input-group" id="avatarInputGroup">
-                <label>Upload Cover / Avatar</label>
+                <label id="imageLabel">Upload Cover / Avatar</label>
                 <input type="file" id="avatarFile" accept="image/*">
             </div>
-            <div class="input-group">
-                <label>Upload Audio (MP3)</label>
-                <input type="file" id="audioFile" accept="audio/*">
-            </div>
-        </div>
-
-        <div id="projectInputs" style="display: none;">
-            <div class="input-group">
-                <label>Link Google Drive Project</label>
-                <input type="url" id="driveLink" placeholder="https://drive.google.com/...">
+            <div class="input-group" id="audioInputGroup">
+                <label id="fileLabel">Upload Audio (MP3)</label>
+                <input type="file" id="audioFile">
             </div>
         </div>
 
         <div class="input-group">
-            <label>Artis (Otomatis)</label>
+            <label>Uploaded By (Otomatis)</label>
             <input type="text" id="artistName" readonly style="opacity: 0.6;">
         </div>
 
@@ -228,10 +221,26 @@
         activeType = type;
         document.getElementById('menuSelection').style.display = 'none';
         document.getElementById('formWrapper').style.display = 'block';
+        
+        // Custom labels for Visualizer
+        const imageLabel = document.getElementById('imageLabel');
+        const fileLabel = document.getElementById('fileLabel');
+        const audioInput = document.getElementById('audioFile');
+
+        if(type === 'visualizer') {
+            imageLabel.innerText = "Upload Gambar Preview";
+            fileLabel.innerText = "Upload File Visualizer (.viz / .zip)";
+            audioInput.accept = "*"; // allow viz/zip
+        } else {
+            imageLabel.innerText = "Upload Cover / Avatar";
+            fileLabel.innerText = "Upload Audio (MP3)";
+            audioInput.accept = "audio/*";
+        }
+
         document.getElementById('avatarInputGroup').style.display = (type === 'acapella') ? 'none' : 'block';
-        document.getElementById('standardInputs').style.display = (type === 'project') ? 'none' : 'block';
-        document.getElementById('projectInputs').style.display = (type === 'project') ? 'block' : 'none';
-        const titles = { 'album': 'Create New Album', 'acapella': 'Share Acapella', 'project': 'Share Project File' };
+        document.getElementById('standardInputs').style.display = 'block';
+        
+        const titles = { 'album': 'Create New Album', 'acapella': 'Share Acapella', 'visualizer': 'Share Visualizer' };
         document.getElementById('formTitle').innerText = titles[type];
     };
 
@@ -264,32 +273,21 @@
         } else { window.location.href = "login.html"; }
     });
 
-    // LOGIKA UPDATE PROFILE PIC
     document.getElementById('profileFileInput').addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if(!file) return;
-
         showSopanAlert("Mengganti foto profil...");
-        
         try {
-            // Re-use fungsi upload yang sudah ada
             const newPhotoUrl = await uploadFileCloudinary(file, "New Profile Pic");
-            
-            // Update URL ke RTDB
-            await update(ref(rtdb, 'users/' + currentUser.uid), {
-                profilePic: newPhotoUrl
-            });
-
+            await update(ref(rtdb, 'users/' + currentUser.uid), { profilePic: newPhotoUrl });
             showSopanAlert("Foto profil diperbarui!");
-        } catch (err) {
-            showSopanAlert("Gagal mengganti foto", true);
-        }
+        } catch (err) { showSopanAlert("Gagal mengganti foto", true); }
     });
 
     async function loadCatalog(artistName) {
         const list = document.getElementById('catalogList');
         list.innerHTML = '';
-        const collections = ["products", "acapellas", "projects"];
+        const collections = ["products", "acapellas", "visualizers"];
         
         for (const col of collections) {
             const q = query(collection(db, col), where("artis", "==", artistName));
@@ -299,9 +297,9 @@
                 const card = document.createElement('div');
                 card.className = 'catalog-card';
                 card.innerHTML = `
-                    <img src="${data.avatar || 'https://via.placeholder.com/150'}" class="cat-img">
+                    <img src="${data.avatar || data.previewImage || 'https://via.placeholder.com/150'}" class="cat-img">
                     <div class="cat-info">
-                        <h4>${data.judul}</h4>
+                        <h4>${data.judul || data.nama}</h4>
                         <p>${col.toUpperCase()}</p>
                     </div>
                     <div class="cat-btns">
@@ -326,14 +324,11 @@
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, true);
-            
             xhr.upload.onprogress = (e) => {
                 if (e.lengthComputable) {
                     const percent = Math.round((e.loaded / e.total) * 100);
                     const bar = document.getElementById('uploadProgressBar');
                     const text = document.getElementById('progressText');
-                    
-                    // Aktifkan progress bar hanya jika sedang upload karya (bukan ganti profil)
                     if(document.getElementById('formWrapper').style.display === 'block') {
                         document.getElementById('uploadProgressContainer').style.display = 'block';
                         text.style.display = 'block';
@@ -342,16 +337,12 @@
                     }
                 }
             };
-
             xhr.onload = () => {
                 if (xhr.status === 200) {
                     const response = JSON.parse(xhr.responseText);
                     resolve(response.secure_url);
-                } else {
-                    reject('Gagal upload ke Cloudinary');
-                }
+                } else { reject('Gagal upload ke Cloudinary'); }
             };
-
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', UPLOAD_PRESET);
@@ -367,39 +358,42 @@
         const btn = document.getElementById('btnUpload');
         btn.disabled = true;
         btn.innerText = "Processing...";
-        document.getElementById('uploadProgressContainer').style.display = 'block';
-        document.getElementById('progressText').style.display = 'block';
 
         try {
-            let audioUrl = "", avatarUrl = "";
+            let fileUrl = "", previewUrl = "";
             let targetCol = "products";
 
-            if (activeType === 'project') {
-                targetCol = "projects";
-                audioUrl = document.getElementById('driveLink').value;
-                if(!audioUrl) throw new Error("Link Drive wajib!");
-            } else {
-                if(activeType === 'acapella') targetCol = "acapellas";
+            const mainFile = document.getElementById('audioFile').files[0];
+            if(!mainFile) throw new Error("File wajib diunggah!");
+            fileUrl = await uploadFileCloudinary(mainFile, activeType === 'visualizer' ? "File Viz" : "Audio");
 
-                const audioFile = document.getElementById('audioFile').files[0];
-                if(!audioFile) throw new Error("File audio wajib!");
-                audioUrl = await uploadFileCloudinary(audioFile, "Audio");
-
-                if (activeType === 'album') {
-                    const avatarFile = document.getElementById('avatarFile').files[0];
-                    if(!avatarFile) throw new Error("Cover wajib!");
-                    avatarUrl = await uploadFileCloudinary(avatarFile, "Cover");
-                }
+            if (activeType !== 'acapella') {
+                const previewFile = document.getElementById('avatarFile').files[0];
+                if(!previewFile) throw new Error("Gambar wajib diunggah!");
+                previewUrl = await uploadFileCloudinary(previewFile, "Preview");
             }
 
-            await addDoc(collection(db, targetCol), {
-                judul: title,
-                artis: artist,
-                audio: audioUrl,
-                avatar: avatarUrl || "https://via.placeholder.com/150",
-                type: activeType,
-                createdAt: serverTimestamp()
-            });
+            if (activeType === 'visualizer') {
+                targetCol = "visualizers";
+                await addDoc(collection(db, targetCol), {
+                    nama: title,
+                    creator: artist,
+                    artis: artist,
+                    fileUrl: fileUrl,
+                    previewImage: previewUrl,
+                    createdAt: serverTimestamp()
+                });
+            } else {
+                if(activeType === 'acapella') targetCol = "acapellas";
+                await addDoc(collection(db, targetCol), {
+                    judul: title,
+                    artis: artist,
+                    audio: fileUrl,
+                    avatar: previewUrl || "https://via.placeholder.com/150",
+                    type: activeType,
+                    createdAt: serverTimestamp()
+                });
+            }
 
             showSopanAlert("Karya berhasil dipublish!");
             setTimeout(() => location.reload(), 2000);
