@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sopan - Avee Player Templates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #14171C; color: #FFFFFF; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+
+        /* HEADER */
+        header { 
+            width: 100%; max-width: 500px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 20px; position: sticky; top: 0; 
+            background: rgba(20, 23, 28, 0.9); backdrop-filter: blur(15px);
+            z-index: 1000; height: 70px;
+        }
+        
+        .brand-wrapper { position: absolute; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; }
+        .logo-box { width: 30px; height: 30px; }
+        .logo-text { font-weight: 800; font-size: 18px; letter-spacing: 1px; color: #FFFFFF; }
+        
+        /* TOMBOL HOME (SVG) SESUAI REQUEST */
+        .home-btn { 
+            width: 40px; height: 40px; background: rgba(255,255,255,0.05);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.3s; border: none;
+        }
+        .home-btn svg { width: 20px; height: 20px; fill: #23C55E; }
+
+        .search-trigger {
+            width: 40px; height: 40px; background: rgba(255,255,255,0.05);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            color: white; cursor: pointer;
+        }
+
+        /* HERO */
+        .hero { width: 100%; max-width: 500px; padding: 30px 20px 25px; text-align: center; }
+        .hero h1 { font-size: 26px; font-weight: 800; color: #FFFFFF; }
+        .hero p { font-size: 13px; color: #636E7A; margin-top: 5px; }
+        .hero-line { width: 40px; height: 4px; background: #23C55E; margin: 15px auto; border-radius: 10px; }
+
+        /* VIZ GRID SYSTEM */
+        .container { width: 100%; max-width: 500px; padding: 0 15px 40px; }
+        .viz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; }
+        
+        .viz-card { 
+            background: #090A0C; border-radius: 18px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
+            display: flex; flex-direction: column;
+        }
+        
+        .preview-img { 
+            width: 100%; aspect-ratio: 1/1; object-fit: cover; 
+            background: #1a1d23; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .viz-info { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .viz-title { font-size: 13px; font-weight: 700; color: #FFFFFF; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .viz-author { font-size: 10px; color: #23C55E; font-weight: 600; text-transform: uppercase; margin-bottom: 10px; }
+
+        .dl-viz-btn { 
+            width: 100%; background: #23C55E; color: #14171C; 
+            text-decoration: none; padding: 8px; border-radius: 10px;
+            text-align: center; font-size: 12px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: 0.2s;
+        }
+        .dl-viz-btn:active { transform: scale(0.95); opacity: 0.9; }
+
+        /* LOADING STATE */
+        #loadingTxt { text-align: center; color: #636E7A; font-size: 13px; grid-column: span 2; padding: 40px 0; }
+    </style>
+</head>
+<body>
+
+<header>
+    <button class="home-btn" onclick="window.location.href='index.html'">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </button>
+    
+    <div class="brand-wrapper">
+        <div class="logo-box">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" rx="25" fill="#FFFFFF"/>
+                <path d="M68,32 C60,24 40,24 32,32 C24,40 32,50 50,50 C68,50 76,60 68,68 C60,76 40,76 32,68" stroke="#14171C" stroke-width="12" stroke-linecap="round" fill="none"/>
+            </svg>
+        </div>
+        <div class="logo-text">Sopan</div>
+    </div>
+
+    <div class="search-trigger">
+        <i class="fas fa-search"></i>
+    </div>
+</header>
+
+<section class="hero">
+    <h1>Visualizer Templates</h1>
+    <p>Template Avee Player premium untuk video musikmu.</p>
+    <div class="hero-line"></div>
+</section>
+
+<main class="container">
+    <div id="vizGrid" class="viz-grid">
+        <p id="loadingTxt">Mencari template terbaru...</p>
+    </div>
+</main>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+    // Gunakan Config Firebase Abang
+    const firebaseConfig = {
+        apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
+        authDomain: "labelmusic-ee1b2.firebaseapp.com",
+        projectId: "labelmusic-ee1b2",
+        storageBucket: "labelmusic-ee1b2.firebasestorage.app",
+        messagingSenderId: "634541524714",
+        appId: "1:634541524714:web:a2fc9d47a91e37f44a7993"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const vizGrid = document.getElementById('vizGrid');
+
+    // MENGAMBIL DATA DARI KOLEKSI "visualizers"
+    // Pastikan di Firebase Firestore Abang buat koleksi namanya: visualizers
+    const q = query(collection(db, "visualizers"), orderBy("createdAt", "desc"));
+
+    onSnapshot(q, (snapshot) => {
+        vizGrid.innerHTML = '';
+        const docs = snapshot.docs;
+
+        if(docs.length === 0) {
+            vizGrid.innerHTML = '<p id="loadingTxt">Belum ada template tersedia.</p>';
+            return;
+        }
+
+        docs.forEach(doc => {
+            const data = doc.data();
+            const card = document.createElement('div');
+            card.className = 'viz-card';
+            
+            // Layout: Gambar di atas, info & tombol di bawah
+            card.innerHTML = `
+                <img src="${data.previewImage || 'https://via.placeholder.com/300x300?text=No+Preview'}" class="preview-img" alt="${data.nama}">
+                <div class="viz-info">
+                    <div>
+                        <div class="viz-title">${data.nama || 'Unnamed Template'}</div>
+                        <div class="viz-author">BY ${data.creator || 'Sopan'}</div>
+                    </div>
+                    <a href="${data.fileUrl}" class="dl-viz-btn" target="_blank">
+                        <i class="fas fa-download"></i> GET VIZ
+                    </a>
+                </div>
+            `;
+            vizGrid.appendChild(card);
+        });
+    });
+</script>
+
+</body>
+</html>
