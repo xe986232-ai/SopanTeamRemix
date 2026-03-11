@@ -25,6 +25,48 @@
 
         .container { width: 100%; max-width: 600px; margin: 0 auto; }
 
+        /* MODIFIKASI: Styling Switch OPMEM */
+        .opmem-control {
+            background: #090A0C;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .opmem-info h3 { font-size: 14px; font-weight: 700; }
+        .opmem-info p { font-size: 11px; color: #636E7A; margin-top: 2px; }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; width: 18px;
+            left: 4px; bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #23C55E; }
+        input:checked + .slider:before { transform: translateX(24px); }
+        /* AKHIR MODIFIKASI STYLING */
+
         /* Group Styling */
         .user-group { margin-bottom: 40px; }
         .group-header {
@@ -125,6 +167,16 @@
 </header>
 
 <div class="container">
+    <div class="opmem-control">
+        <div class="opmem-info">
+            <h3>Status Pendaftaran (OPMEM)</h3>
+            <p id="opmemStatusText">Memuat status...</p>
+        </div>
+        <label class="switch">
+            <input type="checkbox" id="opmemSwitch">
+            <span class="slider"></span>
+        </label>
+    </div>
     <section class="user-group" id="groupPending">
         <div class="group-header">
             <i class="fa-solid fa-clock-rotate-left"></i>
@@ -162,6 +214,33 @@
 
     const app = initializeApp(firebaseConfig);
     const rtdb = getDatabase(app);
+
+    // MODIFIKASI: Logika Switch OPMEM
+    const opmemRef = ref(rtdb, 'opmem');
+    const opmemSwitch = document.getElementById('opmemSwitch');
+    const opmemStatusText = document.getElementById('opmemStatusText');
+
+    // Pantau perubahan status OPMEM dari database
+    onValue(opmemRef, (snapshot) => {
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            const isBuka = data.status === "buka";
+            opmemSwitch.checked = isBuka;
+            opmemStatusText.innerText = isBuka ? "Pendaftaran sedang DIBUKA" : "Pendaftaran sedang DITUTUP";
+            opmemStatusText.style.color = isBuka ? "#23C55E" : "#E74C3C";
+        }
+    });
+
+    // Event listener saat admin mengubah switch
+    opmemSwitch.addEventListener('change', async () => {
+        const newStatus = opmemSwitch.checked ? "buka" : "tutup";
+        try {
+            await update(opmemRef, { status: newStatus });
+        } catch (error) {
+            alert("Gagal merubah status OPMEM");
+        }
+    });
+    // AKHIR MODIFIKASI LOGIKA OPMEM
 
     // Fungsi Global Toggle Detail
     window.toggleDetail = (element) => {
