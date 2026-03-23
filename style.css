@@ -1,4 +1,3 @@
-
         /* RESET & BASE STYLES */
         * {
             margin: 0;
@@ -870,27 +869,26 @@
 
 /* --- MODE FULLSCREEN (EXPANDED) FIXED --- */
 .player-overlay.expanded {
-    height: 100dvh; /* Menggunakan dvh agar akurat di browser mobile */
+    height: 100dvh;
     width: 100vw;
     bottom: 0 !important;
     left: 0;
-    transform: none; /* Hilangkan translate agar tidak meleset dari tengah */
+    transform: none;
     border-radius: 0;
     max-width: none;
-    padding: 40px 20px;
+    padding: 60px 20px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Pastikan semua ke tengah */
-    justify-content: center; /* Pusatkan konten secara vertikal */
-    gap: 30px;
+    align-items: center;
+    justify-content: center;
     background: #090a0c; 
-    z-index: 4000;
+    z-index: 4000; /* Ditingkatkan agar di atas segalanya */
 }
 
 .player-overlay.expanded .player-content {
     flex-direction: column;
     text-align: center;
-    gap: 25px;
+    gap: 30px;
     width: 100%;
 }
 
@@ -899,19 +897,19 @@
     height: 75vw;
     max-width: 320px;
     max-height: 320px;
-    margin: 0 auto; /* Pastikan di tengah */
+    margin: 0 auto;
     border-radius: 24px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.6);
 }
-
 
 .player-overlay.expanded .player-info h4 { font-size: 22px; }
 .player-overlay.expanded .player-controls { gap: 35px; }
 .player-overlay.expanded .btn-play-main { width: 70px; height: 70px; font-size: 28px; }
 
+/* --- FIX TOMBOL MINIMIZE --- */
 .btn-minimize {
     position: absolute;
-    top: env(safe-area-inset-top, 20px); /* Mengikuti area aman poni/notch HP */
+    top: 25px; /* Jarak aman dari atas */
     left: 20px;
     background: rgba(255,255,255,0.1);
     border: none;
@@ -919,15 +917,18 @@
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    display: none;
+    display: none; /* Default tersembunyi */
     align-items: center;
     justify-content: center;
-    z-index: 100; /* Pastikan paling depan */
+    z-index: 5000; /* Harus lebih tinggi dari .player-overlay.expanded */
     cursor: pointer;
 }
 
+/* Munculkan hanya saat expanded */
+.player-overlay.expanded .btn-minimize { 
+    display: flex !important; 
+}
 
-.player-overlay.expanded .btn-minimize { display: flex; align-items: center; justify-content: center; }
 /* Container info lagu agar teks tidak keluar jalur */
 .player-info { 
     overflow: hidden; 
@@ -938,11 +939,11 @@
 /* Animasi Marquee */
 @keyframes marquee-play {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-52%); } /* Geser sedikit lebih dari setengah agar mulus */
+    100% { transform: translateX(-52%); }
 }
 
 .scroll-active {
-    display: inline-block !important; /* Penting agar lebar teks bisa dihitung */
+    display: inline-block !important;
     animation: marquee-play 8s linear infinite;
-    padding-right: 50px; /* Jarak jeda antar teks saat berputar */
+    padding-right: 50px;
 }
