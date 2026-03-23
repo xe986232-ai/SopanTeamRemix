@@ -925,7 +925,10 @@ header {
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    background: #090a0c !important; 
+        background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.04), transparent 50%),
+        linear-gradient(160deg, #0f1115 0%, #090a0c 40%, #050607 100%) !important;
     z-index: 4000 !important;
 }
 
