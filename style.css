@@ -778,7 +778,7 @@ header {
 .logo-box svg {
     filter: none !important;
 }
-/* --- ULTRALIGHT FADE OVERLAY STYLE --- */
+
 .player-overlay {
     position: fixed;
     bottom: 20px; 
@@ -835,6 +835,7 @@ header {
 
 /* --- PROGRESS AREA & DURATION UPDATED --- */
 
+/* Gaya Dasar (Mini Player) */
 .player-progress-area { 
     margin-top: 10px; 
     width: 100%;
@@ -857,6 +858,7 @@ header {
     position: relative; 
 }
 
+/* Bulatan (Knob) Mini Player */
 .ov-progress-bar::after {
     content: ''; 
     position: absolute; 
@@ -880,18 +882,20 @@ header {
     font-weight: 500;
 }
 
-/* --- KHUSUS SAAT MODE EXPANDED --- */
+/* --- KHUSUS SAAT MODE EXPANDED (LAYAR PENUH) --- */
+/* Agar tidak ciut dan lebih lega di HP */
 
 .player-overlay.expanded .player-progress-area {
     width: 90%; 
-    margin: 40px auto 20px auto;
+    margin: 40px auto 20px auto; /* Jarak lebih luas */
 }
 
 .player-overlay.expanded .ov-progress-box {
-    height: 8px;
+    height: 8px; /* Lebih tebal agar mudah digeser jari */
     background: rgba(255, 255, 255, 0.15);
 }
 
+/* Knob lebih besar di layar penuh agar enak disentuh jari */
 .player-overlay.expanded .ov-progress-bar::after {
     width: 18px; 
     height: 18px;
@@ -899,6 +903,7 @@ header {
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
 }
 
+/* Teks Durasi lebih besar dan jelas */
 .player-overlay.expanded .ov-time {
     font-size: 14px; 
     margin-top: 12px;
@@ -908,7 +913,7 @@ header {
 /* --- MODE FULLSCREEN (EXPANDED) FIXED --- */
 .player-overlay.expanded {
     height: 100% !important;
-    height: 100dvh !important;
+    height: 100dvh !important; /* Gunakan dynamic viewport height untuk mobile */
     width: 100vw !important;
     bottom: 0 !important;
     left: 0 !important;
@@ -920,13 +925,7 @@ header {
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-
-    /* ✅ BACKGROUND BARU (GRADIENT SMOOTH + GLOW) */
-    background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06), transparent 40%),
-        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.04), transparent 50%),
-        linear-gradient(160deg, #0f1115 0%, #090a0c 40%, #050607 100%) !important;
-
+    background: #090a0c !important; 
     z-index: 4000 !important;
 }
 
@@ -951,10 +950,10 @@ header {
 .player-overlay.expanded .player-controls { gap: 35px; }
 .player-overlay.expanded .btn-play-main { width: 70px; height: 70px; font-size: 28px; }
 
-/* --- FIX TOMBOL MINIMIZE --- */
+/* --- FIX TOMBOL MINIMIZE (LAYER TERATAS) --- */
 .btn-minimize {
     position: absolute;
-    top: 40px;
+    top: 40px; /* Diturunkan sedikit agar aman dari status bar HP */
     left: 20px;
     background: rgba(255,255,255,0.1);
     border: none;
@@ -965,11 +964,12 @@ header {
     display: none; 
     align-items: center;
     justify-content: center;
-    z-index: 5001 !important;
+    z-index: 5001 !important; /* Di atas overlay expanded */
     cursor: pointer;
     transition: 0.3s;
 }
 
+/* Memastikan tombol muncul saat expanded */
 .player-overlay.expanded .btn-minimize { 
     display: flex !important; 
 }
