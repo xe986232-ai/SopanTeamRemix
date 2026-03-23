@@ -778,7 +778,6 @@ header {
 .logo-box svg {
     filter: none !important;
 }
-
 /* --- ULTRALIGHT FADE OVERLAY STYLE --- */
 .player-overlay {
     position: fixed;
