@@ -868,33 +868,42 @@
 
 .ov-time { display: flex; justify-content: space-between; font-size: 9px; color: #888; margin-top: 5px; font-family: monospace; }
 
-/* --- MODE FULLSCREEN (EXPANDED) --- */
+/* --- MODE FULLSCREEN (EXPANDED) FIXED --- */
 .player-overlay.expanded {
-    height: 100vh;
+    height: 100dvh; /* Menggunakan dvh agar akurat di browser mobile */
     width: 100vw;
     bottom: 0 !important;
+    left: 0;
+    transform: none; /* Hilangkan translate agar tidak meleset dari tengah */
     border-radius: 0;
     max-width: none;
-    padding: 60px 30px;
+    padding: 40px 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    background: #090a0c; /* Background solid saat full agar sangat ringan */
+    align-items: center; /* Pastikan semua ke tengah */
+    justify-content: center; /* Pusatkan konten secara vertikal */
+    gap: 30px;
+    background: #090a0c; 
+    z-index: 4000;
 }
 
 .player-overlay.expanded .player-content {
     flex-direction: column;
     text-align: center;
-    gap: 30px;
+    gap: 25px;
+    width: 100%;
 }
 
 .player-overlay.expanded .player-cover {
-    width: 80vw;
-    height: 80vw;
-    max-width: 300px;
-    max-height: 300px;
-    border-radius: 20px;
+    width: 75vw;
+    height: 75vw;
+    max-width: 320px;
+    max-height: 320px;
+    margin: 0 auto; /* Pastikan di tengah */
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
 }
+
 
 .player-overlay.expanded .player-info h4 { font-size: 22px; }
 .player-overlay.expanded .player-controls { gap: 35px; }
@@ -902,17 +911,21 @@
 
 .btn-minimize {
     position: absolute;
-    top: 25px;
-    left: 25px;
+    top: env(safe-area-inset-top, 20px); /* Mengikuti area aman poni/notch HP */
+    left: 20px;
     background: rgba(255,255,255,0.1);
     border: none;
     color: white;
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     display: none;
-    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    z-index: 100; /* Pastikan paling depan */
+    cursor: pointer;
 }
+
 
 .player-overlay.expanded .btn-minimize { display: flex; align-items: center; justify-content: center; }
 /* Container info lagu agar teks tidak keluar jalur */
