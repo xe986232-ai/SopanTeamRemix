@@ -1,680 +1,650 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sopan Remix Team - Official Website</title>
-    <meta name="description" content="Tempat kumpulnya para artist remix. Download FLM, Acapella, dan join member Team Sopan di sini.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="icon" type="image/png" href="pendiri/logo-sopan.png?v=2">
- <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<link rel="apple-touch-icon" href="pendiri/logo-sopan.png?v=2">
+    <title>Sopan Remix | Official Music Team & Artist Management</title>
+    <meta name="description" content="Official home of Sopan Remix Team. Premium production, top-tier artists, and high-fidelity sound engineering.">
 
-<link rel="icon" sizes="192x192" href="pendiri/logo-sopan.png?v=2">
-</head>
-<body>
-
-<img src="https://cdn-icons-png.flaticon.com/512/10815/10815635.png" class="fixed-bg-decor decor-tone" alt="tone icon">
-<img src="https://cdn-icons-png.flaticon.com/512/26/26274.png" class="fixed-bg-decor decor-clef" alt="clef icon">
-<img src="https://cdn-icons-png.flaticon.com/512/651/651717.png" class="fixed-bg-decor decor-note" alt="note icon">
-<header id="mainHeader">
-    <div class="brand-wrapper">
-<div class="logo-box">
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100" height="100" rx="25" fill="#FFFFFF"/>
-        
-        <path d="M68,32 C60,24 40,24 32,32 C24,40 32,50 50,50 C68,50 76,60 68,68 C60,76 40,76 32,68" 
-              stroke="#14171C" 
-              stroke-width="12" 
-              stroke-linecap="round" 
-              fill="none"/>
-    </svg>
-</div>
-
-        <div class="logo-text">Sopan</div>
-    </div>
-
-    <div class="header-icons">
-        <img id="userAvatar" class="user-photo" onclick="toggleProfileMenu()" referrerpolicy="no-referrer" style="display: none; border: 2px solid #23C55E; border-radius: 12px;">
-        
-        <button class="btn-menu-trigger" onclick="toggleMenu()" style="background: rgba(255,255,255,0.05); border-radius: 12px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-            <i class="fa-solid fa-bars-staggered" style="font-size: 18px;"></i>
-        </button>
-
-<div id="profileDropdown" class="profile-dropdown">
-    <div style="padding: 12px 15px; font-size: 10px; color: #636E7A; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); font-weight: 800;">
-        Member Area
-    </div>
-
-    <a href="dashboard.html" style="display: flex; align-items: center; gap: 10px;">
-        <i class="fa-solid fa-gauge-high" style="color: #23C55E; width: 18px;"></i> 
-        <span>Dashboard</span>
-    </a>
-    <button onclick="handleLogOut()" style="color: #FF4B4B; width: 100%; border-top: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; padding: 12px 15px;">
-        <i class="fa-solid fa-right-from-bracket" style="width: 18px;"></i> 
-        <span>Sign Out</span>
-    </button>
-</div>
-
-</header>
-
-
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
-<div class="side-menu" id="sideMenu">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-        <div style="display: flex; flex-direction: column;">
-            <span style="font-size: 10px; color: #636E7A; text-transform: uppercase; letter-spacing: 2px;">Navigation</span>
-            <div class="logo-text" style="font-size: 20px; background: linear-gradient(to right, #fff, #23C55E); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DASHBOARD</div>
-        </div>
-        <div onclick="toggleMenu()" style="width: 35px; height: 35px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-            <i class="fa-solid fa-xmark" style="font-size: 18px; color: #23C55E;"></i>
-        </div>
-    </div>
-
-    <div id="sideNavContent">
-        <a href="login.html" id="sideSignUpBtn" class="btn-signup-nav" style="margin-bottom: 25px; box-shadow: 0 10px 20px rgba(35, 197, 94, 0.2);">
-            <i class="fa-solid fa-user-plus" style="margin-right: 10px;"></i> Gabung Team
-        </a>
-
-        <p style="font-size: 11px; color: #636E7A; margin-bottom: 10px; font-weight: 700;">MAIN SERVICES</p>
-        <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
-        <a href="membersopan.html" class="nav-item"><i class="fa-solid fa-compact-disc"></i> SopanArtist</a>
-        <a href="sopanmusic.html" class="nav-item"><i class="fa-solid fa-music"></i> Songs</a>
-        <div style="height: 1px; background: rgba(255,255,255,0.05); margin: 20px 0;"></div>
-
-        <p style="font-size: 11px; color: #636E7A; margin-bottom: 10px; font-weight: 700;">OTHERS</p>
-        <a href="rules.html" class="nav-item"><i class="fa-solid fa-shield-halved"></i> Rules & Syarat</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-circle-question"></i> Pusat Bantuan</a>
-        
-        <div style="margin-top: 40px; display: flex; gap: 15px; padding: 15px; background: rgba(255,255,255,0.03); border-radius: 15px;">
-            <a href="https://instagram.com/teamsopanremix" style="color: #636E7A; font-size: 18px;"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://tiktok.com/@team.sopan.remix" style="color: #636E7A; font-size: 18px;"><i class="fa-brands fa-tiktok"></i></a>
-            <a href="#" style="color: #636E7A; font-size: 18px;"><i class="fa-brands fa-youtube"></i></a>
-        </div>
-    </div>
-</div>
-
-<section class="hero">
-    <div class="hero-waves">
-        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-        <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-    </div>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     
-    <p id="userGreeting" ...></p>
-    <h1 class="animate-in" ...>Welcome To,<br>Team Sopan Remix!.</h1>
-    <div class="active-indicator animate-in" ...></div>
-</section>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
 
+    <style>
+        /* CSS Tambahan untuk Fitur Login & Join Artist */
+        .auth-container {
+            padding: 30px;
+        }
+        .auth-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 8px 16px;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+        .tab-btn.active {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+            box-shadow: 0 0 15px rgba(255,255,255,0.1);
+        }
+        .auth-form {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .auth-form.active {
+            display: flex;
+            animation: fadeIn 0.4s ease;
+        }
+        .file-upload-box {
+            border: 2px dashed rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .file-upload-box:hover {
+            border-color: var(--accent, #fff);
+            background: rgba(255,255,255,0.02);
+        }
+        .file-upload-box i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .custom-alert {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 12px;
+            border-left: 4px solid #00ff88;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: none;
+            z-index: 10000;
+            font-family: 'Inter', sans-serif;
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="loading">
 
-<div style="width: 100%; max-width: 500px; text-align: center; margin: 30px 0 10px 0;">
-    <h2 class="animate-in" style="animation-delay: 0.25s; font-size: 16px; color: #636E7A; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
-        Artist Album
-    </h2>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div id="custom-alert" class="custom-alert">
+        <i class="fa-solid fa-circle-check" style="color: #00ff88; margin-right: 10px;"></i>
+        Data sedang di proses admin
+    </div>
+
+    <div class="loader-wrapper" id="loader">
+        <div class="loader-content">
+            <svg class="loader-logo" viewBox="0 0 100 100">
+                <circle class="loader-circle" cx="50" cy="50" r="45"></circle>
+                <text x="50" y="56" text-anchor="middle" font-family="Outfit" font-weight="900" font-size="28" fill="currentColor">S</text>
+            </svg>
+            <div class="loader-progress-bar">
+                <div class="loader-progress" id="loader-progress"></div>
+            </div>
+            <div class="loader-percentage" id="loader-percentage">0%</div>
+        </div>
+    </div>
+
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo hover-target">
+                <svg viewBox="0 0 40 40" width="40" height="40" class="logo-svg">
+                    <path d="M5,20 Q10,5 20,20 T35,20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M5,25 Q10,10 20,25 T35,25" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+                </svg>
+                <span class="logo-text">Sopan.<span class="text-accent"></span></span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#home" class="nav-link active hover-target">Home</a>
+                <a href="#about" class="nav-link hover-target">Top Artists</a>
+                <a href="#skills" class="nav-link hover-target">Team Tech</a>
+                <a href="#services" class="nav-link hover-target">Services</a>
+                <a href="#projects" class="nav-link hover-target">Team Albums</a>
+                <a href="#experience" class="nav-link hover-target">Label Credits</a>
+                <a href="#blog" class="nav-link hover-target">Team News</a>
+                <a href="#contact" class="nav-link hover-target">Join the Team</a>
+            </nav>
+
+<div class="nav-actions">
+    <button class="theme-switch hover-target" id="theme-switch" aria-label="Toggle Theme">
+        <i class="fa-solid fa-moon dark-icon"></i>
+        <i class="fa-solid fa-sun light-icon"></i>
+    </button>
+
+<div id="user-profile-nav" class="user-nav-container" style="display: none;">
+    <img id="user-nav-img" src="" alt="Profile" class="nav-avatar hover-target">
+    <div class="user-dropdown">
+        <span id="user-nav-name" style="font-weight: bold; display: block; margin-bottom: 5px;">Artist Name</span>
+        <hr>
+        <a href="dashboard-artist.html" class="dashboard-link hover-target" style="display: block; padding: 8px 0; color: var(--accent); text-decoration: none; font-size: 0.9rem;">
+            <i class="fa-solid fa-gauge-high"></i> Dashboard
+        </a>
+        <hr>
+        <button onclick="handleLogout()" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
 </div>
 
-<section class="swiper-section animate-in" style="animation-delay: 0.3s; margin-top: 0;">
-    <div class="swiper mySwiper">
-        <div class="swiper-wrapper" id="swiperPreviewContainer">
-            <div class="swiper-slide">
-                <div class="playlist-card">
-                    <div style="height: 200px; background: #14171C; border-radius: 18px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fa-solid fa-spinner fa-spin" style="font-size: 30px; color: #23C55E;"></i>
+
+    <div class="hamburger hover-target" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-bg">
+                <div class="blob blob-1"></div>
+                <div class="blob blob-2"></div>
+                <div class="particles" id="particles"></div>
+            </div>
+
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <span class="greeting reveal-up">Defining the Sound of Tomorrow</span>
+                    <h1 class="hero-title reveal-up" style="transition-delay: 0.1s;">
+                        Sopan Remix <br> <span class="text-gradient">Official Team.</span>
+                    </h1>
+                    <h2 class="hero-subtitle reveal-up" style="transition-delay: 0.2s;">
+                        We are a <span class="typing-text" id="typing-text">Music Collective</span><span class="typing-cursor">|</span>
+                    </h2>
+                    <p class="hero-desc reveal-up" style="transition-delay: 0.3s;">
+                        Leading the scene through innovation. A powerhouse of world-class producers, engineers, and remixers specialized in Phonk, Electronic, and Hipdut.
+                    </p>
+                    <div class="hero-ctas reveal-up" style="transition-delay: 0.4s;">
+                        <a href="#projects" class="btn btn-primary hover-target">
+                            Listen to Albums <i class="fa-solid fa-play"></i>
+                        </a>
+                        <a href="#contact" class="btn btn-outline hover-target">
+                            Join the Team
+                        </a>
+                    </div>
+                    <div class="hero-socials reveal-up" style="transition-delay: 0.5s;">
+                    <a href="#" class="social-icon hover-target"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#" class="social-icon hover-target"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" class="social-icon hover-target"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="hero-visual reveal-scale" style="transition-delay: 0.3s;">
+                    <div class="profile-card">
+                        <div class="profile-img-container" id="artist-display-box">
+                            <i class="fa-solid fa-users-gear profile-placeholder"></i>
+                        </div>
+                        
+                        <div style="text-align: center; margin-top: 10px; font-family: 'Outfit'; font-weight: 700; color: #fff;" id="artist-name-display">
+                            Sopan Artist
+                        </div>
+
+                        <div class="floating-badge badge-1">
+                            <i class="fa-solid fa-compact-disc"></i> Top Artists
+                        </div>
+                        <div class="floating-badge badge-2">
+                            <i class="fa-solid fa-wave-square"></i> Production Label
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="scroll-indicator reveal-fade" style="transition-delay: 1s;">
+                <a href="#about" class="hover-target">
+                    <div class="mouse"></div>
+                    <span>Discover More</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="about" class="about section">
+            <div class="container">
+                <div class="section-header reveal-up">
+                    <span class="section-subtitle">Our Artists</span>
+                    <h2 class="section-title">The Top Artists</h2>
+                </div>
+
+                <div class="about-grid">
+                    <div class="about-image-wrapper reveal-right">
+                        <div class="about-frame">
+                            <div class="about-photo-placeholder">
+                                <i class="fa-solid fa-microphone-lines"></i>
+                            </div>
+                        </div>
+<div class="experience-circle">
+    <span class="circle-num" id="artist-count">0</span>
+    <span class="circle-text">Artist<br>Active</span>
+</div>
+
+                    </div>
+
+                    <div class="about-content reveal-left">
+                        <h3 class="about-heading">Unity in Sound. Power in Remix.</h3>
+                        <p class="about-text">
+                            Sopan Remix is an elite music team and artist management. Our studio serves as a creative hub where top-tier talent collaborates to set new standards in digital and analog sound production.
+                        </p>
+                        <p class="about-text">
+                            We don't just make music; we build auditory experiences. Every project is handled by our specialized team members to ensure professional clarity and maximum energy on every sound system.
+                        </p>
+
+                        <div class="stats-grid">
+                            <div class="stat-box hover-target">
+                                <h4 class="stat-num"><span class="counter" data-target="500">0</span>+</h4>
+                                <p class="stat-label">Album Releases</p>
+                            </div>
+                            <div class="stat-box hover-target">
+                                <h4 class="stat-num"><span class="counter" data-target="25">0</span>M+</h4>
+                                <p class="stat-label">Label Streams</p>
+                            </div>
+                            <div class="stat-box hover-target">
+                                <h4 class="stat-num"><span class="counter" data-target="15">0</span>+</h4>
+                                <p class="stat-label">Expert Members</p>
+                            </div>
+                        </div>
+
+                        <a href="#" class="btn btn-outline hover-target mt-4">
+                            Our Full Roster <i class="fa-solid fa-users"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="trending-tiktok" class="section bg-alt" style="padding-top: 0;">
+    <div class="container">
+        <div class="section-header reveal-up">
+            <span class="section-subtitle">Trending on Feed</span>
+            <h2 class="section-title">Team TikTok Hits</h2>
         </div>
-        <div class="swiper-pagination"></div>
+
+        <div class="tiktok-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(325px, 1fr)); gap: 25px; justify-content: center;">
+            
+            <div class="tiktok-card glass-card hover-target" style="border-radius: 15px; overflow: hidden; padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1);">
+                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@team.sopan.remix/video/7578519417223417106" data-video-id="7578519417223417106" style="margin: 0;"> 
+                    <section></section> 
+                </blockquote>
+                <div style="padding: 15px 5px 5px;">
+                    <a href="https://www.tiktok.com/@team.sopan.remix/video/7578519417223417106" target="_blank" class="btn btn-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.9rem;">
+                        Watch Now <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tiktok-card glass-card hover-target" style="border-radius: 15px; overflow: hidden; padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1);">
+                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@team.sopan.remix/video/7590748567707438344" data-video-id="7590748567707438344" style="margin: 0;"> 
+                    <section></section> 
+                </blockquote>
+                <div style="padding: 15px 5px 5px;">
+                    <a href="https://www.tiktok.com/@team.sopan.remix/video/7590748567707438344" target="_blank" class="btn btn-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.9rem;">
+                        Watch Now <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="tiktok-card glass-card hover-target" style="border-radius: 15px; overflow: hidden; padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1);">
+                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@team.sopan.remix/video/7549595473078701368" data-video-id="7549595473078701368" style="margin: 0;"> 
+                    <section></section> 
+                </blockquote>
+                <div style="padding: 15px 5px 5px;">
+                    <a href="https://www.tiktok.com/@team.sopan.remix/video/7549595473078701368" target="_blank" class="btn btn-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.9rem;">
+                        Watch Now <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script async src="https://www.tiktok.com/embed.js"></script>
+</section>
+<section id="members" class="section">
+    <div class="container text-center">
+        <div class="section-header reveal-up">
+            <span class="section-subtitle">Behind the Sound</span>
+            <h2 class="section-title">The Sopan Roster</h2>
+        </div>
+        
+        <div id="member-list-grid" class="services-grid" style="margin-top: 40px;">
+            <p style="opacity: 0.5;">Memuat daftar member...</p>
+        </div>
+
+        <div class="reveal-up" style="margin-top: 40px;">
+            <p style="margin-bottom: 20px; opacity: 0.7;">Mau namamu ada di sini?</p>
+            <a href="#contact" class="btn btn-outline hover-target">Join the Team <i class="fa-solid fa-plus"></i></a>
+        </div>
+    </div>
+</section>
+<section id="tools" class="skills section bg-alt">
+    <div class="container">
+        <div class="section-header text-center reveal-up">
+            <span class="section-subtitle">Producer's Toolkit</span>
+            <h2 class="section-title">Music Tools & Recommendation</h2>
+        </div>
+
+        <div class="skills-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+            
+            <div class="skill-category reveal-up">
+                <div class="glass-card hover-target" style="padding: 30px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); border-radius: 20px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <div style="width: 60px; height: 60px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.3);">
+                        <i class="fa-solid fa-microphone-slash" style="font-size: 1.5rem; color: #fff;"></i>
+                    </div>
+                    <h3 style="margin-bottom: 10px; font-size: 1.2rem;">Vocal Remover</h3>
+                    <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">Pisahin vokal dan instrumen dari lagu favoritmu dengan AI.</p>
+                    <a href="https://vocalremover.org/id/" class="btn btn-primary btn-sm" style="width: 100%; border-radius: 10px;">
+                        Buka Tools <i class="fa-solid fa-arrow-right" style="margin-left: 8px; font-size: 0.7rem;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="skill-category reveal-up" style="transition-delay: 0.1s;">
+                <div class="glass-card hover-target" style="padding: 30px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); border-radius: 20px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <div style="width: 60px; height: 60px; background: #ff0000; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);">
+                        <i class="fa-brands fa-youtube" style="font-size: 1.5rem; color: #fff;"></i>
+                    </div>
+                    <h3 style="margin-bottom: 10px; font-size: 1.2rem;">YT to MP3</h3>
+                    <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">Convert link video YouTube jadi audio HQ buat sampling.</p>
+                    <a href="https://ytmp3.sc/" class="btn btn-primary btn-sm" style="width: 100%; border-radius: 10px;">
+                        Buka Tools <i class="fa-solid fa-arrow-right" style="margin-left: 8px; font-size: 0.7rem;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="skill-category reveal-up" style="transition-delay: 0.2s;">
+                <div class="glass-card hover-target" style="padding: 30px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); border-radius: 20px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <div style="width: 60px; height: 60px; background: #00d4ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);">
+                        <i class="fa-solid fa-music" style="font-size: 1.5rem; color: #fff;"></i>
+                    </div>
+                    <h3 style="margin-bottom: 10px; font-size: 1.2rem;">Chord Detector</h3>
+                    <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px;">Cari tahu progresi chord dari file audio secara otomatis.</p>
+                    <a href="https://chordify.net/" class="btn btn-primary btn-sm" style="width: 100%; border-radius: 10px;">
+                        Buka Tools <i class="fa-solid fa-arrow-right" style="margin-left: 8px; font-size: 0.7rem;"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
     </div>
 </section>
 
 
-<main class="services-container">
+        <section id="services" class="services section">
+            <div class="container">
+                <div class="section-header text-center reveal-up">
+                    <span class="section-subtitle">Solutions</span>
+                    <h2 class="section-title">Label Services</h2>
+                </div>
 
-
-    <h2 class="animate-in" style="animation-delay: 0.75s;">MUSIC TOOLS RECOMEND</h2>
-    <div class="tools-row animate-in" style="animation-delay: 0.8s;">
-        <a href="https://tunebat.com/Analyzer" target="_blank" class="tool-pill"><i class="fa-solid fa-magnifying-glass-chart"></i><span>Bpm & Key Finder</span></a>
-        <a href="https://chordify.net/" target="_blank" class="tool-pill"><i class="fa-solid fa-lines-leaning"></i><span>Chord Lagu</span></a>
-        <a href="https://vocalremover.org/id/" target="_blank" class="tool-pill"><i class="fa-solid fa-scissors"></i><span>Vocal Remover</span></a>
-        <a href="https://ytmp3.sc/" target="_blank" class="tool-pill"><i class="fa-brands fa-youtube" style="color: #FF0000;"></i><span>YT to MP3</span></a>
-    </div>
-
-<div id="playlistSection" style="display: none;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;" class="animate-in">
-        <h2 style="margin-bottom: 0;">SOPAN MUSIC</h2>
-        <a href="sopanmusic.html" style="color: #23C55E; text-decoration: none; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 5px;">
-            View All <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
-        </a>
-    </div>
-    <div class="preview-list animate-in" id="previewContainer"></div>
-</div>
-
-
-<h2 class="animate-in" style="animation-delay: 0.85s;">SOPAN BERBAGI</h2>
-<div class="grid-layanan" id="sampleGrid">
-    <a href="javascript:void(0)" onclick="showAlert('Sample sedang disiapkan')" class="card animate-in" style="animation-delay: 0.9s;">
-        <i class="fa-solid fa-box-open" style="color: #23C55E;"></i><span>Asset Free</span>
-        <p style="font-size: 10px; color: #636E7A; margin-top: -10px;">Koleksi sound gratis buat project kamu.</p>
-    </a>
-    <a href="acapella.html" class="card animate-in" style="animation-delay: 1s;">
-        <i class="fa-solid fa-microphone-lines" style="color: #23C55E;"></i><span>Acapella Free</span>
-        <p style="font-size: 10px; color: #636E7A; margin-top: -10px;">Vokal jernih gratis untuk project kamu.</p>
-    </a>
-    <a href="viz.html" class="card animate-in" style="animation-delay: 1.1s;">
-        <i class="fa-solid fa-wand-magic-sparkles" style="color: #23C55E;"></i><span>Template Viz</span>
-        <p style="font-size: 10px; color: #636E7A; margin-top: -10px;">Template Avee Player premium gratis.</p>
-    </a>
-</div>
-
-
-    <h2 class="animate-in" style="animation-delay: 0.82s; margin-top: 30px;">DAW DOWNLOAD</h2>
-    <div class="tools-row animate-in" style="animation-delay: 0.85s;">
-        <a href="https://liteapks.com/download/fl-studio-mobile-6151/1" download class="tool-pill" style="flex: 0 1 100%; justify-content: flex-start; padding: 15px 20px;">
-            <i class="fa-solid fa-file-download" style="color: #23C55E; font-size: 18px;"></i>
-            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
-                <span style="font-size: 14px;">FL Studio Mobile V 4.9.1 G</span>
-                <span style="font-size: 10px; color: #636E7A;">Klik untuk langsung mendownload file</span>
+                <div class="services-grid">
+                    <div class="service-card glass-card hover-target reveal-up">
+                        <div class="service-icon"><i class="fa-solid fa-music"></i></div>
+                        <h3 class="service-title">Full Team Production</h3>
+                        <p class="service-desc">Get a complete track produced by our top artists. We handle arrangement and beat-making with team-based quality control.</p>
+                    </div>
+                    <div class="service-card glass-card hover-target reveal-up" style="transition-delay: 0.1s;">
+                        <div class="service-icon"><i class="fa-solid fa-wave-square"></i></div>
+                        <h3 class="service-title">Mixing & Mastering</h3>
+                        <p class="service-desc">Transform your raw stems into industry-standard hits by our specialized engineering department.</p>
+                    </div>
+                    <div class="service-card glass-card hover-target reveal-up" style="transition-delay: 0.2s;">
+                        <div class="service-icon"><i class="fa-solid fa-ghost"></i></div>
+                        <h3 class="service-title">Official Remix Service</h3>
+                        <p class="service-desc">Collaborate with Sopan Remix for official remix duties. We bring our signature team energy to your records.</p>
+                    </div>
+                </div>
             </div>
-        </a>
-    </div>
+        </section>
 
-<div class="features-section animate-in" style="animation-delay: 0.9s;">
-    <h2 style="font-size: 14px; color: #636E7A; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1.5px;">DIBALIK LAYAR TEAM SOPAN REMIX</h2>
-    
-    <div class="feature-item">
-        <div class="feature-icon"><i class="fa-solid fa-users-gear"></i></div>
-        <div class="feature-content">
-            <h3>Project Management & FLM</h3>
-            <p style="color: #636E7A;">Kami mengelola kolaborasi antar member untuk memastikan setiap project remix memiliki standar kualitas TSR.</p>
-        </div>
-    </div>
+        <section id="projects" class="portfolio section bg-alt">
+            <div class="container">
+                <div class="section-header reveal-up">
+                    <span class="section-subtitle">The Catalog</span>
+                    <h2 class="section-title">Team Albums</h2>
+                </div>
 
-    <div class="feature-item">
-        <div class="feature-icon"><i class="fa-solid fa-sliders"></i></div>
-        <div class="feature-content">
-            <h3>Remixing & Arranging</h3>
-            <p style="color: #636E7A;">Menyusun ulang alur musik, chord, hingga melodi agar menjadi karya remix yang unik dan 'sopan' di telinga.</p>
-        </div>
-    </div>
+                <div class="portfolio-filters reveal-up">
+                    <button class="filter-btn active hover-target" data-filter="all">All Releases</button>
+                </div>
 
-    <div class="feature-item">
-        <div class="feature-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-        <div class="feature-content">
-            <h3>Community Support</h3>
-            <p style="color: #636E7A;">Membantu talenta baru untuk berkembang, menyediakan resource vokal, hingga sharing ilmu seputar dunia remix.</p>
-        </div>
+<div class="portfolio-grid" id="projects-grid">
     </div>
 </div>
+        </section>
 
-</main>
+        <section id="experience" class="experience section">
+            <div class="container">
+                <div class="section-header text-center reveal-up">
+                    <span class="section-subtitle">Our Legacy</span>
+                    <h2 class="section-title">Label Credits</h2>
+                </div>
 
-<footer class="footer-text animate-in" style="animation-delay: 1s;">
-    <div class="biodata-footer animate-in" style="animation-delay: 0.95s;">
-        <div class="bio-brand">
-            <div class="bio-logo-svg">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="100" height="100" rx="25" fill="#FFFFFF"/>
-                    <path d="M68,32 C60,24 40,24 32,32 C24,40 32,50 50,50 C68,50 76,60 68,68 C60,76 40,76 32,68" 
-                          stroke="#14171C" 
-                          stroke-width="12" 
-                          stroke-linecap="round" 
-                          fill="none"/>
-                </svg>
+                <div class="timeline">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="timeline-item reveal-right">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content glass-card hover-target">
+                            <span class="timeline-year">2024 - Present</span>
+                            <h3 class="timeline-title">Leading the Collective</h3>
+                            <span class="timeline-company">Sopan Remix Global</span>
+                            <p class="timeline-desc">Scaling our team into a full-scale digital label and sample pack developer for top-tier VSTs.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item reveal-left">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content glass-card hover-target">
+                            <span class="timeline-year">2021 - 2024</span>
+                            <h3 class="timeline-title">The Origin Years</h3>
+                            <span class="timeline-company">Team Foundation</span>
+                            <p class="timeline-desc">United as a specialized team to mix and master 500+ tracks for international clients.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <span class="bio-name-text">Sopan</span>
-        </div>
-        </div>
+        </section>
 
-</footer>
+        <section id="blog" class="blog section">
+            <div class="container">
+                <div class="section-header reveal-up">
+                    <span class="section-subtitle">Knowledge</span>
+                    <h2 class="section-title">Team News & Insights</h2>
+                </div>
 
-<div class="custom-alert-overlay" id="customAlert">
-    <div class="custom-alert-box">
-        <i class="fa-solid fa-screwdriver-wrench"></i>
-        <p id="alertMessage">Pesan sedang disiapkan</p>
-        <button class="custom-alert-btn" onclick="closeAlert()">OKE</button>
-    </div>
-</div>
+                <div class="blog-grid">
+                    <article class="blog-card glass-card hover-target reveal-up">
+                        <div class="blog-img">
+                            <i class="fa-solid fa-headphones placeholder-img"></i>
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-date">March 2026</span>
+                            <h3 class="blog-title">Team Mastering Workflow</h3>
+                            <p class="blog-desc">How our engineers collaborate to achieve the perfect LUFS level.</p>
+                            <a href="#" class="blog-link">Read Team Guide <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </article>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-    import { getFirestore, collection, getDocs, limit, query } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-    // UPDATE: Import Database
-    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+                    <article class="blog-card glass-card hover-target reveal-up" style="transition-delay: 0.1s;">
+                        <div class="blog-img">
+                            <i class="fa-solid fa-microphone placeholder-img"></i>
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-date">Feb 2026</span>
+                            <h3 class="blog-title">The Secret to Team Remixes</h3>
+                            <p class="blog-desc">Sharing stems and creative ideas within the Sopan Remix roster.</p>
+                            <a href="#" class="blog-link">Read Team Guide <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-    // UPDATE: Konfigurasi Firebase LabelMusic
-    const firebaseConfig = {
-        apiKey: "AIzaSyDQJ0dFT8ohAkwDODrdfDa2GEwzk0kZRm0",
-        authDomain: "labelmusic-ee1b2.firebaseapp.com",
-        databaseURL: "https://labelmusic-ee1b2-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "labelmusic-ee1b2",
-        storageBucket: "labelmusic-ee1b2.firebasestorage.app",
-        messagingSenderId: "634541524714",
-        appId: "1:634541524714:web:a2fc9d47a91e37f44a7993",
-        measurementId: "G-MMFG3N1VV9"
-    };
+        <section id="contact" class="contact section bg-alt">
+            <div class="container">
+                <div class="section-header text-center reveal-up">
+                    <span class="section-subtitle">Portal</span>
+                    <h2 class="section-title">Artist Access</h2>
+                </div>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const rtdb = getDatabase(app); // Inisialisasi Real-time Database
-    // Fungsi untuk mengacak array (Fisher-Yates Shuffle)
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
-
-    const userAvatar = document.getElementById('userAvatar');
-    const sideSignUpBtn = document.getElementById('sideSignUpBtn');
-
-    window.handleLogOut = () => { signOut(auth).then(() => { 
-        document.getElementById('profileDropdown').classList.remove('active'); 
-        window.location.reload();
-    }); };
-
-    // UPDATE: Logika pengecekan Status (Pending/Success)
-    onAuthStateChanged(auth, async (user) => {
-        const greetingElement = document.getElementById('userGreeting');
-        if (user) {
-            try {
-                const userRef = ref(rtdb, 'users/' + user.uid);
-                const snapshot = await get(userRef);
-
-                if (snapshot.exists()) {
-                    const userData = snapshot.val();
-                    const name = userData.username || 'User';
-                    const status = userData.status; // Ambil nilai status
-
-                    if (status === "success") {
-                        // Jika status success: Tampilkan foto dan sambutan normal
-                        userAvatar.src = userData.profilePic || 'https://via.placeholder.com/150';
-                        userAvatar.style.display = 'block';
-                        if (greetingElement) { 
-                            greetingElement.innerText = `Welcome, ${name}!`; 
-                            greetingElement.style.opacity = '1'; 
-                        }
-                    } else {
-                        // Jika status pending: Sembunyikan foto, ganti teks sambutan
-                        userAvatar.style.display = 'none';
-                        if (greetingElement) { 
-                            greetingElement.innerText = `${name}, sedang ditinjau admin`; 
-                            greetingElement.style.opacity = '1'; 
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error("Gagal memuat data:", error);
-            }
-
-            if(sideSignUpBtn) sideSignUpBtn.style.display = 'none';
-        } else {
-            userAvatar.style.display = 'none';
-            if(sideSignUpBtn) sideSignUpBtn.style.display = 'block';
-            if (greetingElement) { greetingElement.style.opacity = '0'; greetingElement.innerText = ''; }
-        }
-    });
-
-    let allSongs = []; 
-    let currentIndex = -1;
-    let mainSwiper;
-    let currentPlayingAudio = null;
-    let currentPlayingBtn = null;
-    let currentPlayingItem = null;
-// PASANG KODE BARU DI SINI (Sebelum fetchPlaylist)
-const musicOverlay = document.getElementById('musicOverlay');
-const triggerArea = document.getElementById('triggerArea');
-const btnMinimize = document.getElementById('btnMinimize');
-
-if (triggerArea) {
-    triggerArea.onclick = (e) => {
-        // Jika yang diklik BUKAN tombol kontrol, maka perbesar
-        if (!e.target.closest('.player-controls')) {
-            musicOverlay.classList.add('expanded');
-        }
-    };
-}
-
-if (btnMinimize) {
-    btnMinimize.onclick = (e) => {
-        e.stopPropagation(); 
-        musicOverlay.classList.remove('expanded');
-    };
-}
-    async function fetchPlaylist() {
-        const swiperContainer = document.getElementById('swiperPreviewContainer');
-        const listContainer = document.getElementById('previewContainer');
-        const section = document.getElementById('playlistSection');
-        
-        // Element Overlay
-        const overlay = document.getElementById('musicOverlay');
-        const ovPlay = document.getElementById('ovPlay');
-        const ovProgress = document.getElementById('ovProgressBar');
-        const ovProgressBox = document.getElementById('ovProgressBox');
-
-        try {
-            const q = query(collection(db, "products"), limit(20));
-            const snap = await getDocs(q);
-            if (snap.empty) return;
-
-            let items = [];
-            snap.forEach((doc) => { items.push({ id: doc.id, ...doc.data() }); });
-            
-            // Simpan ke array global untuk navigasi Next/Prev
-            allSongs = shuffleArray(items).slice(0, 8);
-            
-            section.style.display = 'block';
-            swiperContainer.innerHTML = '';
-            listContainer.innerHTML = '';
-
-            // Helper Format Waktu
-            const formatTime = (secs) => {
-                if(!secs) return "0:00";
-                const m = Math.floor(secs / 60);
-                const s = Math.floor(secs % 60);
-                return `${m}:${s < 10 ? '0' + s : s}`;
-            };
-
-            allSongs.forEach((data, index) => {
-                const swSlide = document.createElement('div');
-                swSlide.className = 'swiper-slide';
-                swSlide.innerHTML = `
-                    <div class="playlist-card">
-                        <img src="${data.avatar}" class="pl-cover">
-                        <div class="pl-info">
-                            <div class="pl-visualizer" style="display: flex; align-items: flex-end; gap: 3px; height: 15px; margin-bottom: 8px; opacity: 0; transition: 0.3s; justify-content: center;">
-                                <div class="bar" style="width:3px; background:#23C55E; height:4px;"></div>
-                                <div class="bar" style="width:3px; background:#23C55E; height:4px;"></div>
-                                <div class="bar" style="width:3px; background:#23C55E; height:4px;"></div>
-                                <div class="bar" style="width:3px; background:#23C55E; height:4px;"></div>
-                            </div>
-                            <h4>${data.judul}</h4>
-                            <p>${data.artis}</p>
-                            <div class="pl-controls">
-                                <div class="pl-play-btn"><i class="fa-solid fa-play"></i></div>
-                                <div class="pl-progress-box" style="flex: 1; cursor: pointer; position: relative;">
-                                    <div class="pl-progress-bg" style="position: relative; overflow: visible;">
-                                        <div class="pl-progress-bar" style="position: relative;">
-                                            <div style="position: absolute; right: -5px; top: 50%; transform: translateY(-50%); width: 10px; height: 10px; background: #fff; border-radius: 50%; border: 2px solid #23C55E;"></div>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; font-size: 10px; color: #636E7A; margin-top: 5px; font-family: monospace;">
-                                        <span class="curr-time">0:00</span>
-                                        <span class="total-time">0:00</span>
-                                    </div>
+                <div class="contact-content">
+                    <div class="contact-info reveal-right">
+                        <h3 class="contact-heading">Join the Roster</h3>
+                        <p class="contact-desc">Silahkan masuk ke akun anda atau daftarkan diri untuk menjadi bagian dari Sopan Remix Team.</p>
+                        
+                        <div class="info-items">
+                            <div class="info-item hover-target">
+                                <div class="info-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                                <div>
+                                    <span class="info-title">Secure Portal</span>
+                                    <span class="info-detail">Management Verified</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                `;
 
-                const listItem = document.createElement('div');
-                listItem.className = 'preview-item';
-                listItem.innerHTML = `
-                    <img src="${data.avatar}" class="preview-avatar">
-                    <div class="preview-info">
-                        <div class="title-wrapper">
-                            <h4>${data.judul}</h4>
-                            <div class="spectrum">
-                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                            </div>
-                        </div>
-                        <p>${data.artis}</p>
-                        <div class="progress-container"><div class="progress-bar"></div></div>
-                    </div>
-                    <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                `;
+                    <div class="contact-form-wrapper reveal-left">
+<div class="glass-card auth-container">
+    <div class="auth-tabs">
+        <button class="tab-btn active hover-target" id="tab-login" onclick="toggleAuth('login')">Sign In</button>
+        <button class="tab-btn hover-target" id="tab-join" onclick="toggleAuth('join')">Join Artist</button>
+    </div>
 
-                const audio = new Audio(data.audio);
-                data.audioObj = audio; // Simpan objek audio ke dalam data
-
-                const swBtn = swSlide.querySelector('.pl-play-btn');
-                const swBar = swSlide.querySelector('.pl-progress-bar');
-                const swProgressBox = swSlide.querySelector('.pl-progress-box');
-                const swVisualizer = swSlide.querySelector('.pl-visualizer');
-                const liBtn = listItem.querySelector('.play-btn');
-                const liBar = listItem.querySelector('.progress-bar');
-
-                audio.onloadedmetadata = () => {
-                    swSlide.querySelector('.total-time').innerText = formatTime(audio.duration);
-                };
-
-const updateOverlayUI = () => {
-    const ovTitle = document.getElementById('ovTitle');
-    const ovArtist = document.getElementById('ovArtist');
-    const ovCover = document.getElementById('ovCover');
-    const infoContainer = ovTitle.parentElement;
-
-    // 1. Set data dasar
-    ovCover.src = data.avatar;
-    ovTitle.innerText = data.judul;
-    ovArtist.innerText = data.artis;
-    overlay.classList.add('active');
-
-    // 2. Reset animasi & teks setiap ganti lagu
-    ovTitle.classList.remove('scroll-active');
-    ovTitle.style.animation = 'none'; 
-
-    // 3. Logika Cek Panjang Teks (Gunakan timeout kecil agar DOM selesai render)
-    setTimeout(() => {
-        // Jika lebar teks asli lebih besar dari lebar kotak penampungnya
-        if (ovTitle.scrollWidth > infoContainer.offsetWidth) {
-            // Duplikat teks hanya jika kepanjangan agar loop tidak putus
-            ovTitle.innerHTML = `${data.judul} &nbsp;&nbsp;&nbsp;&nbsp; ${data.judul} &nbsp;&nbsp;&nbsp;&nbsp;`;
-            ovTitle.classList.add('scroll-active');
-            ovTitle.style.animation = ''; // Jalankan kembali animasi
-        }
-    }, 100);
-};
-
-
-                const handlePlay = (btn, bar, itemType) => {
-                    if (currentPlayingAudio && currentPlayingAudio !== audio) {
-                        currentPlayingAudio.pause();
-                        // Reset all icons
-                        document.querySelectorAll('.pl-play-btn, .play-btn').forEach(b => b.innerHTML = '<i class="fa-solid fa-play"></i>');
-                        document.querySelectorAll('.pl-visualizer, .spectrum').forEach(v => v.style.opacity = "0");
-                        document.querySelectorAll('.preview-item, .swiper-slide').forEach(i => i.classList.remove('playing'));
-                    }
-
-                    if (audio.paused) {
-                        audio.play();
-                        btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                        ovPlay.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                        swVisualizer.style.opacity = "1";
-                        updateOverlayUI();
-                        currentIndex = index;
-
-                        if (mainSwiper && mainSwiper.autoplay) mainSwiper.autoplay.stop();
-                        if(itemType === 'list') listItem.classList.add('playing');
-                        else swSlide.classList.add('playing');
-
-                        currentPlayingAudio = audio; 
-                        currentPlayingBtn = btn; 
-                        currentPlayingItem = (itemType === 'list' ? listItem : swSlide);
-                    } else {
-                        audio.pause();
-                        btn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                        ovPlay.innerHTML = '<i class="fa-solid fa-play"></i>';
-                        swVisualizer.style.opacity = "0";
-                        if (mainSwiper && mainSwiper.autoplay) mainSwiper.autoplay.start();
-                    }
-                };
-
-                audio.ontimeupdate = () => {
-                    if (audio.duration) {
-                        const prog = (audio.currentTime / audio.duration) * 100;
-                        swBar.style.width = prog + "%";
-                        liBar.style.width = prog + "%";
-                        ovProgress.style.width = prog + "%";
-                        swSlide.querySelector('.curr-time').innerText = formatTime(audio.currentTime);
-                        document.getElementById('ovCurrent').innerText = formatTime(audio.currentTime);
-                        document.getElementById('ovTotal').innerText = formatTime(audio.duration);
-                    }
-                };
-
-                swProgressBox.onclick = (e) => {
-                    const rect = swSlide.querySelector('.pl-progress-bg').getBoundingClientRect();
-                    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
-                };
-
-                audio.onended = () => { playNext(); };
-
-                swBtn.onclick = () => handlePlay(swBtn, swBar, 'swiper');
-                liBtn.onclick = () => handlePlay(liBtn, liBar, 'list');
-
-                swiperContainer.appendChild(swSlide);
-                listContainer.appendChild(listItem);
-            });
-
-            // Logika Global Kontrol Overlay
-            ovPlay.onclick = () => {
-                if(currentPlayingAudio) {
-                    if(currentPlayingAudio.paused) {
-                        currentPlayingAudio.play();
-                        ovPlay.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                        if(currentPlayingBtn) currentPlayingBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                    } else {
-                        currentPlayingAudio.pause();
-                        ovPlay.innerHTML = '<i class="fa-solid fa-play"></i>';
-                        if(currentPlayingBtn) currentPlayingBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                    }
-                }
-            };
-
-            ovProgressBox.onclick = (e) => {
-                if(currentPlayingAudio) {
-                    const rect = ovProgressBox.getBoundingClientRect();
-                    currentPlayingAudio.currentTime = ((e.clientX - rect.left) / rect.width) * currentPlayingAudio.duration;
-                }
-            };
-
-            const playNext = () => {
-                let nextIdx = (currentIndex + 1) % allSongs.length;
-                // Trigger click pada tombol play slide berikutnya
-                swiperContainer.children[nextIdx].querySelector('.pl-play-btn').click();
-                if(mainSwiper) mainSwiper.slideToLoop(nextIdx);
-            };
-
-            const playPrev = () => {
-                let prevIdx = (currentIndex - 1 + allSongs.length) % allSongs.length;
-                swiperContainer.children[prevIdx].querySelector('.pl-play-btn').click();
-                if(mainSwiper) mainSwiper.slideToLoop(prevIdx);
-            };
-
-            document.getElementById('ovNext').onclick = playNext;
-            document.getElementById('ovPrev').onclick = playPrev;
-
-            mainSwiper = new Swiper(".mySwiper", {
-                effect: "coverflow",
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: "auto",
-                speed: 700,
-                coverflowEffect: { rotate: 0, stretch: 15, depth: 120, modifier: 1.4, slideShadows: false },
-                loop: true,
-                autoplay: { delay: 4000, disableOnInteraction: false }
-            });
-
-        } catch (e) { console.error("Error loading playlist:", e); }
-    }
-fetchPlaylist();
-</script>
-<script>
-    function toggleProfileMenu() { document.getElementById('profileDropdown').classList.toggle('active'); }
-    window.onclick = function(event) {
-        if (!event.target.matches('.user-photo')) {
-            const dropdown = document.getElementById('profileDropdown');
-            if (dropdown && dropdown.classList.contains('active')) dropdown.classList.remove('active');
-        }
-    }
-    function toggleMenu() {
-        const menu = document.getElementById('sideMenu');
-        const overlay = document.getElementById('overlay');
-        menu.classList.toggle('active');
-        overlay.style.display = menu.classList.contains('active') ? 'block' : 'none';
-    }
-    function showAlert(msg) {
-        document.getElementById('alertMessage').innerText = msg;
-        document.getElementById('customAlert').style.display = 'flex';
-    }
-    function closeAlert() { document.getElementById('customAlert').style.display = 'none'; }
-</script>
-<footer class="footer-minimal">
-    <div class="footer-grid">
-        <div class="footer-col">
-            <h4>Menu</h4>
-            <ul>
-                <li><a href="membersopan.html">Member List</a></li>
-                <li><a href="rules.html">Rules Team</a></li>
-                <li><a href="syarat.html">Syarat Join</a></li>
-            </ul>
+    <div id="login-form" class="auth-form active">
+        <div class="form-group">
+            <input type="email" id="email" required class="form-input" placeholder=" ">
+            <label for="email" class="form-label">Email Address</label>
         </div>
+        <div class="form-group">
+            <input type="password" id="password" required class="form-input" placeholder=" ">
+            <label for="password" class="form-label">Password</label>
+        </div>
+    </div>
+
+    <div id="join-form" class="auth-form">
         
-        <div class="footer-col">
-            <h4>Sosial Media</h4>
-            <ul>
-                <li><a href="https://instagram.com/teamsopanremix">Instagram</a></li>
-                <li><a href="https://www.tiktok.com/@team.sopan.remix?_r=1&_t=ZS-93HVFf2Dbm8">TikTok</a></li>
-                <li><a href="#">YouTube</a></li>
-            </ul>
+        <div id="step1" class="auth-form-step active">
+            <div class="form-group">
+                <input type="text" id="regName" class="form-input" placeholder=" ">
+                <label class="form-label">Nama Artist (Contoh: RIZ)</label>
+            </div>
+            <div class="form-group">
+                <div class="file-upload-box hover-target" onclick="document.getElementById('regAvatar').click()">
+                    <i class="fa-solid fa-camera"></i>
+                    <span id="avatar-status">Upload Foto Profil (1:1)</span>
+                    <input type="file" id="regAvatar" accept="image/*" style="display: none;" onchange="document.getElementById('avatar-status').innerText = 'Foto Terpilih!'">
+                </div>
+            </div>
         </div>
-        
-        <div class="footer-col">
-            <h4>Pusat Bantuan</h4>
-            <ul>
-                <li>
-                    <a href="https://wa.me/6283129555763" style="display: flex; align-items: center; gap: 5px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                        Admin 1
-                    </a>
-                </li>
-                <li><a href="faq.html">FAQ</a></li>
-            </ul>
+
+        <div id="step2" class="auth-form-step">
+            <div class="form-group">
+                <input type="email" id="regEmailAktif" class="form-input" placeholder=" ">
+                <label class="form-label">Email Aktif (Pribadi)</label>
+            </div>
+            <div class="form-group">
+                <div class="file-upload-box hover-target" onclick="document.getElementById('regAudio').click()">
+                    <i class="fa-solid fa-music"></i>
+                    <span id="audio-status">Upload Audio Demo (MP3)</span>
+                    <input type="file" id="regAudio" accept="audio/mpeg" style="display: none;" onchange="document.getElementById('audio-status').innerText = 'Audio Siap!'">
+                </div>
+            </div>
         </div>
-    </div>
-    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: #636E7A;">
-        &copy; 2026 Team Sopan Remix. All Rights Reserved.
-    </div>
-</footer>
-<div class="player-overlay" id="musicOverlay">
-    <button class="btn-minimize" id="btnMinimize">
-        <i class="fa-solid fa-chevron-down"></i>
-    </button>
-    
-    <div class="player-content" id="triggerArea">
-        <img src="" class="player-cover" id="ovCover">
-        <div class="player-info">
-            <h4 id="ovTitle">Judul Lagu</h4>
-            <p id="ovArtist">Nama Artist</p>
-        </div>
-        <div class="player-controls">
-            <button class="btn-control" id="ovPrev"><i class="fa-solid fa-backward-step"></i></button>
-            <button class="btn-control btn-play-main" id="ovPlay"><i class="fa-solid fa-play"></i></button>
-            <button class="btn-control" id="ovNext"><i class="fa-solid fa-forward-step"></i></button>
+
+        <div id="step3" class="auth-form-step">
+            <div id="previewData" class="preview-box">
+                </div>
+            <div class="alert-info-mini" style="margin-top: 15px; font-size: 0.7rem; opacity: 0.6; color: #00ff88; line-height: 1.4;">
+                <i class="fa-solid fa-circle-info"></i> Harap screenshot Email & Password System di atas untuk login ke portal artist nanti.
+            </div>
         </div>
     </div>
 
-    <div class="player-progress-area">
-        <div class="ov-progress-box" id="ovProgressBox">
-            <div class="ov-progress-bar" id="ovProgressBar"></div>
+    <div class="auth-footer" style="margin-top: 25px; display: flex; gap: 10px;">
+        <button id="backBtn" class="btn btn-outline hover-target" style="display: none; flex: 1; padding: 12px;" onclick="moveStep(-1)">
+            <i class="fa-solid fa-arrow-left"></i>
         </div>
-        <div class="ov-time">
-            <span id="ovCurrent">0:00</span>
-            <span id="ovTotal">0:00</span>
-        </div>
+        <button id="mainBtn" class="btn btn-primary hover-target" style="flex: 2; width: 100%;" onclick="handleAuth()">
+            Masuk <i class="fa-solid fa-right-to-bracket"></i>
+        </button>
     </div>
 </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-top">
+                <a href="#home" class="logo hover-target">
+                    <span class="logo-text">Sopan.<span class="text-accent">Remix</span></span>
+                </a>
+                <div class="footer-links">
+                    <a href="#about" class="hover-target">Artists</a>
+                    <a href="#projects" class="hover-target">Albums</a>
+                    <a href="#services" class="hover-target">Services</a>
+                </div>
+                <button id="back-to-top" class="back-to-top hover-target" aria-label="Back to top">
+                    <i class="fa-solid fa-arrow-up"></i>
+                </button>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Sopan Remix Team Management. All rights reserved.</p>
+                <div class="footer-socials">
+                    <a href="#" class="hover-target"><i class="fa-brands fa-spotify"></i></a>
+                    <a href="#" class="hover-target"><i class="fa-brands fa-soundcloud"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Script untuk Toggle Form
+        function toggleAuth(type) {
+            const loginForm = document.getElementById('login-form');
+            const joinForm = document.getElementById('join-form');
+            const tabLogin = document.getElementById('tab-login');
+            const tabJoin = document.getElementById('tab-join');
+
+            if (type === 'login') {
+                loginForm.classList.add('active');
+                joinForm.classList.remove('active');
+                tabLogin.classList.add('active');
+                tabJoin.classList.remove('active');
+            } else {
+                loginForm.classList.remove('active');
+                joinForm.classList.add('active');
+                tabLogin.classList.remove('active');
+                tabJoin.classList.add('active');
+            }
+        }
+        // Catatan: Listener submit dihandle di script.js
+    </script>
+<script type="module" src="script.js"></script>
 
 </body>
 </html>
